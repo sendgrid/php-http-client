@@ -55,7 +55,7 @@ class Client {
     * @return: string
    */
   private function _build_versioned_url($url) {
-    return sprintf("%s/v%d%s", $this->host, $this->_version, $url);
+    return sprintf("%s/v%d%s", $this->host, $this->_get_version(), $url);
   }
 
   /**
@@ -70,16 +70,16 @@ class Client {
     $count = 0;
 
     while ($count < count($this->_url_path)) {
-      $url += sprintf("/%s", $this->_url_path[count]);
-      count+=1;
+      $url += sprintf("/%s", $this->_url_path[$count]);
+      $count+=1;
     }
 
     if (isset($query_params)) {
-      $url_values = urlencode(asort(query_params));
+      $url_values = urlencode(asort($query_params));
       $url = sprintf('%s?%s', $url, $url_values);
     }
 
-    if ($this->_version) {
+    if (null != $this->_get_version()) {
       $url = $this->_build_versioned_url($url);
     } else {
       $url = $this->host + url;
@@ -119,7 +119,7 @@ class Client {
    * @type request: urllib.Request object
    * @return:
    */
-  private function _make_request($opener, $request) {
+  private function _make_request($request) {
       //@todo make the call using guzzle, and fix the return value
 
       return null;
@@ -140,13 +140,15 @@ class Client {
     */
   public function __call($name, $args){
 
+    // @todo handle args
+
     if (in_array($name, $this->_methods)) {
-        $this->_make_request();d
+        $this->_make_request();
         return $this;
     }
 
-    $this->cache[$this->count] = $name;
-    $this->count = $this->count + 1;
+    $this->_cache[$this->_count] = $name;
+    $this->_count = $this->_count + 1;
     return $this;
   }
 
@@ -154,21 +156,21 @@ class Client {
    * @return: integer, status code of API call
    */
   public function status_code() {
-    return $this->status_code;
+    return $this->_status_code;
   }
 
   /**
    * @return: response from the API
    */
   public function response_body() {
-    return $this->response_body;
+    return $this->_response_body;
   }
 
   /**
    * @return: dict of response headers
    */
   public function response_headers() {
-    return $this->response_headers;
+    return $this->_response_headers;
   }
 
   /**
@@ -176,6 +178,7 @@ class Client {
    */
   public function version($version) {
       $this->_version = $version;
+      return $this;
   }
 
   private function _get_version() {
