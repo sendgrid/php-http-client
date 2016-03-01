@@ -13,5 +13,5 @@ Any other information you want to share that is relevant to the issue being repo
 
 #### Technical details:
 
-* python-http-client Version: master (latest commit: [commit number])
-* Python Version: 2.7
+* php-http-client Version: master (latest commit: [commit number])
+* PHP Version: 5.x
