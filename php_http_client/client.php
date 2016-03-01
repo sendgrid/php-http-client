@@ -1,7 +1,7 @@
 <?php
 class Client {
 
-  function __construct($host, $request_headers= [], $version=null){
+  function __construct($host, $request_headers = [], $version = null){
     /*
       @param host: Base URL for the api. (e.g. https://api.sendgrid.com)
       @type host:  string
@@ -20,20 +20,19 @@ class Client {
     # _count and _url_path keep track of the dynamically built url
     $this->_count = 0;
     $this->_methods = ['delete', 'get', 'patch', 'post', 'put'];
-    $this->_url_path = {};
-    $this->_status_code = null;
-    $this->_response_body = null;
-    $this->_response_headers = null;
-    $this->_response = null;
+
+    $this->_reset();
   }
 
   /*
     Resets the URL builder, so you can make a fresh new dynamic call.
   */
-  private function _reset(self) {
-    $this->_count = 0
-    $this->_url_path = {}
-    $this->_response = None
+  private function _reset() {
+    $this->_count = 0;
+    $this->_url_path = [];
+    $this->_response = null;
+    $this->_response_body = null;
+    $this->_response_headers = null;
   }
 
   /**
