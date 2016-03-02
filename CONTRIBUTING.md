@@ -229,4 +229,3 @@ Please run your code through [pyflakes](https://pypi.python.org/pypi/pyflakes), 
     with a clear title and description against the `master` branch. All tests must be passing before we will review the PR.
 
 If you have any additional questions, please feel free to [email](mailto:dx@sendgrid.com) us or create an issue in this repo.
-
