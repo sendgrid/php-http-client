@@ -129,7 +129,6 @@ class Client {
           curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
           break;
         case 'post':
-          curl_setopt($curl, CURLOPT_POST, 1);  
           curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
           $request_body = json_encode($request_body);
           curl_setopt($curl, CURLOPT_POSTFIELDS, $request_body);

@@ -1,11 +1,8 @@
 <?php
 include(dirname(__DIR__).'/php_http_client/client.php');
-
-$myfile = fopen(dirname(__DIR__).'/.env', "r");
-$env = fgets($myfile);
-$env = explode('=', $env);
-$api_key = $env[1];
-$api_key = trim(preg_replace('/\s+/', ' ', $api_key));
+include(dirname(__DIR__).'/php_http_client/config.php');
+$config = new Config(dirname(__DIR__), '.env');
+$api_key = getenv('SENDGRID_API_KEY');
 $headers = array(
     'Content-Type: application/json',
     'Authorization: Bearer '.$api_key
