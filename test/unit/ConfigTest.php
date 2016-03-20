@@ -8,7 +8,7 @@ class ConfigTest_Config extends PHPUnit_Framework_TestCase
     
     protected function setUp()
     {
-        $this->base_path = dirname("..");
+        $this->base_path = dirname('../');
         $this->config_filename = '.env_sample';
         $this->config = new SendGrid\Config($this->base_path, $this->config_filename);
     }
