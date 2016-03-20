@@ -11,8 +11,6 @@ after_script:
 - phpenv local 5.4
 - phpenv local --unset
 php:
-- 5.2
-- 5.3
 - 5.4
 - 5.5
 - 5.6
