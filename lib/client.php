@@ -1,4 +1,5 @@
 <?php
+namespace SendGrid;
 class Response {
 
   function __construct($status_code = null, $response_body = null, $response_headers = null){
@@ -30,7 +31,14 @@ class Response {
 }
 
 class Client {
-
+  
+  public 
+    $host,
+    $request_headers,
+    $version,
+    $url_path,
+    $methods;    
+  
   function __construct($host, $request_headers = null, $version = null, $url_path = null){
     /*
       @param host: Base URL for the api. (e.g. https://api.sendgrid.com)
@@ -45,11 +53,11 @@ class Client {
 
     $this->host = $host;
     $this->request_headers = ($request_headers ? $request_headers : []);
-    $this->_version = $version;
-    # _url_path keeps track of the dynamically built url
-    $this->_url_path = ($url_path ? $url_path : []);
+    $this->version = $version;
+    # url_path keeps track of the dynamically built url
+    $this->url_path = ($url_path ? $url_path : []);
     # These are the supported HTTP verbs
-    $this->_methods = ['delete', 'get', 'patch', 'post', 'put'];
+    $this->methods = ['delete', 'get', 'patch', 'post', 'put'];
   }
 
   /**
@@ -58,14 +66,26 @@ class Client {
     *   @type name: string
     */
   private function _build_client($name = null) {
-    if($name != null){
-        array_push($this->_url_path, $name);
+    if(isset($name)){
+        array_push($this->url_path, $name);
     }
-    $url_path = $this->_url_path;
-    $this->_url_path = [];
-    return new Client($this->host, $this->request_headers, $this->_version, $url_path);
+    $url_path = $this->url_path;
+    $this->url_path = [];
+    return new Client($this->host, $this->request_headers, $this->version, $url_path);
   }
 
+  /**
+   * Add the version to the path
+   */
+  public function version($version) {
+      $this->version = $version;
+      return $this->_(null);
+  }
+
+  public function get_version() {
+    return $this->version;
+  }
+  
   /**
     *   Subclass this function for your own needs.
     *    Or just pass the version as part of the URL
@@ -75,7 +95,7 @@ class Client {
     * @return: string
    */
   private function _build_versioned_url($url) {
-    return sprintf("%s/v%d%s", $this->host, $this->_get_version(), $url);
+    return sprintf("%s/v%d%s", $this->host, $this->get_version(), $url);
   }
 
   /**
@@ -86,14 +106,14 @@ class Client {
    */
   private function _build_url($query_params = null) {
 
-    $url = '/'.implode('/', $this->_url_path);
+    $url = '/'.implode('/', $this->url_path);
 
     if (isset($query_params)) {
       $url_values = http_build_query($query_params);
       $url = sprintf('%s?%s', $url, $url_values);
     }
     
-    if (null != $this->_get_version()) {
+    if (null != $this->get_version()) {
       $url = $this->_build_versioned_url($url);
     } else {
       $url = sprintf('%s%s', $this->host, $url);;
@@ -120,53 +140,29 @@ class Client {
    * @type request: urllib.Request object
    * @return:
    */
-  private function _make_request($method, $url, $request_body = null, $request_headers = null) {
+  public function _make_request($method, $url, $request_body = null, $request_headers = null) {
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HEADER, 1);
-    switch($method){
-        case 'get':
-          curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
-          break;
-        case 'post':
-          curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-          $request_body = json_encode($request_body);
-          curl_setopt($curl, CURLOPT_POSTFIELDS, $request_body);
-          $content_length = array('Content-Length: ' . strlen($request_body));
-          $this->request_headers = array_merge($this->request_headers, $content_length);
-          break;
-        case 'patch':
-          curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
-          $request_body = json_encode($request_body);
-          curl_setopt($curl, CURLOPT_POSTFIELDS, $request_body);
-          $content_length = array('Content-Length: ' . strlen($request_body));
-          $this->request_headers = array_merge($this->request_headers, $content_length);
-          break;
-        case 'put':
-          curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
-          $request_body = json_encode($request_body);
-          curl_setopt($curl, CURLOPT_POSTFIELDS, $request_body);
-          $content_length = array('Content-Length: ' . strlen($request_body));
-          $this->request_headers = array_merge($this->request_headers, $content_length);
-          break;
-        case 'delete':
-          curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
-          break;
-        default:
-          curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
-          break;
-    }
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($method));
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    if(isset($request_body)){
+      $request_body = json_encode($request_body);
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $request_body);
+      $content_length = array('Content-Length: ' . strlen($request_body));
+    }
     if(isset($request_headers)){
         $this->request_headers = array_merge($this->request_headers, $request_headers);
     }
     curl_setopt($curl, CURLOPT_HTTPHEADER, $this->request_headers);
     $curl_response = curl_exec($curl);
     $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-    $response_header = substr($curl_response, 0, $header_size);
-    $response_body = substr($curl_response, $header_size);
     $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $response_body = substr($curl_response, $header_size);
+    $response_header = substr($curl_response, 0, $header_size);
+    
     curl_close($curl);
+    
     return new Response($status_code, $response_body, $response_header);
   }
 
@@ -188,28 +184,15 @@ class Client {
         return version($name);
     }
     
-    if (in_array($name, $this->_methods)) {
-        $request_body = ($args ? $args[0] : null);
+    if (in_array($name, $this->methods)) {
         $query_params = ((count($args) >= 2) ? $args[1] : null);
         $url = $this->_build_url($query_params);
+        $request_body = ($args ? $args[0] : null);
         $request_headers = ((count($args) == 3) ? $args[2] : null);
         return $this->_make_request($name, $url, $request_body, $request_headers);
     }
     
     return $this->_($name);
   }
-
-  /**
-   * Add the version to the path
-   */
-  public function version($version) {
-      $this->_version = $version;
-      return $this->_(null);
-  }
-
-  private function _get_version() {
-    return $this->_version;
-  }
-
 }
 ?>

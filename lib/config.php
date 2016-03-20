@@ -1,4 +1,5 @@
 <?php
+namespace SendGrid;
 class Config{
   function __construct($base_path, $config_filename){
     $handle = fopen($base_path.'/'.$config_filename, "r");

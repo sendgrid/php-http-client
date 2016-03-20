@@ -1,13 +1,13 @@
 <?php
-include(dirname(__DIR__).'/php_http_client/client.php');
-include(dirname(__DIR__).'/php_http_client/config.php');
-$config = new Config(dirname(__DIR__), '.env');
+include(dirname(__DIR__).'/lib/client.php');
+include(dirname(__DIR__).'/lib/config.php');
+$config = new SendGrid\Config(dirname(__DIR__), '.env');
 $api_key = getenv('SENDGRID_API_KEY');
 $headers = array(
     'Content-Type: application/json',
     'Authorization: Bearer '.$api_key
 );
-$client = new Client("https://e9sk3d3bfaikbpdq7.stoplight-proxy.io", $headers, "3", null);
+$client = new SendGrid\Client("https://e9sk3d3bfaikbpdq7.stoplight-proxy.io", $headers, "3", null);
 
 # GET Collection
 $query_params = array('limit' => 100, 'offset' => 0);
