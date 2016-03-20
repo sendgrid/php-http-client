@@ -24,37 +24,37 @@ class ClientTest_Client extends PHPUnit_Framework_TestCase
     
     protected function setUp()
     {
-        $this->host = "https://localhost:4010";
+        $this->host = 'https://localhost:4010';
         $this->headers = array(
             'Content-Type: application/json',
             'Authorization: Bearer SG.XXXX'
         );
-        $this->client = new MockClient($this->host, $this->headers, "/v3", null);
+        $this->client = new MockClient($this->host, $this->headers, '/v3', null);
     }
     
     public function testInitialization()
     {
         $this->assertEquals($this->client->host, $this->host);
         $this->assertEquals($this->client->request_headers, $this->headers);
-        $this->assertEquals($this->client->version, "/v3");
+        $this->assertEquals($this->client->version, '/v3');
         $this->assertEquals($this->client->url_path, []);
         $this->assertEquals($this->client->methods, ['delete', 'get', 'patch', 'post', 'put']);
     }
     
     public function test_()
     {
-        $client = $this->client->_("test");
-        $this->assertEquals($client->url_path, array("test"));
+        $client = $this->client->_('test');
+        $this->assertEquals($client->url_path, array('test'));
     }
     
     public function test__call()
     {
         $client = $this->client->get();
-        $this->assertEquals($client->url, "https://localhost:4010/v3/");
+        $this->assertEquals($client->url, 'https://localhost:4010/v3/');
       
         $query_params = array('limit' => 100, 'offset' => 0);
         $client = $this->client->get(null, $query_params);
-        $this->assertEquals($client->url, "https://localhost:4010/v3/?limit=100&offset=0");
+        $this->assertEquals($client->url, 'https://localhost:4010/v3/?limit=100&offset=0');
       
         $request_body = array('name' => 'A New Hope');
         $client = $this->client->get($request_body);
@@ -64,13 +64,13 @@ class ClientTest_Client extends PHPUnit_Framework_TestCase
         $client = $this->client->get(null, null, $request_headers);
         $this->assertEquals($client->request_headers, $request_headers);
       
-        $client = $this->client->version("/v4");
-        $this->assertEquals($client->version, "/v4");
+        $client = $this->client->version('/v4');
+        $this->assertEquals($client->version, '/v4');
       
         $client = $this->client->path_to_endpoint();
-        $this->assertEquals($client->url_path, array("path_to_endpoint"));
+        $this->assertEquals($client->url_path, array('path_to_endpoint'));
         $client = $client->one_more_segment();
-        $this->assertEquals($client->url_path, array("path_to_endpoint", "one_more_segment"));
+        $this->assertEquals($client->url_path, array('path_to_endpoint', 'one_more_segment'));
     }
 }
 ?>
