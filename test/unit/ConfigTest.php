@@ -8,7 +8,7 @@ class ConfigTest_Config extends PHPUnit_Framework_TestCase
     
     protected function setUp()
     {
-        if(getenv('TRAVIS') {
+        if(getenv('TRAVIS')) {
             $this->base_path = '/home/travis/build/sendgrid/php-http-client/';
         } else {
             $this->base_path = basename(__DIR__).'../..';
