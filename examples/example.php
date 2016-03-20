@@ -9,7 +9,7 @@ $headers = array(
 );
 $client = new SendGrid\Client('https://e9sk3d3bfaikbpdq7.stoplight-proxy.io', $headers, '/v3', null);
 
-# GET Collection
+// GET Collection
 $query_params = array('limit' => 100, 'offset' => 0);
 $request_headers = array('X-Mock: 200');
 $response = $client->api_keys()->get(null, $query_params, $request_headers);
@@ -17,7 +17,7 @@ echo $response->statusCode();
 echo $response->responseBody();
 echo $response->responseHeaders();
 
-# POST
+// POST
 $request_body = array(
         'name' => 'My PHP API Key',
         'scopes' => array(
@@ -33,13 +33,13 @@ echo $response->responseHeaders();
 $response_body = json_decode($response->responseBody());
 $api_key_id = $response_body->api_key_id;
 
-# GET Single
+// GET Single
 $response = $client->version('/v3')->api_keys()->_($api_key_id)->get();
 echo $response->statusCode();
 echo $response->responseBody();
 echo $response->responseHeaders();
 
-# PATCH
+// PATCH
 $request_body = array(
         'name' => 'A New Hope'
 );
@@ -48,7 +48,7 @@ echo $response->statusCode();
 echo $response->responseBody();
 echo $response->responseHeaders();
 
-# PUT
+// PUT
 $request_body = array(
         'name' => 'A New Hope',
         'scopes' => array(
@@ -61,7 +61,7 @@ echo $response->statusCode();
 echo $response->responseBody();
 echo $response->responseHeaders();
 
-# DELETE
+// DELETE
 $response = $client->api_keys()->_($api_key_id)->delete();
 echo $response->statusCode();
 echo $response->responseBody();

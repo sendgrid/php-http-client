@@ -1,13 +1,12 @@
-Hello! Thank you for choosing to help contribute to the python-http-client. There are many ways you can contribute and help is always welcome.
+Hello! Thank you for choosing to help contribute to the php-http-client. There are many ways you can contribute and help is always welcome.
 
-We use [Milestones](https://github.com/sendgrid/python-http-client/milestones) to help define current roadmaps, please feel free to grab an issue from the current milestone. Please indicate that you have begun work on it to avoid collisions. Once a PR is made, community review, comments, suggestions and additional PRs are welcomed and encouraged.
+We use [Milestones](https://github.com/sendgrid/php-http-client/milestones) to help define current roadmaps, please feel free to grab an issue from the current milestone. Please indicate that you have begun work on it to avoid collisions. Once a PR is made, community review, comments, suggestions and additional PRs are welcomed and encouraged.
 
 * [Feature Request](#feature_request)
 * [Submit a Bug Report](#submit_a_bug_report)
 * [Improvements to the Codebase](#improvements_to_the_codebase)
 * [Understanding the Code Base](#understanding_the_codebase)
 * [Testing](#testing)
-* [Testing Multiple Versions of Python](#testing_multiple_versoins_of_python)
 * [Style Guidelines & Naming Conventions](#style_guidelines_and_naming_conventions)
 * [Creating a Pull Request](#creating_a_pull_request)
 
@@ -58,14 +57,14 @@ Any other information you want to share that is relevant to the issue being repo
 
 #### Technical details:
 
-* python-http-client Version: master (latest commit: 2cb34372ef0f31352f7c90015a45e1200cb849da)
-* Python Version: 2.7
+* php-http-client Version: master (latest commit: 2cb34372ef0f31352f7c90015a45e1200cb849da)
+* PHP Version: 5.6
 ```
 
 <a name="improvements_to_the_codebase"></a>
 ## Improvements to the Codebase
 
-We welcome direct contributions to the python-http-client code base. Thank you!
+We welcome direct contributions to the php-http-client code base. Thank you!
 
 ### Development Environment ###
 
@@ -73,14 +72,14 @@ We welcome direct contributions to the python-http-client code base. Thank you!
 
 ##### Prerequisites #####
 
-* Python 2.6 through 3.5
-* There are no external dependencies
+* PHP 5.2 through 5.6
+* [Composer](https://getcomposer.org/)
 
 ##### Initial setup: #####
 
 ```
-git clone https://github.com/sendgrid/python-http-client.git
-cd python-http-client
+git clone https://github.com/sendgrid/php-http-client.git
+cd php-http-client
 cp .env_sample .env
 ```
 
@@ -88,7 +87,7 @@ Update your settings in `.env`
 
 ##### Execute: #####
 
-See the [examples folder](https://github.com/sendgrid/python-http-client/tree/master/examples) to get started quickly.
+See the [examples folder](https://github.com/sendgrid/php-http-client/tree/master/examples) to get started quickly.
 
 <a name="understanding_the_codebase"></a>
 ## Understanding the Code Base
@@ -97,15 +96,15 @@ See the [examples folder](https://github.com/sendgrid/python-http-client/tree/ma
 
 Working examples that demonstrate usage.
 
-**client.py**
+**client.php**
 
-An HTTP client with a fluent interface using method chaining and reflection. By returning self on [__getattr__](https://github.com/sendgrid/python-http-client/blob/master/client.py#L74) and [_()](https://github.com/sendgrid/python-http-client/blob/master/client.py#L70), we can dynamically build the URL using method chaining and [__getattr__](https://github.com/sendgrid/python-http-client/blob/master/client.py#L74) allows us to dynamically receive the method calls to achieve reflection.
+An HTTP client with a fluent interface using method chaining and reflection. By returning self on [__call](https://github.com/sendgrid/php-http-client/blob/master/lib/client.php#L212) and [_()](https://github.com/sendgrid/php-http-client/blob/master/lib/client.pph#L198), we can dynamically build the URL using method chaining and [__call](https://github.com/sendgrid/php-http-client/blob/master/lib/client.php#L212) allows us to dynamically receive the method calls to achieve reflection.
 
 This allows for the following mapping from a URL to a method chain:
 
-`/api_client/{api_key_id}/version` maps to `client.api_client._(api_key_id).version.<method>()` where <method> is a [HTTP verb](https://github.com/sendgrid/python-http-client/blob/master/client.py#L24).
+`/api_client/{api_key_id}/version` maps to `client->api_client().->_($api_key_id)->version-><method>()` where <method> is a [HTTP verb](https://github.com/sendgrid/php-http-client/blob/master/lib/client.php#L94).
 
-**congfig.py**
+**congfig.php**
 
 Loads the environment variables.
 
@@ -114,66 +113,26 @@ Loads the environment variables.
 
 All PRs require passing tests before the PR will be reviewed.
 
-All test files are in the `[tests](https://github.com/sendgrid/python-http-client/tree/master/tests)` directory.
+All test files are in the `[test/unit](https://github.com/sendgrid/php-http-client/tree/master/test/unit)` directory.
 
-For the purposes of contributing to this repo, please update the [`test_unit.py`](https://github.com/sendgrid/python-http-client/blob/master/tests/test_unit.py) file with unit tests as you modify the code.
+For the purposes of contributing to this repo, please update the [`ClientTest.php`](https://github.com/sendgrid/php-http-client/blob/master/test/unit/ClientTest.php) file with unit tests as you modify the code.
 
-For Python 2.6.*:
-
-`unit2 discover -v`
-
-For Python 2.7.* and up:
-
-`python -m unittest discover -v`
-
-<a name="testing_multiple_versoins_of_python"></a>
-## Testing Multiple Versions of Python
-
-All PRs require passing tests before the PR will be reviewed.
-
-### Prequisites: ###
-
-The above local "Initial setup" is complete
-
-* [pyenv](https://github.com/yyuu/pyenv)
-* [tox](https://pypi.python.org/pypi/tox)
-
-### Initial setup: ###
-
-Add ```eval "$(pyenv init -)"``` to your shell environment (.profile, .bashrc, etc) after installing tox, you only need to do this once.
-
-```
-pyenv install 2.6.9
-pyenv install 2.7.11
-pyenv install 3.2.6
-pyenv install 3.3.6
-pyenv install 3.4.3
-pyenv install 3.5.0
-python setup.py install
-pyenv local 3.5.0 3.4.3 3.3.6 3.2.6 2.7.8 2.6.9
-pyenv rehash
-````
-
-### Execute: ###
-
-```
-source venv/bin/activate
-tox
-```
+`phpunit --bootstrap test/unit/bootstrap.php --filter test* test/unit`
 
 <a name="style_guidelines_and_naming_conventions"></a>
 ## Style Guidelines & Naming Conventions
 
 Generally, we follow the style guidelines as suggested by the official language. However, we ask that you conform to the styles that already exist in the library. If you wish to deviate, please explain your reasoning.
 
-* [PEP8](https://www.python.org/dev/peps/pep-0008/)
+* [pear coding standards](https://pear.php.net/manual/en/standards.php)
 
-Please run your code through [pyflakes](https://pypi.python.org/pypi/pyflakes), [pylint](https://www.pylint.org/) and [pep8](https://pypi.python.org/pypi/pep8)
+Please run your code through [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer)
 
 ### Directory Structure
 
-* `examples` for example calls
-* `tests`, for all tests
+* `examples`, for example calls
+* `test\unit`, for all tests
+* 'lib`, for source code
 
 ## Creating a Pull Request<a name="creating_a_pull_request"></a>
 
@@ -182,11 +141,11 @@ Please run your code through [pyflakes](https://pypi.python.org/pypi/pyflakes), 
 
    ```bash
    # Clone your fork of the repo into the current directory
-   git clone https://github.com/sendgrid/python-http-client
+   git clone https://github.com/sendgrid/php-http-client
    # Navigate to the newly cloned directory
-   cd python-http-client
+   cd php-http-client
    # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/sendgrid/python-http-client
+   git remote add upstream https://github.com/sendgrid/php-http-client
    ```
 
 2. If you cloned a while ago, get the latest changes from upstream:
