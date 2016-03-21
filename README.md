@@ -47,13 +47,15 @@ Add php-http-client to your `composer.json` file. If you are not using [Composer
 
 Then at the top of your PHP script require the autoloader:
 
-```bash
-require 'vendor/autoload.php';
+```php
+require __DIR__ . '/vendor/autoload.php';
 ```
 
-or
+Then from the command line:
 
-`pear install php-http-client`
+```bash
+`composer install`
+```
 
 ## Usage ##
 
