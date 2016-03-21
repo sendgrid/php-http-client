@@ -4,8 +4,8 @@
     "type": "library",
     "version": "1.0.1",
     "require-dev": {
-        "phpunit/phpunit": "^5.2",
-        "squizlabs/php_codesniffer": "^2.5"
+        "phpunit/phpunit": "~4.4",
+        "squizlabs/php_codesniffer": "2.*"
     },
     "homepage": "http://github.com/sendgrid/php-http-client",
     "keywords": ["SendGrid", "HTTP", "REST", "API", "Fluent"],
