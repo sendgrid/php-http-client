@@ -1,6 +1,6 @@
 {
     "name": "sendgrid/php-http-client",
-    "description": "HTTP REST client, simplified for Python",
+    "description": "HTTP REST client, simplified for PHP",
     "type": "library",
     "version": "1.0.1",
     "require-dev": {
