@@ -74,7 +74,7 @@ $headers = array(
     'Content-Type: application/json',
     'Authorization: Bearer '.$api_key
 );
-$client = new SendGrid\Client('https://e9sk3d3bfaikbpdq7.stoplight-proxy.io', $headers, '/v3', null);
+$client = new SendGrid\Client('https://api.sendgrid.com', $headers, '/v3', null);
 
 // GET Collection
 $query_params = array('limit' => 100, 'offset' => 0);
