@@ -1,13 +1,18 @@
 <?php
-include(dirname(__DIR__).'/lib/client.php');
-include(dirname(__DIR__).'/lib/config.php');
-$config = new SendGrid\Config(dirname(__DIR__), '.env');
+// If running this outside of this context, use the following include and
+// comment out the two includes below
+// require __DIR__ . '/vendor/autoload.php';
+include(dirname(__DIR__).'/lib/SendGrid/client.php');
+include(dirname(__DIR__).'/lib/SendGrid/config.php');
+// This gets the parent directory, for your current directory use getcwd()
+$path_to_config = dirname(__DIR__);
+$config = new SendGrid\Config($path_to_config, '.env');
 $api_key = getenv('SENDGRID_API_KEY');
 $headers = array(
     'Content-Type: application/json',
     'Authorization: Bearer '.$api_key
 );
-$client = new SendGrid\Client('https://e9sk3d3bfaikbpdq7.stoplight-proxy.io', $headers, '/v3', null);
+$client = new SendGrid\Client('https://api.sendgrid.com', $headers, '/v3', null);
 
 // GET Collection
 $query_params = array('limit' => 100, 'offset' => 0);

@@ -40,7 +40,7 @@ Add php-http-client to your `composer.json` file. If you are not using [Composer
 ```json
 {  
   "require": {
-    "sendgrid/php-http-client": "~1"
+    "sendgrid/php-http-client": "1.*"
   }
 }
 ```
@@ -67,8 +67,8 @@ Following is an abridged example, here is the [full working code](https://github
 
 ```php
 <?php
-include 'php-http-client';
-$config = new SendGrid\Config(dirname(__DIR__), '.env');
+require __DIR__ . '/vendor/autoload.php';
+$config = new SendGrid\Config(getcwd(), '.env');
 $api_key = getenv('SENDGRID_API_KEY');
 $headers = array(
     'Content-Type: application/json',
