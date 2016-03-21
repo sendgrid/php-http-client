@@ -54,7 +54,7 @@ require __DIR__ . '/vendor/autoload.php';
 Then from the command line:
 
 ```bash
-`composer install`
+composer install
 ```
 
 ## Usage ##
