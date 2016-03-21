@@ -10,7 +10,6 @@
   "require": {
     "php": ">=5.3"
   },
-  "minimum-stability": "dev",
   "authors": [
       {
           "name": "Matt Bernier",
