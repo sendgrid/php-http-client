@@ -104,7 +104,7 @@ This allows for the following mapping from a URL to a method chain:
 
 `/api_client/{api_key_id}/version` maps to `client->api_client().->_($api_key_id)->version-><method>()` where <method> is a [HTTP verb](https://github.com/sendgrid/php-http-client/blob/master/lib/client.php#L94).
 
-**congfig.php**
+**config.php**
 
 Loads the environment variables.
 
