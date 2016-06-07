@@ -1,6 +1,5 @@
 <?php
 include(dirname(dirname(__FILE__)) . '/../lib/SendGrid/client.php');
-include(dirname(dirname(__FILE__)) . '/../lib/SendGrid/config.php');
 require __DIR__ . '/../../vendor/autoload.php';
 function autoload_tests($class)
 {

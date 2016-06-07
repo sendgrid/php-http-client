@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0] - 2016-06-06
+### Changed
+- Made the Request and Response variables non-redundant. e.g. request.requestBody becomes request.body
+
 ## [2.0.2] - 2016-02-29
 ### Fixed
 - Renaming files to conform to PSR-0, git ignored the case in 2.0.1

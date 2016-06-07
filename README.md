@@ -42,8 +42,8 @@ $global_headers = array(Authorization: Basic XXXXXXX);
 $client = SendGrid\Client('base_url', 'global_headers');
 $response = $client->your()->api()->_($param)->call()->get();
 print $response->statusCode();
-print $response->responseHeaders();
-print $response->responseBody();
+print $response->headers();
+print $response->body();
 ```
 
 `POST /your/api/{param}/call` with headers, query parameters and a request body with versioning.
@@ -59,8 +59,8 @@ $response = $client->your()->api()->_($param)->call()->post('data',
                                                             'query_params',
                                                             'request_headers');
 print $response->statusCode();
-print $response->responseHeaders();
-print $response->responseBody();
+print $response->headers();
+print $response->body();
 ```
 
 # Usage

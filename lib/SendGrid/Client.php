@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
   * HTTP Client library
   *
   * PHP version 5.2
@@ -28,10 +28,10 @@ class Response
     function __construct($status_code = null, $response_body = null, $response_headers = null)
     {
         $this->_status_code = $status_code;
-        $this->_response_body = $response_body;
-        $this->_response_headers = $response_headers;
+        $this->_body = $response_body;
+        $this->_headers = $response_headers;
     }
-    
+
     /**
     * The status code
     *
@@ -47,9 +47,9 @@ class Response
     *
     * @return array
     */
-    public function responseBody() 
+    public function body()
     {
-        return $this->_response_body;
+        return $this->_body;
     }
 
     /**
@@ -57,9 +57,9 @@ class Response
     *
     * @return array
     */
-    public function responseHeaders() 
+    public function headers()
     {
-        return $this->_response_headers;
+        return $this->_headers;
     }
 }
 
@@ -68,14 +68,14 @@ class Response
   */
 class Client
 {
-    
-    public 
+
+    public
       $host,
       $request_headers,
       $version,
       $url_path,
-      $methods;    
- 
+      $methods;
+
     /**
       * Initialize the client
       *
@@ -83,7 +83,7 @@ class Client
       * @param array  $request_headers global request headers
       * @param string $version         api version (configurable)
       * @param array  $url_path        holds the segments of the url path
-      */   
+      */
     function __construct($host, $request_headers = null, $version = null, $url_path = null)
     {
         $this->host = $host;
@@ -110,7 +110,7 @@ class Client
         $this->url_path = [];
         return new Client($this->host, $this->request_headers, $this->version, $url_path);
     }
-  
+
     /**
       * Subclass this function for your own needs.
       *  Or just pass the version as part of the URL
@@ -120,7 +120,7 @@ class Client
       *
       * @return string
     */
-    private function _buildVersionedUrl($url) 
+    private function _buildVersionedUrl($url)
     {
         return sprintf("%s%s%s", $this->host, $this->version, $url);
     }
@@ -129,10 +129,10 @@ class Client
       * Build the final URL to be passed
       *
       * @param array $query_params an array of all the query parameters
-      * 
+      *
       * @return string
       */
-    private function _buildUrl($query_params = null) 
+    private function _buildUrl($query_params = null)
     {
         $url = '/'.implode('/', $this->url_path);
         if (isset($query_params)) {
@@ -155,10 +155,10 @@ class Client
       * @param string $url             the final url to call
       * @param array  $request_body    request body
       * @param array  $request_headers any additional request headers
-      * 
+      *
       * @return Response object
       */
-    public function makeRequest($method, $url, $request_body = null, $request_headers = null) 
+    public function makeRequest($method, $url, $request_body = null, $request_headers = null)
     {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -179,9 +179,9 @@ class Client
         $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $response_body = substr($curl_response, $header_size);
         $response_header = substr($curl_response, 0, $header_size);
-        
+
         curl_close($curl);
-        
+
         return new Response($status_code, $response_body, $response_header);
     }
 
@@ -192,10 +192,10 @@ class Client
       * in your url, you must use this method.
       *
       * @param string $name name of the url segment
-      * 
+      *
       * @return Client object
       */
-    public function _($name = null) 
+    public function _($name = null)
     {
         return $this->_buildClient($name);
     }
@@ -206,16 +206,16 @@ class Client
       *
       * @param string $name name of the dynamic method call or HTTP verb
       * @param array  $args parameters passed with the method call
-      * 
+      *
       * @return Client or Response object
       */
     public function __call($name, $args)
-    {    
+    {
         if($name == 'version') {
             $this->version = $args[0];
             return $this->_();
         }
-      
+
         if (in_array($name, $this->methods)) {
             $query_params = ((count($args) >= 2) ? $args[1] : null);
             $url = $this->_buildUrl($query_params);
@@ -223,7 +223,7 @@ class Client
             $request_headers = ((count($args) == 3) ? $args[2] : null);
             return $this->makeRequest($name, $url, $request_body, $request_headers);
         }
-      
+
         return $this->_($name);
     }
 }
