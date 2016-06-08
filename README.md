@@ -1,6 +1,8 @@
 [![Travis Badge](https://travis-ci.org/sendgrid/php-http-client.svg?branch=master)](https://travis-ci.org/sendgrid/php-http-client)
 
-**Quickly and easily access any REST or REST-like API.**
+**Quickly and easily access any RESTful or RESTful-like API.**
+
+If you are looking for the SendGrid API client library, please see [this repo](https://github.com/sendgrid/sendgrid-php).
 
 # Announcements
 
