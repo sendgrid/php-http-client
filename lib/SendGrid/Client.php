@@ -165,13 +165,15 @@ class Client
         curl_setopt($curl, CURLOPT_HEADER, 1);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($method));
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        if(isset($request_headers)) {
+            $this->request_headers = array_merge($this->request_headers, $request_headers);
+        }
         if(isset($request_body)) {
             $request_body = json_encode($request_body);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $request_body);
             $content_length = array('Content-Length: ' . strlen($request_body));
-        }
-        if(isset($request_headers)) {
-            $this->request_headers = array_merge($this->request_headers, $request_headers);
+            $content_type = array('Content-Type: application/json');
+            $this->request_headers = array_merge($this->request_headers, $content_type);
         }
         curl_setopt($curl, CURLOPT_HTTPHEADER, $this->request_headers);
         $curl_response = curl_exec($curl);

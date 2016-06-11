@@ -6,10 +6,7 @@ include(dirname(__DIR__).'/lib/SendGrid/client.php');
 // This gets the parent directory, for your current directory use getcwd()
 $path_to_config = dirname(__DIR__);
 $api_key = getenv('SENDGRID_API_KEY');
-$headers = array(
-    'Content-Type: application/json',
-    'Authorization: Bearer '.$api_key
-);
+$headers = array('Authorization: Bearer '.$api_key);
 $client = new SendGrid\Client('https://api.sendgrid.com', $headers, '/v3', null);
 
 // GET Collection
