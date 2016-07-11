@@ -1,8 +1,6 @@
 language: php
 before_script:
-- phpenv local 5.4
 - composer install --dev --no-interaction
-- phpenv local --unset
 - cd test/unit
 script:
 - ../../vendor/bin/phpunit . --bootstrap bootstrap.php --filter test* --coverage-clover clover.xml
