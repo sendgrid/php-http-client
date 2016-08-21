@@ -64,7 +64,7 @@ We welcome direct contributions to the php-http-client code base. Thank you!
 
 ##### Prerequisites #####
 
-- PHP 5.2 through 5.6
+- PHP 5.6 or 7.0
 - [Composer](https://getcomposer.org/)
 
 ##### Initial setup: #####
