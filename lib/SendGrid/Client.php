@@ -1,16 +1,16 @@
 <?php
 /**
-  * HTTP Client library
-  *
-  * PHP version 5.2
-  *
-  * @author    Matt Bernier <dx@sendgrid.com>
-  * @author    Elmer Thomas <dx@sendgrid.com>
-  * @copyright 2016 SendGrid
-  * @license   https://opensource.org/licenses/MIT The MIT License
-  * @version   GIT: <git_id>
-  * @link      http://packagist.org/packages/sendgrid/php-http-client
-  */
+ * HTTP Client library
+ *
+ * PHP version 5.2
+ *
+ * @author    Matt Bernier <dx@sendgrid.com>
+ * @author    Elmer Thomas <dx@sendgrid.com>
+ * @copyright 2016 SendGrid
+ * @license   https://opensource.org/licenses/MIT The MIT License
+ * @version   GIT: <git_id>
+ * @link      http://packagist.org/packages/sendgrid/php-http-client
+ */
 namespace SendGrid;
 
 /**
@@ -90,36 +90,17 @@ class Client
         $this->request_headers = ($request_headers ? $request_headers : []);
         $this->version = $version;
         $this->url_path = ($url_path ? $url_path : []);
-        // These are the supported HTTP verbs
-        $this->methods = ['delete', 'get', 'patch', 'post', 'put'];
     }
 
     /**
-      * Make a new Client object
-      *
-      * @param string $name name of the url segment
-      *
-      * @return Client object
-      */
-    private function _buildClient($name = null)
-    {
-        if(isset($name)) {
-            array_push($this->url_path, $name);
-        }
-        $url_path = $this->url_path;
-        $this->url_path = [];
-        return new Client($this->host, $this->request_headers, $this->version, $url_path);
-    }
-
-    /**
-      * Subclass this function for your own needs.
-      *  Or just pass the version as part of the URL
-      *  (e.g. client._('/v3'))
-      *
-      * @param string $url URI portion of the full URL being requested
-      *
-      * @return string
-    */
+     * Subclass this function for your own needs.
+     *  Or just pass the version as part of the URL
+     *  (e.g. client._('/v3'))
+     *
+     * @param string $url URI portion of the full URL being requested
+     *
+     * @return string
+     */
     private function _buildVersionedUrl($url)
     {
         return sprintf("%s%s%s", $this->host, $this->version, $url);
@@ -188,44 +169,107 @@ class Client
     }
 
     /**
-      * Add variable values to the url.
-      * (e.g. /your/api/{variable_value}/call)
-      * Another example: if you have a PHP reserved word, such as and,
-      * in your url, you must use this method.
-      *
-      * @param string $name name of the url segment
-      *
-      * @return Client object
-      */
+     * @todo rename the function if it's possible
+     * Add variable values to the url.
+     * (e.g. /your/api/{variable_value}/call)
+     * Another example: if you have a PHP reserved word, such as and,
+     * in your url, you must use this method.
+     *
+     * @param string $name name of the url segment
+     *
+     * @return Client object
+     */
     public function _($name = null)
     {
-        return $this->_buildClient($name);
+        if(!is_null($name)) {
+            $this->url_path[] = $name;
+        }
+        return $this;
     }
 
     /**
-      * Dynamically add method calls to the url, then call a method.
-      * (e.g. client.name.name.method())
-      *
-      * @param string $name name of the dynamic method call or HTTP verb
-      * @param array  $args parameters passed with the method call
-      *
-      * @return Client or Response object
-      */
-    public function __call($name, $args)
+     * @param array $args
+     * @return array
+     */
+    protected function getExtractedArgs(array $args = [])
     {
-        if($name == 'version') {
-            $this->version = $args[0];
-            return $this->_();
-        }
+        $query_params = ((count($args) >= 2) ? $args[1] : null);
+        $url = $this->_buildUrl($query_params);
+        $request_body = ($args ? $args[0] : null);
+        $request_headers = ((count($args) == 3) ? $args[2] : null);
+        return ['url' => $url, 'request_body' => $request_body, 'request_headers' => $request_headers];
+    }
 
-        if (in_array($name, $this->methods)) {
-            $query_params = ((count($args) >= 2) ? $args[1] : null);
-            $url = $this->_buildUrl($query_params);
-            $request_body = ($args ? $args[0] : null);
-            $request_headers = ((count($args) == 3) ? $args[2] : null);
-            return $this->makeRequest($name, $url, $request_body, $request_headers);
-        }
+    /**
+     * @param array $args
+     * @return Response
+     */
+    public function delete($args)
+    {
+        $params = $this->getExtractedArgs($args);
+        return $this->makeRequest('delete', $params['url'], $params['request_body'], $params['request_headers']);
+    }
 
+    /**
+     * @param array $args
+     * @return Response
+     */
+    public function get($args)
+    {
+        $params = $this->getExtractedArgs($args);
+        return $this->makeRequest('get', $params['url'], $params['request_body'], $params['request_headers']);
+    }
+
+    /**
+     * @param array $args
+     * @return Response
+     */
+    public function patch($args)
+    {
+        $params = $this->getExtractedArgs($args);
+        return $this->makeRequest('patch', $params['url'], $params['request_body'], $params['request_headers']);
+    }
+
+    /**
+     * @param array $args
+     * @return Response
+     */
+    public function post($args)
+    {
+        $params = $this->getExtractedArgs($args);
+        return $this->makeRequest('post', $params['url'], $params['request_body'], $params['request_headers']);
+    }
+
+    /**
+     * @param array $args
+     * @return Response
+     */
+    public function put($args)
+    {
+        $params = $this->getExtractedArgs($args);
+        return $this->makeRequest('put', $params['url'], $params['request_body'], $params['request_headers']);
+    }
+
+    /**
+     * @param string $version
+     * @return Client
+     */
+    public function version($version)
+    {
+        $this->version = $version;
+        return $this->_();
+    }
+
+    /**
+     * Dynamically add method calls to the url, then call a method.
+     * (e.g. client.name.name.method())
+     *
+     * @param string $name name of the dynamic method call or HTTP verb
+     *
+     * @return Client or Response object
+     */
+    public function __call($name)
+    {
         return $this->_($name);
     }
 }
