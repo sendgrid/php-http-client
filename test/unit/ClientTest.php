@@ -73,4 +73,3 @@ class ClientTest_Client extends PHPUnit_Framework_TestCase
         $this->assertEquals($client->url_path, array('path_to_endpoint', 'one_more_segment'));
     }
 }
-?>

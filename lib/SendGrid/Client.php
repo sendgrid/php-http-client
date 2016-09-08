@@ -73,8 +73,9 @@ class Client
       $host,
       $request_headers,
       $version,
-      $url_path,
-      $methods;
+      $url_path;
+    /** @var array */
+    public $methods = ['delete', 'get', 'patch', 'post', 'put'];
 
     /**
       * Initialize the client
@@ -191,7 +192,7 @@ class Client
      * @param array $args
      * @return array
      */
-    protected function getExtractedArgs(array $args = [])
+    protected function getExtractedArgs($args = [])
     {
         $query_params = ((count($args) >= 2) ? $args[1] : null);
         $url = $this->_buildUrl($query_params);
@@ -204,7 +205,7 @@ class Client
      * @param array $args
      * @return Response
      */
-    public function delete($args)
+    protected function delete($args = [])
     {
         $params = $this->getExtractedArgs($args);
         return $this->makeRequest('delete', $params['url'], $params['request_body'], $params['request_headers']);
@@ -214,7 +215,7 @@ class Client
      * @param array $args
      * @return Response
      */
-    public function get($args)
+    protected function get($args = [])
     {
         $params = $this->getExtractedArgs($args);
         return $this->makeRequest('get', $params['url'], $params['request_body'], $params['request_headers']);
@@ -224,7 +225,7 @@ class Client
      * @param array $args
      * @return Response
      */
-    public function patch($args)
+    protected function patch($args = [])
     {
         $params = $this->getExtractedArgs($args);
         return $this->makeRequest('patch', $params['url'], $params['request_body'], $params['request_headers']);
@@ -234,7 +235,7 @@ class Client
      * @param array $args
      * @return Response
      */
-    public function post($args)
+    protected function post($args = [])
     {
         $params = $this->getExtractedArgs($args);
         return $this->makeRequest('post', $params['url'], $params['request_body'], $params['request_headers']);
@@ -244,7 +245,7 @@ class Client
      * @param array $args
      * @return Response
      */
-    public function put($args)
+    protected function put($args = [])
     {
         $params = $this->getExtractedArgs($args);
         return $this->makeRequest('put', $params['url'], $params['request_body'], $params['request_headers']);
@@ -265,12 +266,15 @@ class Client
      * (e.g. client.name.name.method())
      *
      * @param string $name name of the dynamic method call or HTTP verb
+     * @param array  $args parameters passed with the method call
      *
      * @return Client or Response object
      */
-    public function __call($name)
+    public function __call($name, $args)
     {
+        if(in_array($name, $this->methods)) {
+            return $this->$name($args);
+        }
         return $this->_($name);
     }
 }
-?>
