@@ -40,22 +40,22 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = $this->client->get();
         $this->assertAttributeEquals('https://localhost:4010/v3/', 'url', $client);
-      
+
         $queryParams = ['limit' => 100, 'offset' => 0];
         $client = $this->client->get(null, $queryParams);
         $this->assertAttributeEquals('https://localhost:4010/v3/?limit=100&offset=0', 'url', $client);
-      
+
         $requestBody = ['name' => 'A New Hope'];
         $client = $this->client->get($requestBody);
         $this->assertAttributeEquals($requestBody, 'requestBody', $client);
-      
+
         $requestHeaders = ['X-Mock: 200'];
         $client = $this->client->get(null, null, $requestHeaders);
         $this->assertAttributeEquals($requestHeaders, 'requestHeaders', $client);
-      
+
         $client = $this->client->version('/v4');
         $this->assertAttributeEquals('/v4', 'version', $client);
-      
+
         $client = $this->client->path_to_endpoint();
         $this->assertAttributeEquals(['path_to_endpoint'], 'path', $client);
         $client = $client->one_more_segment();
