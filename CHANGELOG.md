@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.3.0] - 2016-09-13
+### Added
+- Pull request #6: [Library refactoring around PSR-2 / PSR-4 code standards](https://github.com/sendgrid/php-http-client/pull/6)
+- Thanks to [Alexandr Ivanov](https://github.com/misantron) for the pull request!
+
 ## [3.1.0] - 2016-06-10
 ### Added
 - Automatically add Content-Type: application/json when there is a request body
