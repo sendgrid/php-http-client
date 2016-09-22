@@ -48,6 +48,38 @@ class Client
         // These are the supported HTTP verbs
         $this->methods = ['delete', 'get', 'patch', 'post', 'put'];
     }
+    
+    /**
+     * @return string
+     */
+    public function getHost()
+    {
+        return $this->host;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+    
+    /**
+     * @return string|null
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
 
     /**
       * Make a new Client object
