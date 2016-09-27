@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.4.0] - 2016-09-27
+### Added
+- Pull request #9: [Add getters for certain properties](https://github.com/sendgrid/php-http-client/pull/9)
+- Thanks to [Arjan Keeman](https://github.com/akeeman) for the pull request!
+
 ## [3.3.0] - 2016-09-13
 ### Added
 - Pull request #6: [Library refactoring around PSR-2 / PSR-4 code standards](https://github.com/sendgrid/php-http-client/pull/6)
