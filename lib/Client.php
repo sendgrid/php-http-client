@@ -29,26 +29,30 @@ class Client
     /** @var array */
     protected $path;
     /** @var array */
+    protected $curlOptions;
+    /** @var array */
     private $methods;
 
     /**
       * Initialize the client
       *
-      * @param string $host    the base url (e.g. https://api.sendgrid.com)
-      * @param array  $headers global request headers
-      * @param string $version api version (configurable)
-      * @param array  $path    holds the segments of the url path
+      * @param string $host        the base url (e.g. https://api.sendgrid.com)
+      * @param array  $headers     global request headers
+      * @param string $version     api version (configurable)
+      * @param array  $path        holds the segments of the url path
+      * @param array  $curlOptions extra options to set during curl initialization
       */
-    public function __construct($host, $headers = null, $version = null, $path = null)
+    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null)
     {
         $this->host = $host;
         $this->headers = $headers ?: [];
         $this->version = $version;
         $this->path = $path ?: [];
+        $this->curlOptions = $curlOptions ?: [];
         // These are the supported HTTP verbs
         $this->methods = ['delete', 'get', 'patch', 'post', 'put'];
     }
-    
+
     /**
      * @return string
      */
@@ -56,7 +60,7 @@ class Client
     {
         return $this->host;
     }
-    
+
     /**
      * @return array
      */
@@ -64,7 +68,7 @@ class Client
     {
         return $this->headers;
     }
-    
+
     /**
      * @return string|null
      */
@@ -72,13 +76,21 @@ class Client
     {
         return $this->version;
     }
-    
+
     /**
      * @return array
      */
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCurlOptions()
+    {
+        return $this->curlOptions;
     }
 
     /**
@@ -129,12 +141,12 @@ class Client
     {
         $curl = curl_init($url);
 
-        curl_setopt_array($curl, [
+        curl_setopt_array($curl, array_merge([
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => 1,
             CURLOPT_CUSTOMREQUEST => strtoupper($method),
             CURLOPT_SSL_VERIFYPEER => false,
-        ]);
+        ], $this->curlOptions));
 
         if (isset($headers)) {
             $this->headers = array_merge($this->headers, $headers);

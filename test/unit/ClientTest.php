@@ -20,7 +20,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             'Content-Type: application/json',
             'Authorization: Bearer SG.XXXX'
         ];
-        $this->client = new MockClient($this->host, $this->headers, '/v3', null);
+        $this->client = new MockClient($this->host, $this->headers, '/v3', null, null);
     }
 
     public function testConstructor()
@@ -29,6 +29,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($this->headers, 'headers', $this->client);
         $this->assertAttributeEquals('/v3', 'version', $this->client);
         $this->assertAttributeEquals([], 'path', $this->client);
+        $this->assertAttributeEquals([], 'curlOptions', $this->client);
         $this->assertAttributeEquals(['delete', 'get', 'patch', 'post', 'put'], 'methods', $this->client);
     }
 
@@ -95,5 +96,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $client = new Client('https://localhost:4010', null, null, null);
         $this->assertSame([], $client->getPath());
+    }
+
+    public function testGetCurlOptions()
+    {
+        $client = new Client('https://localhost:4010', null, null, null, [CURLOPT_PROXY => '127.0.0.1:8080']);
+        $this->assertSame([CURLOPT_PROXY => '127.0.0.1:8080'], $client->getCurlOptions());
+
+        $client = new Client('https://localhost:4010', null, null, null, null);
+        $this->assertSame([], $client->getCurlOptions());
     }
 }
