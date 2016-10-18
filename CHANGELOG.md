@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.5.0] - 2016-10-18
+### Added
+- Pull request #11: [Added curlOptions property to customize curl instance](https://github.com/sendgrid/php-http-client/pull/11)
+- Thanks to [Alain Tiemblo](https://github.com/ninsuo) for the pull request!
+
 ## [3.4.0] - 2016-09-27
 ### Added
 - Pull request #9: [Add getters for certain properties](https://github.com/sendgrid/php-http-client/pull/9)
