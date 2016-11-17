@@ -141,12 +141,12 @@ class Client
     {
         $curl = curl_init($url);
 
-        curl_setopt_array($curl, array_merge([
+        curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => 1,
             CURLOPT_CUSTOMREQUEST => strtoupper($method),
             CURLOPT_SSL_VERIFYPEER => false,
-        ], $this->curlOptions));
+        ] + $this->curlOptions);
 
         if (isset($headers)) {
             $this->headers = array_merge($this->headers, $headers);
