@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.5.1] - 2016-11-17
+### Fixed
+- Pull request #13, fixed issue #12: [Change from to php union operator to combine curl options](https://github.com/sendgrid/php-http-client/pull/13)
+- Thanks to [emil](https://github.com/emilva) for the pull request!
+
 ## [3.5.0] - 2016-10-18
 ### Added
 - Pull request #11: [Added curlOptions property to customize curl instance](https://github.com/sendgrid/php-http-client/pull/11)

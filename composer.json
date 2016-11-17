@@ -2,7 +2,7 @@
     "name": "sendgrid/php-http-client",
     "description": "HTTP REST client, simplified for PHP",
     "type": "library",
-    "version": "3.5.0",
+    "version": "3.5.1",
     "require-dev": {
         "phpunit/phpunit": "~4.4",
         "squizlabs/php_codesniffer": "~2.0"
