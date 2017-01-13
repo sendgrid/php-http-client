@@ -105,7 +105,7 @@ class Client
         if (isset($name)) {
             $this->path[] = $name;
         }
-        $client = new Client($this->host, $this->headers, $this->version, $this->path);
+        $client = new Client($this->host, $this->headers, $this->version, $this->path, $this->curlOptions);
         $this->path = [];
         return $client;
     }
