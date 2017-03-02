@@ -122,7 +122,9 @@ All test files are in the [`/test/unit`](https://github.com/sendgrid/php-http-cl
 For the purposes of contributing to this repo, please update the [`ClientTest.php`](https://github.com/sendgrid/php-http-client/blob/master/test/unit/ClientTest.php) file with unit tests as you modify the code.
 
 ```bash
-phpunit --bootstrap test/unit/bootstrap.php --filter test* test/unit
+composer install
+cd test/unit
+../../vendor/bin/phpunit . --bootstrap bootstrap.php --filter test*
 ```
 
 <a name="style_guidelines_and_naming_conventions"></a>
