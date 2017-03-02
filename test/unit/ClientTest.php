@@ -35,8 +35,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function test_()
     {
-        $client = $this->client->_('test');
+        $client = new MockClient($this->host, $this->headers, '/v3', null, ['foo' => 'bar']);
+        $client = $client->_('test');
+
         $this->assertAttributeEquals(['test'], 'path', $client);
+        $this->assertAttributeEquals(['foo' => 'bar'], 'curlOptions', $client);
     }
 
     public function test__call()
