@@ -47,7 +47,7 @@ Here is a quick example:
 ```php
 require 'vendor/autoload.php';
 $global_headers = array(Authorization: Basic XXXXXXX);
-$client = SendGrid\Client('base_url', 'global_headers');
+$client = SendGrid\Client('base_url', global_headers);
 $response = $client->your()->api()->_($param)->call()->get();
 print $response->statusCode();
 print $response->headers();
@@ -59,7 +59,7 @@ print $response->body();
 ```php
 require 'vendor/autoload.php';
 $global_headers = array(Authorization: Basic XXXXXXX);
-$client = SendGrid\Client('base_url', 'global_headers');
+$client = SendGrid\Client('base_url', global_headers);
 $query_params = array('hello' => 0, 'world' => 1);
 $request_headers = array('X-Test' => 'test');
 $data = array('some' => 1, 'awesome' => 2, 'data' => 3);
