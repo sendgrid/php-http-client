@@ -74,7 +74,7 @@ class Response
             return $this->headers;
         }
         
-        return $this->prettifyHeaders($this->headers):
+        return $this->prettifyHeaders($this->headers);
     }
     
     /**
