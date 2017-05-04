@@ -64,10 +64,49 @@ class Response
     /**
      * The response headers
      *
+     * @param bool $assoc
+     *
      * @return array
      */
-    public function headers()
+    public function headers($assoc = false)
     {
-        return $this->headers;
+        if (!$assoc) {
+            return $this->headers;
+        }
+        
+        return $this->prettifyHeaders($this->headers):
+    }
+    
+    /**
+      * Returns response headers as associative array
+      * 
+      * @param array $headers
+      *
+      * @return array
+      * 
+      * @throws \InvalidArgumentException
+      */
+    private function prettifyHeaders($headers)
+    {
+        if (!is_array($headers)) {
+            throw new \InvalidArgumentException('$headers should be array');
+        }
+        
+        return array_reduce(
+            $headers,
+            function ($result, $header) {
+                if (false === strpos(':', $header) {
+                    $result['status'] = $header;
+                    
+                    return $result;
+                }
+                    
+                list ($key, $value) = explode(':', $header);
+                $result[$key] = $value;
+                    
+                return $result;
+            },
+            []
+        );
     }
 }
