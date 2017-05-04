@@ -41,4 +41,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(['Content-Type: text/html'], $response->headers());
     }
+    
+    public function testAssociativeHeaders()
+    {
+        $response = new Response(null, null, ['Content-Type: text/html', 'HTTP/1.1 200 OK']);
+        
+        $this->assertEquals(['Content-Type' => 'text/html', 'Status' => 'HTTP/1.1 200 OK'], $response->headers(true));
+    }
 }
