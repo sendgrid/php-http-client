@@ -105,8 +105,8 @@ class Response
                     return $result;
                 }
 
-                list ($key, $value) = explode(':', $header);
-                $result[$key] = trim($value);
+                list ($key, $value) = explode(':', $header, 2);
+                $result[trim($key)] = trim($value);
 
                 return $result;
             },
