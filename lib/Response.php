@@ -96,13 +96,13 @@ class Response
             $headers,
             function ($result, $header) {
                 if (false === strpos(':', $header) {
-                    $result['status'] = $header;
+                    $result['Status'] = $header;
                     
                     return $result;
                 }
                     
                 list ($key, $value) = explode(':', $header);
-                $result[$key] = $value;
+                $result[$key] = trim($value);
                     
                 return $result;
             },
