@@ -95,7 +95,7 @@ class Response
         return array_reduce(
             $headers,
             function ($result, $header) {
-                if (false === strpos(':', $header) {
+                if (false === strpos(':', $header)) {
                     $result['Status'] = $header;
                     
                     return $result;
