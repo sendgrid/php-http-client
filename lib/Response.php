@@ -91,19 +91,23 @@ class Response
         if (!is_array($headers)) {
             throw new \InvalidArgumentException('$headers should be array');
         }
-        
+
         return array_reduce(
-            $headers,
+            array_filter($headers),
             function ($result, $header) {
-                if (false === strpos($header, ':')) {
-                    $result['Status'] = $header;
-                    
+                if (empty($header)) {
                     return $result;
                 }
-                    
+
+                if (false === strpos($header, ':')) {
+                    $result['Status'] = trim($header);
+
+                    return $result;
+                }
+
                 list ($key, $value) = explode(':', $header);
                 $result[$key] = trim($value);
-                    
+
                 return $result;
             },
             []
