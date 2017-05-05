@@ -166,6 +166,7 @@ class Client
         $responseHeaders = substr($response, 0, $headerSize);
 
         $responseHeaders = explode("\n", $responseHeaders);
+        $responseHeaders = array_map('trim', $responseHeaders);
 
         curl_close($curl);
 
