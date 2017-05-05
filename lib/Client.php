@@ -144,6 +144,7 @@ class Client
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => 1,
+            CURLOPT_FAILONERROR => false,
             CURLOPT_CUSTOMREQUEST => strtoupper($method),
             CURLOPT_SSL_VERIFYPEER => false,
         ] + $this->curlOptions);
