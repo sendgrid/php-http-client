@@ -195,7 +195,7 @@ class Client
       * @param string $name name of the dynamic method call or HTTP verb
       * @param array  $args parameters passed with the method call
       *
-      * @return Client or Response object
+      * @return Client|Response object
       */
     public function __call($name, $args)
     {
