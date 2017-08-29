@@ -134,10 +134,11 @@ class Client
       * @param string $url     the final url to call
       * @param array  $body    request body
       * @param array  $headers any additional request headers
+      * @param bool   $retryOnLimit should retry if rate limit is reach?
       *
       * @return Response object
       */
-    public function makeRequest($method, $url, $body = null, $headers = null)
+    public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = true)
     {
         $curl = curl_init($url);
 
@@ -169,8 +170,17 @@ class Client
         $responseHeaders = array_map('trim', $responseHeaders);
 
         curl_close($curl);
+     
+        $response = new Response($statusCode, $responseBody, $responseHeaders);
 
-        return new Response($statusCode, $responseBody, $responseHeaders);
+        if ($statusCode == 429 && $retryOnLimit) {
+            $headers = $response->headers(true);
+            $sleepDurations = $headers['X-Ratelimit-Reset'] - time();
+            sleep($sleepDurations > 0 ? $sleepDurations : 0);
+            return $this->makeRequest($method, $url, $body, $headers, false);
+        }
+
+        return $response;
     }
 
     /**
