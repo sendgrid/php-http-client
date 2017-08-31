@@ -32,17 +32,20 @@ class Client
     protected $curlOptions;
     /** @var array */
     private $methods;
+    /** @var bool */
+    private $retryOnLimit;
 
     /**
       * Initialize the client
       *
-      * @param string $host        the base url (e.g. https://api.sendgrid.com)
-      * @param array  $headers     global request headers
-      * @param string $version     api version (configurable)
-      * @param array  $path        holds the segments of the url path
-      * @param array  $curlOptions extra options to set during curl initialization
+      * @param string  $host          the base url (e.g. https://api.sendgrid.com)
+      * @param array   $headers       global request headers
+      * @param string  $version       api version (configurable)
+      * @param array   $path          holds the segments of the url path
+      * @param array   $curlOptions   extra options to set during curl initialization
+      * @param bool    $retryOnLimit  set default retry on limit flag
       */
-    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null)
+    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null, $retryOnLimit = false)
     {
         $this->host = $host;
         $this->headers = $headers ?: [];
@@ -51,6 +54,8 @@ class Client
         $this->curlOptions = $curlOptions ?: [];
         // These are the supported HTTP verbs
         $this->methods = ['delete', 'get', 'patch', 'post', 'put'];
+
+        $this->retryOnLimit = $retryOnLimit;
     }
 
     /**
@@ -138,7 +143,7 @@ class Client
       *
       * @return Response object
       */
-    public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = true)
+    public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
     {
         $curl = curl_init($url);
 
@@ -221,7 +226,8 @@ class Client
             $queryParams = isset($args[1]) ? $args[1] : null;
             $url = $this->buildUrl($queryParams);
             $headers = isset($args[2]) ? $args[2] : null;
-            return $this->makeRequest($name, $url, $body, $headers);
+            $retryOnLimit = isset($args[3]) ? $args[3] : $this->retryOnLimit;
+            return $this->makeRequest($name, $url, $body, $headers, $retryOnLimit);
         }
 
         return $this->_($name);
