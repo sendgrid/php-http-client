@@ -18,6 +18,15 @@ echo $response->statusCode();
 echo $response->body();
 echo $response->headers();
 
+// GET with auto retry on rate limit
+$query_params = ['limit' => 100, 'offset' => 0];
+$request_headers = ['X-Mock: 200'];
+$retryOnLimit = true;
+$response = $client->api_keys()->get(null, $query_params, $request_headers, $retryOnLimit);
+echo $response->statusCode();
+echo $response->body();
+echo $response->headers();
+
 // POST
 $request_body = [
     'name' => 'My PHP API Key',
