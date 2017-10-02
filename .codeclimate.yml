@@ -8,6 +8,7 @@ engines:
     enabled: true
     config:
       file_extensions: "php"
+      standard: "PSR1,PSR2"
 ratings:
   paths:
   - "**.php"
