@@ -38,6 +38,46 @@ Then from the command line:
 composer install
 ```
 
+## Install without Composer
+
+You should create directory `lib` in directory of your application and clone to `lib` repositories [php-http-client](https://github.com/sendgrid/php-http-client.git) and [sendgrid-php](https://github.com/sendgrid/sendgrid-php.git):
+
+```
+$ cd /path/to/your/app
+$ mkdir lib
+$ cd lib
+$ git clone https://github.com/sendgrid/php-http-client.git
+$ git clone https://github.com/sendgrid/sendgrid-php.git
+```
+
+In the next step you should create `loader.php`:
+
+```
+$ cd /path/to/your/app
+$ touch loader.php
+```
+
+And add to `loader.php` code below:
+
+```php
+<?php
+
+require_once __DIR__ . '/lib/php-http-client/lib/Client.php';
+require_once __DIR__ . '/lib/php-http-client/lib/Response.php';
+require_once __DIR__ . '/lib/sendgrid-php/lib/SendGrid.php';
+
+```
+
+After it you can use `php-http-client` library in your project:
+
+```php
+<?php
+
+include __DIR__ . '/loader.php';
+
+$client = new SendGrid\Client();
+```
+
 # Quick Start
 
 Here is a quick example:
@@ -45,9 +85,10 @@ Here is a quick example:
 `GET /your/api/{param}/call`
 
 ```php
+// include __DIR__ . '/loader.php';
 require 'vendor/autoload.php';
 $global_headers = array(Authorization: Basic XXXXXXX);
-$client = SendGrid\Client('base_url', global_headers);
+$client = new SendGrid\Client('base_url', global_headers);
 $response = $client->your()->api()->_($param)->call()->get();
 print $response->statusCode();
 print $response->headers();
@@ -57,9 +98,10 @@ print $response->body();
 `POST /your/api/{param}/call` with headers, query parameters and a request body with versioning.
 
 ```php
+// include __DIR__ . '/loader.php';
 require 'vendor/autoload.php';
 $global_headers = array(Authorization: Basic XXXXXXX);
-$client = SendGrid\Client('base_url', global_headers);
+$client = new SendGrid\Client('base_url', global_headers);
 $query_params = array('hello' => 0, 'world' => 1);
 $request_headers = array('X-Test' => 'test');
 $data = array('some' => 1, 'awesome' => 2, 'data' => 3);
