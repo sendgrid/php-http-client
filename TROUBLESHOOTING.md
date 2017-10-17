@@ -7,9 +7,7 @@ If you can't find a solution below, please open an [issue](https://github.com/se
 <a name="request-body"></a>
 ## Viewing the Request Body
 
-When debugging or testing, it may be useful to examine the raw request body to compare against the [documented format](https://sendgrid.com/docs/API_Reference/SMTP_API/index.html).
-
-In the `examples/example.php` file, after your API call use this code to echo out the statuscode, body and headers:
+When debugging or testing, it may be useful to examine the raw request body. In the `examples/example.php` file, after your API call use this code to echo out the statuscode, body and headers:
 
 ```php
 echo $response->statusCode();
