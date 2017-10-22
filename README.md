@@ -9,6 +9,14 @@ If you are looking for the SendGrid API client library, please see [this repo](h
 
 All updates to this library is documented in our [CHANGELOG](https://github.com/sendgrid/php-http-client/blob/master/CHANGELOG.md).
 
+# Table of Contents
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+- [Thanks](#thanks)
+- [About](#about)
+
+<a name="installation"></a>
 # Installation
 
 ## Prerequisites
@@ -79,6 +87,7 @@ include __DIR__ . '/loader.php';
 $client = new SendGrid\Client();
 ```
 
+<a name="quick-start"></a>
 # Quick Start
 
 Here is a quick example:
@@ -114,6 +123,7 @@ print $response->headers();
 print $response->body();
 ```
 
+<a name="usage"></a>
 # Usage
 
 - [Example Code](https://github.com/sendgrid/php-http-client/tree/master/examples)
@@ -133,10 +143,12 @@ Quick links:
 - [Sign the CLA to Create a Pull Request](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md#cla)
 - [Improvements to the Codebase](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md#improvements-to-the-codebase)
 
+<a name="thanks"></a>
 # Thanks
 
 We were inspired by the work done on [birdy](https://github.com/inueni/birdy) and [universalclient](https://github.com/dgreisen/universalclient).
 
+<a name="about"></a>
 # About
 
 php-http-client is guided and supported by the SendGrid [Developer Experience Team](mailto:dx@sendgrid.com).
