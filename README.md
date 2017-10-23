@@ -1,5 +1,10 @@
+![SendGrid Logo](https://uiux.s3.amazonaws.com/2016-logos/email-logo%402x.png)
+
 [![Travis Badge](https://travis-ci.org/sendgrid/php-http-client.svg?branch=master)](https://travis-ci.org/sendgrid/php-http-client)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sendgrid/php-http-client.svg?style=flat-square)](https://packagist.org/packages/sendgrid/php-http-client)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.txt)
+[![Twitter Follow](https://img.shields.io/twitter/follow/sendgrid.svg?style=social&label=Follow)](https://twitter.com/sendgrid)
+[![GitHub contributors](https://img.shields.io/github/contributors/sendgrid/php-http-client.svg)](https://github.com/sendgrid/php-http-client/graphs/contributors)
 
 **Quickly and easily access any RESTful or RESTful-like API.**
 
@@ -13,8 +18,11 @@ All updates to this library is documented in our [CHANGELOG](https://github.com/
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Usage](#usage)
+- [Roadmap](#roadmap)
+- [How to Contribute](#contribute)
 - [Thanks](#thanks)
 - [About](#about)
+- [License](#license)
 
 <a name="installation"></a>
 # Installation
@@ -128,11 +136,13 @@ print $response->body();
 
 - [Example Code](https://github.com/sendgrid/php-http-client/tree/master/examples)
 
-## Roadmap
+<a name="roadmap"></a>
+# Roadmap
 
 If you are interested in the future direction of this project, please take a look at our [milestones](https://github.com/sendgrid/php-http-client/milestones). We would love to hear your feedback.
 
-## How to Contribute
+<a name="contribute"></a>
+# How to Contribute
 
 We encourage contribution to our libraries, please see our [CONTRIBUTING](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md)) guide for details.
 
@@ -155,4 +165,5 @@ php-http-client is guided and supported by the SendGrid [Developer Experience Te
 
 php-http-client is maintained and funded by SendGrid, Inc. The names and logos for php-http-client are trademarks of SendGrid, Inc.
 
-![SendGrid Logo](https://uiux.s3.amazonaws.com/2016-logos/email-logo%402x.png)
+# License
+[The MIT License (MIT)](LICENSE.txt)
