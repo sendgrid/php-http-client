@@ -23,6 +23,7 @@ All updates to this library is documented in our [CHANGELOG](https://github.com/
 - [Usage](#usage)
 - [Thanks](#thanks)
 - [About](#about)
+- [License](#license)
 
 <a name="installation"></a>
 # Installation
@@ -163,4 +164,6 @@ php-http-client is guided and supported by the SendGrid [Developer Experience Te
 
 php-http-client is maintained and funded by SendGrid, Inc. The names and logos for php-http-client are trademarks of SendGrid, Inc.
 
-![SendGrid Logo](https://uiux.s3.amazonaws.com/2016-logos/email-logo%402x.png)
+<a name="license"></a>
+# License
+[The MIT License (MIT)](LICENSE.txt)
