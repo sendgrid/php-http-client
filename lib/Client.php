@@ -151,7 +151,8 @@ class Client
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => 1,
             CURLOPT_CUSTOMREQUEST => strtoupper($method),
-            CURLOPT_SSL_VERIFYPEER => false,
+	    CURLOPT_SSL_VERIFYPEER => false,
+	    CURLOPT_FAILONERROR => false,
         ] + $this->curlOptions);
 
         if (isset($headers)) {
