@@ -107,8 +107,8 @@ Here is a quick example:
 ```php
 // include __DIR__ . '/loader.php';
 require 'vendor/autoload.php';
-$global_headers = array(Authorization: Basic XXXXXXX);
-$client = new SendGrid\Client('base_url', global_headers);
+$global_headers = array('Authorization: Basic XXXXXXX');
+$client = new SendGrid\Client('base_url', $global_headers);
 $response = $client->your()->api()->_($param)->call()->get();
 print $response->statusCode();
 print $response->headers();
@@ -120,8 +120,8 @@ print $response->body();
 ```php
 // include __DIR__ . '/loader.php';
 require 'vendor/autoload.php';
-$global_headers = array(Authorization: Basic XXXXXXX);
-$client = new SendGrid\Client('base_url', global_headers);
+$global_headers = array('Authorization: Basic XXXXXXX');
+$client = new SendGrid\Client('base_url', $global_headers);
 $query_params = array('hello' => 0, 'world' => 1);
 $request_headers = array('X-Test' => 'test');
 $data = array('some' => 1, 'awesome' => 2, 'data' => 3);
