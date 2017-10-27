@@ -138,6 +138,8 @@ print $response->body();
 
 - [Example Code](https://github.com/sendgrid/php-http-client/tree/master/examples)
 
+You can use the ```.env_example``` file located at "examples" folder. Just copy it to a ```.env``` folder ou can put on your project's root.
+
 <a name="roadmap"></a>
 # Roadmap
 
