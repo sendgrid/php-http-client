@@ -28,8 +28,6 @@ Make sure all of these items are complete, or else the PR will be ineligible for
 - [ ] All code, branch, and git naming and style conventions are followed (see [`CONTRIBUTING.md`](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md#style-guidelines-and-naming-conventions))
 - [ ] Feature branch has been rebased off of the latest `master` branch. (see [`CONTRIBUTING.md`](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md#creating-a-pull-request)).
 
-If you have questions, please send an email [Sendgrid](mailto:dx@sendgrid.com), or file a Github Issue in this repository.
-
 <!-- 
 Template based off of @ksigler7's Sendgrid docs PR template.
 https://raw.githubusercontent.com/sendgrid/docs/develop/.github/PULL_REQUEST_TEMPLATE
