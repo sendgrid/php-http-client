@@ -30,38 +30,33 @@ class Client
     protected $path;
     /** @var array */
     protected $curlOptions;
-    /** @var array */
-    private $methods;
     /** @var bool */
-    private $retryOnLimit;
+    protected $retryOnLimit;
+
+    /**
+     * These are the supported HTTP verbs
+     *
+     * @var array
+     */
+    private $methods = ['delete', 'get', 'patch', 'post', 'put'];
 
     /**
       * Initialize the client
       *
-      * @param string  $host          the base url (e.g. https://api.sendgrid.com)
-      * @param array   $headers       global request headers
-      * @param string  $version       api version (configurable)
-      * @param array   $path          holds the segments of the url path
-      * @param array   $curlOptions   extra options to set during curl initialization
-      * @param bool    $retryOnLimit  set default retry on limit flag
+      * @param string  $host     the base url (e.g. https://api.sendgrid.com)
+      * @param array   $headers  global request headers
+      * @param string  $version  api version (configurable)
+      * @param array   $path     holds the segments of the url path
       */
-    public function __construct(
-        $host,
-        $headers = null,
-        $version = null,
-        $path = null,
-        $curlOptions = null,
-        $retryOnLimit = false
-    ) {
+    public function __construct($host, $headers = [], $version = null, $path = [])
+    {
         $this->host = $host;
-        $this->headers = $headers ?: [];
+        $this->headers = $headers;
         $this->version = $version;
-        $this->path = $path ?: [];
-        $this->curlOptions = $curlOptions ?: [];
-        // These are the supported HTTP verbs
-        $this->methods = ['delete', 'get', 'patch', 'post', 'put'];
+        $this->path = $path;
 
-        $this->retryOnLimit = $retryOnLimit;
+        $this->curlOptions = [];
+        $this->retryOnLimit = false;
     }
 
     /**
@@ -97,6 +92,34 @@ class Client
     }
 
     /**
+     * Set extra options to set during curl initialization
+     *
+     * @param array $options
+     *
+     * @return Client
+     */
+    public function setCurlOptions(array $options)
+    {
+        $this->curlOptions = $options;
+
+        return $this;
+    }
+
+    /**
+     * Set default retry on limit flag
+     *
+     * @param bool $retry
+     *
+     * @return Client
+     */
+    public function setRetryOnLimit($retry)
+    {
+        $this->retryOnLimit = $retry;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getCurlOptions()
@@ -116,8 +139,22 @@ class Client
         if (isset($name)) {
             $this->path[] = $name;
         }
-        $client = new Client($this->host, $this->headers, $this->version, $this->path, $this->curlOptions);
+        $client = $this->cloneClient();
         $this->path = [];
+        return $client;
+    }
+
+    /**
+     * Clone existing Client object with all settings
+     *
+     * @return Client
+     */
+    private function cloneClient()
+    {
+        $client = new static($this->host, $this->headers, $this->version, $this->path);
+        $client->setCurlOptions($this->curlOptions);
+        $client->setRetryOnLimit($this->retryOnLimit);
+
         return $client;
     }
 
@@ -153,13 +190,18 @@ class Client
     {
         $curl = curl_init($url);
 
-        curl_setopt_array($curl, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER => 1,
-            CURLOPT_CUSTOMREQUEST => strtoupper($method),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_FAILONERROR => false,
-        ] + $this->curlOptions);
+        $options = array_merge(
+            [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER => 1,
+                CURLOPT_CUSTOMREQUEST => strtoupper($method),
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_FAILONERROR => false,
+            ],
+            $this->curlOptions
+        );
+
+        curl_setopt_array($curl, $options);
 
         if (isset($headers)) {
             $this->headers = array_merge($this->headers, $headers);
@@ -185,7 +227,7 @@ class Client
      
         $response = new Response($statusCode, $responseBody, $responseHeaders);
 
-        if ($statusCode == 429 && $retryOnLimit) {
+        if ($statusCode === 429 && $retryOnLimit) {
             $headers = $response->headers(true);
             $sleepDurations = $headers['X-Ratelimit-Reset'] - time();
             sleep($sleepDurations > 0 ? $sleepDurations : 0);
