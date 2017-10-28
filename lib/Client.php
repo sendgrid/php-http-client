@@ -45,8 +45,14 @@ class Client
       * @param array   $curlOptions   extra options to set during curl initialization
       * @param bool    $retryOnLimit  set default retry on limit flag
       */
-    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null, $retryOnLimit = false)
-    {
+    public function __construct(
+        $host,
+        $headers = null,
+        $version = null,
+        $path = null,
+        $curlOptions = null,
+        $retryOnLimit = false
+    ) {
         $this->host = $host;
         $this->headers = $headers ?: [];
         $this->version = $version;
@@ -135,10 +141,10 @@ class Client
       * Make the API call and return the response. This is separated into
       * it's own function, so we can mock it easily for testing.
       *
-      * @param string $method  the HTTP verb
-      * @param string $url     the final url to call
-      * @param array  $body    request body
-      * @param array  $headers any additional request headers
+      * @param string $method       the HTTP verb
+      * @param string $url          the final url to call
+      * @param array  $body         request body
+      * @param array  $headers      any additional request headers
       * @param bool   $retryOnLimit should retry if rate limit is reach?
       *
       * @return Response object
