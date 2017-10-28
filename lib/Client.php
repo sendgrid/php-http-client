@@ -3,8 +3,6 @@
 /**
   * HTTP Client library
   *
-  * PHP version 5.4
-  *
   * @author    Matt Bernier <dx@sendgrid.com>
   * @author    Elmer Thomas <dx@sendgrid.com>
   * @copyright 2016 SendGrid
@@ -16,8 +14,16 @@
 namespace SendGrid;
 
 /**
-  * Quickly and easily access any REST or REST-like API.
-  */
+ * Quickly and easily access any REST or REST-like API.
+ *
+ * @method Response get($body = null, $query = null, $headers = null)
+ * @method Response post($body = null, $query = null, $headers = null)
+ * @method Response patch($body = null, $query = null, $headers = null)
+ * @method Response put($body = null, $query = null, $headers = null)
+ * @method Response delete($body = null, $query = null, $headers = null)
+ *
+ * @method Client version($value)
+ */
 class Client
 {
     /** @var string */
@@ -38,7 +44,7 @@ class Client
      *
      * @var array
      */
-    private $methods = ['delete', 'get', 'patch', 'post', 'put'];
+    private $methods = ['get', 'post', 'patch',  'put', 'delete'];
 
     /**
       * Initialize the client
@@ -48,7 +54,7 @@ class Client
       * @param string  $version  api version (configurable)
       * @param array   $path     holds the segments of the url path
       */
-    public function __construct($host, $headers = [], $version = null, $path = [])
+    public function __construct($host, $headers = [], $version = '/v3', $path = [])
     {
         $this->host = $host;
         $this->headers = $headers;
@@ -125,37 +131,6 @@ class Client
     public function getCurlOptions()
     {
         return $this->curlOptions;
-    }
-
-    /**
-      * Make a new Client object
-      *
-      * @param string $name name of the url segment
-      *
-      * @return Client object
-      */
-    private function buildClient($name = null)
-    {
-        if (isset($name)) {
-            $this->path[] = $name;
-        }
-        $client = $this->cloneClient();
-        $this->path = [];
-        return $client;
-    }
-
-    /**
-     * Clone existing Client object with all settings
-     *
-     * @return Client
-     */
-    private function cloneClient()
-    {
-        $client = new static($this->host, $this->headers, $this->version, $this->path);
-        $client->setCurlOptions($this->curlOptions);
-        $client->setRetryOnLimit($this->retryOnLimit);
-
-        return $client;
     }
 
     /**
@@ -249,7 +224,15 @@ class Client
       */
     public function _($name = null)
     {
-        return $this->buildClient($name);
+        if (isset($name)) {
+            $this->path[] = $name;
+        }
+        $client = new static($this->host, $this->headers, $this->version, $this->path);
+        $client->setCurlOptions($this->curlOptions);
+        $client->setRetryOnLimit($this->retryOnLimit);
+        $this->path = [];
+
+        return $client;
     }
 
     /**
