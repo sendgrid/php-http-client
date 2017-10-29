@@ -136,7 +136,7 @@ print $response->body();
 <a name="usage"></a>
 # Usage
 
-- [Example Code](https://github.com/sendgrid/php-http-client/tree/master/examples)
+- [Usage Examples](USAGE.md)
 
 <a name="roadmap"></a>
 # Roadmap
