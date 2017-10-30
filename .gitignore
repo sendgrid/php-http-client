@@ -3,3 +3,4 @@
 vendor/
 *.old
 .idea/
+*.phar

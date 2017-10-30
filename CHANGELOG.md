@@ -3,6 +3,22 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.8.0] - 2017-09-13
+### Added
+- Pull request #23: [Automatically retry when rate limit is reached](https://github.com/sendgrid/php-http-client/pull/23)
+- Thanks to [Budi Chandra](https://github.com/budirec) for the pull request!
+
+## [3.7.0] - 2017-05-04
+### Added
+- Pull request #19: [Added ability to get headers as associative array](https://github.com/sendgrid/php-http-client/pull/19)
+- Solves issue #361: [https://github.com/sendgrid/sendgrid-php/issues/361](https://github.com/sendgrid/sendgrid-php/issues/361)
+- Thanks to [Alexander](https://github.com/mazanax) for the pull request!
+
+## [3.6.0] - 2017-03-01
+### Added
+- Pull request #16: [Pass the curlOptions to the client in buildClient](https://github.com/sendgrid/php-http-client/pull/16)
+- Thanks to [Baptiste Clavié](https://github.com/Taluu) for the pull request!
+
 ## [3.5.1] - 2016-11-17
 ### Fixed
 - Pull request #13, fixed issue #12: [Change from to php union operator to combine curl options](https://github.com/sendgrid/php-http-client/pull/13)
