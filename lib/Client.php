@@ -132,6 +132,51 @@ class Client
     }
 
     /**
+     * Prepare response object
+     *
+     * @param resource $curl the curl resource
+     *
+     * @return Response object
+     */
+    private function prepareResponse($curl)
+    {
+        $response = curl_exec($curl);
+
+        $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+
+        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        $responseBody = substr($response, $headerSize);
+
+        $responseHeaders = substr($response, 0, $headerSize);
+        $responseHeaders = explode("\n", $responseHeaders);
+        $responseHeaders = array_map('trim', $responseHeaders);
+
+        $response = new Response($statusCode, $responseBody, $responseHeaders);
+
+        return $response;
+    }
+
+    /**
+     * Retry request
+     *
+     * @param  array  $responseHeaders headers from rate limited response
+     * @param  string $method          the HTTP verb
+     * @param  string $url             the final url to call
+     * @param  array  $body            request body
+     * @param  array  $headers         original headers
+     *
+     * @return Response response object
+     */
+    private function retryRequest($responseHeaders, $method, $url, $body, $headers)
+    {
+        $sleepDurations = $responseHeaders['X-Ratelimit-Reset'] - time();
+        sleep($sleepDurations > 0 ? $sleepDurations : 0);
+
+        return $this->makeRequest($method, $url, $body, $headers, false);
+    }
+
+    /**
       * Make the API call and return the response. This is separated into
       * it's own function, so we can mock it easily for testing.
       *
@@ -158,32 +203,21 @@ class Client
         if (isset($headers)) {
             $this->headers = array_merge($this->headers, $headers);
         }
+
         if (isset($body)) {
             $encodedBody = json_encode($body);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $encodedBody);
             $this->headers = array_merge($this->headers, ['Content-Type: application/json']);
         }
+
         curl_setopt($curl, CURLOPT_HTTPHEADER, $this->headers);
 
-        $response = curl_exec($curl);
-        $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-        $responseBody = substr($response, $headerSize);
-        $responseHeaders = substr($response, 0, $headerSize);
-
-        $responseHeaders = explode("\n", $responseHeaders);
-        $responseHeaders = array_map('trim', $responseHeaders);
+        $response = $this->prepareResponse($curl);
 
         curl_close($curl);
-     
-        $response = new Response($statusCode, $responseBody, $responseHeaders);
 
-        if ($statusCode == 429 && $retryOnLimit) {
-            $headers = $response->headers(true);
-            $sleepDurations = $headers['X-Ratelimit-Reset'] - time();
-            sleep($sleepDurations > 0 ? $sleepDurations : 0);
-            return $this->makeRequest($method, $url, $body, $headers, false);
+        if ($response->statusCode() == 429 && $retryOnLimit) {
+            return $this->retryRequest($response->headers(true), $method, $url, $body, $headers);
         }
 
         return $response;
