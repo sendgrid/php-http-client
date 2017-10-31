@@ -5,7 +5,6 @@ Hello! Thank you for choosing to help contribute to one of the SendGrid open sou
 - [Feature Request](#feature-request)
 - [Submit a Bug Report](#submit-a-bug-report)
 - [Improvements to the Codebase](#improvements-to-the-codebase)
-- [Environment Variables](#environment-variables)
 - [Understanding the Code Base](#understanding-the-codebase)
 - [Testing](#testing)
 - [Style Guidelines & Naming Conventions](#style-guidelines-and-naming-conventions)
@@ -75,8 +74,7 @@ git clone https://github.com/sendgrid/php-http-client.git
 cd php-http-client
 ```
 
-<a name="environment-variables"></a>
-## Environment Variables
+### Environment Variables
 
 First, get your free SendGrid account [here](https://sendgrid.com/free?source=php-http-client).
 
