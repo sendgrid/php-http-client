@@ -1,7 +1,7 @@
 Hello! Thank you for choosing to help contribute to one of the SendGrid open source projects. There are many ways you can contribute and help is always welcome.  We simply ask that you follow the following contribution policies.
 
-- [Roadmap & Milestones](#roadmap)
 - [CLAs and CCLAs](#cla)
+- [Roadmap & Milestones](#roadmap)
 - [Feature Request](#feature-request)
 - [Submit a Bug Report](#submit-a-bug-report)
 - [Improvements to the Codebase](#improvements-to-the-codebase)
