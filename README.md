@@ -138,7 +138,13 @@ print $response->body();
 
 - [Example Code](https://github.com/sendgrid/php-http-client/tree/master/examples)
 
-You can use the ```.env_example``` file located at "examples" folder. Just copy it to a ```.env``` folder ou can put on your project's root.
+## Environment Variables 
+
+You can do the following to create a .env file:
+
+```cp .env_example .env```
+
+Then, just add your API Key into your .env file.
 
 <a name="roadmap"></a>
 # Roadmap
