@@ -88,7 +88,7 @@ source ./sendgrid.env
 
 ##### Execute: #####
 
-See the [examples folder](https://github.com/sendgrid/php-http-client/tree/master/examples
+See the [examples folder](https://github.com/sendgrid/php-http-client/tree/master/examples)
 <a name="understanding-the-codebase"></a>
 ## Understanding the Code Base
 
