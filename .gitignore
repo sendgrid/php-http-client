@@ -1,6 +1,11 @@
-.env
-*.lock
+# Composer
 vendor/
+*.phar
+*.lock
+
+# Jetbrains Idea
 *.old
 .idea/
-*.phar
+
+# Environment files
+.env/*.*
