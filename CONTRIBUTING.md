@@ -1,10 +1,11 @@
 Hello! Thank you for choosing to help contribute to one of the SendGrid open source projects. There are many ways you can contribute and help is always welcome.  We simply ask that you follow the following contribution policies.
 
-- [CLAs and CCLAs](#cla)
 - [Roadmap & Milestones](#roadmap)
+- [CLAs and CCLAs](#cla)
 - [Feature Request](#feature-request)
 - [Submit a Bug Report](#submit-a-bug-report)
 - [Improvements to the Codebase](#improvements-to-the-codebase)
+- [Environment Variables](#environment-variables)
 - [Understanding the Code Base](#understanding-the-codebase)
 - [Testing](#testing)
 - [Style Guidelines & Naming Conventions](#style-guidelines-and-naming-conventions)
@@ -74,6 +75,7 @@ git clone https://github.com/sendgrid/php-http-client.git
 cd php-http-client
 ```
 
+<a name="environment-variables"></a>
 ## Environment Variables
 
 First, get your free SendGrid account [here](https://sendgrid.com/free?source=php-http-client).
@@ -138,7 +140,8 @@ Please run your code through:
 
 - [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer)
 
-## Creating a Pull Request<a name="creating-a-pull-request"></a>
+<a name="creating-a-pull-request"></a>
+## Creating a Pull Request
 
 1. [Fork](https://help.github.com/fork-a-repo/) the project, clone your fork,
    and configure the remotes:
