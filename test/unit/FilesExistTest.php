@@ -24,7 +24,7 @@ class FilesExistTest extends \PHPUnit_Framework_TestCase
         $composeExists = file_exists('./docker-compose.yml') || file_exists('./docker/docker-compose.yml');
         $this->assertTrue($composeExists);
 
-        $dockerExists = file_exists('./Docker') || file_exists('./docker/Docker')
+        $dockerExists = file_exists('./Docker') || file_exists('./docker/Docker');
         $this->assertTrue($dockerExists);
     }
 }
