@@ -9,3 +9,6 @@ vendor/
 
 # Environment files
 .env/*.*
+
+# Docker compose env file
+.env

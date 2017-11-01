@@ -20,6 +20,7 @@ All updates to this library is documented in our [CHANGELOG](https://github.com/
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Usage](#usage)
+- [Docker](#docker)
 - [Roadmap](#roadmap)
 - [How to Contribute](#contribute)
 - [Thanks](#thanks)
@@ -138,7 +139,45 @@ print $response->body();
 
 - [Example Code](https://github.com/sendgrid/php-http-client/tree/master/examples)
 
-## Environment Variables 
+<a name="docker"></a>
+# Docker
+
+This repo comes with a `docker-compose.yml` file to get a development environment up and running quickly.
+
+## Prerequisites
+
+- Install [Docker](https://www.docker.com/) on your local machine.
+
+## Instructions
+
+Clone this repo to your local machine.
+
+```
+$ git clone https://github.com/sendgrid/php-http-client.git
+```
+
+Create a .env file at the root of the repo and add your API key.
+
+```
+$ cd php-http-client
+$ echo "SENDGRID_API_KEY='YOUR_API_KEY'" >> .env
+```
+
+Create the containers.
+
+```
+$ docker-compose up -d
+```
+
+The `examples` directory is now available locally by visiting `localhost:8080`. Run the provided `example.php` file by clicking on the link in the browser or experiment with your own files by adding them to the `examples` folder.
+
+Destroy the containers.
+
+```
+$ docker-compose down
+```
+
+## Environment Variables
 
 You can do the following to create a .env file:
 
