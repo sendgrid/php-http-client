@@ -3,8 +3,6 @@
 /**
   * HTTP Client library
   *
-  * PHP version 5.4
-  *
   * @author    Matt Bernier <dx@sendgrid.com>
   * @author    Elmer Thomas <dx@sendgrid.com>
   * @copyright 2016 SendGrid
@@ -16,8 +14,16 @@
 namespace SendGrid;
 
 /**
-  * Quickly and easily access any REST or REST-like API.
-  */
+ * Quickly and easily access any REST or REST-like API.
+ *
+ * @method Response get($body = null, $query = null, $headers = null)
+ * @method Response post($body = null, $query = null, $headers = null)
+ * @method Response patch($body = null, $query = null, $headers = null)
+ * @method Response put($body = null, $query = null, $headers = null)
+ * @method Response delete($body = null, $query = null, $headers = null)
+ *
+ * @method Client version($value)
+ */
 class Client
 {
     /** @var string */
@@ -30,32 +36,33 @@ class Client
     protected $path;
     /** @var array */
     protected $curlOptions;
-    /** @var array */
-    private $methods;
     /** @var bool */
-    private $retryOnLimit;
+    protected $retryOnLimit;
+
+    /**
+     * These are the supported HTTP verbs
+     *
+     * @var array
+     */
+    private $methods = ['get', 'post', 'patch',  'put', 'delete'];
 
     /**
       * Initialize the client
       *
-      * @param string  $host          the base url (e.g. https://api.sendgrid.com)
-      * @param array   $headers       global request headers
-      * @param string  $version       api version (configurable)
-      * @param array   $path          holds the segments of the url path
-      * @param array   $curlOptions   extra options to set during curl initialization
-      * @param bool    $retryOnLimit  set default retry on limit flag
+      * @param string  $host     the base url (e.g. https://api.sendgrid.com)
+      * @param array   $headers  global request headers
+      * @param string  $version  api version (configurable)
+      * @param array   $path     holds the segments of the url path
       */
-    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null, $retryOnLimit = false)
+    public function __construct($host, $headers = [], $version = '/v3', $path = [])
     {
         $this->host = $host;
-        $this->headers = $headers ?: [];
+        $this->headers = $headers;
         $this->version = $version;
-        $this->path = $path ?: [];
-        $this->curlOptions = $curlOptions ?: [];
-        // These are the supported HTTP verbs
-        $this->methods = ['delete', 'get', 'patch', 'post', 'put'];
+        $this->path = $path;
 
-        $this->retryOnLimit = $retryOnLimit;
+        $this->curlOptions = [];
+        $this->retryOnLimit = false;
     }
 
     /**
@@ -91,28 +98,39 @@ class Client
     }
 
     /**
+     * Set extra options to set during curl initialization
+     *
+     * @param array $options
+     *
+     * @return Client
+     */
+    public function setCurlOptions(array $options)
+    {
+        $this->curlOptions = $options;
+
+        return $this;
+    }
+
+    /**
+     * Set default retry on limit flag
+     *
+     * @param bool $retry
+     *
+     * @return Client
+     */
+    public function setRetryOnLimit($retry)
+    {
+        $this->retryOnLimit = $retry;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getCurlOptions()
     {
         return $this->curlOptions;
-    }
-
-    /**
-      * Make a new Client object
-      *
-      * @param string $name name of the url segment
-      *
-      * @return Client object
-      */
-    private function buildClient($name = null)
-    {
-        if (isset($name)) {
-            $this->path[] = $name;
-        }
-        $client = new Client($this->host, $this->headers, $this->version, $this->path, $this->curlOptions);
-        $this->path = [];
-        return $client;
     }
 
     /**
@@ -135,10 +153,10 @@ class Client
       * Make the API call and return the response. This is separated into
       * it's own function, so we can mock it easily for testing.
       *
-      * @param string $method  the HTTP verb
-      * @param string $url     the final url to call
-      * @param array  $body    request body
-      * @param array  $headers any additional request headers
+      * @param string $method       the HTTP verb
+      * @param string $url          the final url to call
+      * @param array  $body         request body
+      * @param array  $headers      any additional request headers
       * @param bool   $retryOnLimit should retry if rate limit is reach?
       *
       * @return Response object
@@ -147,13 +165,18 @@ class Client
     {
         $curl = curl_init($url);
 
-        curl_setopt_array($curl, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER => 1,
-            CURLOPT_CUSTOMREQUEST => strtoupper($method),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_FAILONERROR => false,
-        ] + $this->curlOptions);
+        $options = array_merge(
+            [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER => 1,
+                CURLOPT_CUSTOMREQUEST => strtoupper($method),
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_FAILONERROR => false,
+            ],
+            $this->curlOptions
+        );
+
+        curl_setopt_array($curl, $options);
 
         if (isset($headers)) {
             $this->headers = array_merge($this->headers, $headers);
@@ -179,7 +202,7 @@ class Client
      
         $response = new Response($statusCode, $responseBody, $responseHeaders);
 
-        if ($statusCode == 429 && $retryOnLimit) {
+        if ($statusCode === 429 && $retryOnLimit) {
             $headers = $response->headers(true);
             $sleepDurations = $headers['X-Ratelimit-Reset'] - time();
             sleep($sleepDurations > 0 ? $sleepDurations : 0);
@@ -201,7 +224,15 @@ class Client
       */
     public function _($name = null)
     {
-        return $this->buildClient($name);
+        if (isset($name)) {
+            $this->path[] = $name;
+        }
+        $client = new static($this->host, $this->headers, $this->version, $this->path);
+        $client->setCurlOptions($this->curlOptions);
+        $client->setRetryOnLimit($this->retryOnLimit);
+        $this->path = [];
+
+        return $client;
     }
 
     /**
