@@ -20,7 +20,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             'Content-Type: application/json',
             'Authorization: Bearer SG.XXXX'
         ];
-        $this->client = new MockClient($this->host, $this->headers, '/v3', null, null);
+        $this->client = new MockClient($this->host, $this->headers);
     }
 
     public function testConstructor()
@@ -30,12 +30,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals('/v3', 'version', $this->client);
         $this->assertAttributeEquals([], 'path', $this->client);
         $this->assertAttributeEquals([], 'curlOptions', $this->client);
-        $this->assertAttributeEquals(['delete', 'get', 'patch', 'post', 'put'], 'methods', $this->client);
+        $this->assertAttributeEquals(false, 'retryOnLimit', $this->client);
+        $this->assertAttributeEquals(['get', 'post', 'patch',  'put', 'delete'], 'methods', $this->client);
     }
 
     public function test_()
     {
-        $client = new MockClient($this->host, $this->headers, '/v3', null, ['foo' => 'bar']);
+        $client = new MockClient($this->host, $this->headers, '/v3');
+        $client->setCurlOptions(['foo' => 'bar']);
         $client = $client->_('test');
 
         $this->assertAttributeEquals(['test'], 'path', $client);
@@ -79,34 +81,35 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client('https://localhost:4010', ['Content-Type: application/json', 'Authorization: Bearer SG.XXXX']);
         $this->assertSame(['Content-Type: application/json', 'Authorization: Bearer SG.XXXX'], $client->getHeaders());
 
-        $client2 = new Client('https://localhost:4010', null);
+        $client2 = new Client('https://localhost:4010');
         $this->assertSame([], $client2->getHeaders());
     }
 
     public function testGetVersion()
     {
-        $client = new Client('https://localhost:4010', null, '/v3');
+        $client = new Client('https://localhost:4010', [], '/v3');
         $this->assertSame('/v3', $client->getVersion());
 
-        $client = new Client('https://localhost:4010', null, null);
-        $this->assertSame(null, $client->getVersion());
+        $client = new Client('https://localhost:4010');
+        $this->assertSame('/v3', $client->getVersion());
     }
 
     public function testGetPath()
     {
-        $client = new Client('https://localhost:4010', null, null, ['/foo/bar']);
+        $client = new Client('https://localhost:4010', [], null, ['/foo/bar']);
         $this->assertSame(['/foo/bar'], $client->getPath());
 
-        $client = new Client('https://localhost:4010', null, null, null);
+        $client = new Client('https://localhost:4010');
         $this->assertSame([], $client->getPath());
     }
 
     public function testGetCurlOptions()
     {
-        $client = new Client('https://localhost:4010', null, null, null, [CURLOPT_PROXY => '127.0.0.1:8080']);
+        $client = new Client('https://localhost:4010');
+        $client->setCurlOptions([CURLOPT_PROXY => '127.0.0.1:8080']);
         $this->assertSame([CURLOPT_PROXY => '127.0.0.1:8080'], $client->getCurlOptions());
 
-        $client = new Client('https://localhost:4010', null, null, null, null);
+        $client = new Client('https://localhost:4010');
         $this->assertSame([], $client->getCurlOptions());
     }
 }

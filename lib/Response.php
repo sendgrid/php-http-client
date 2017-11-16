@@ -3,8 +3,6 @@
 /**
  * HTTP Client library
  *
- * PHP version 5.4
- *
  * @author    Matt Bernier <dx@sendgrid.com>
  * @author    Elmer Thomas <dx@sendgrid.com>
  * @copyright 2016 SendGrid
@@ -89,7 +87,7 @@ class Response
     private function prettifyHeaders($headers)
     {
         if (!is_array($headers)) {
-            throw new \InvalidArgumentException('$headers should be array');
+            throw new \InvalidArgumentException('Headers should be an array');
         }
 
         return array_reduce(
