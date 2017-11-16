@@ -48,4 +48,14 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals(['Content-Type' => 'text/html', 'Status' => 'HTTP/1.1 200 OK'], $response->headers(true));
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Headers should be an array
+     */
+    public function testHeadersWithInvalidValue()
+    {
+        $response = new Response(null, null, false);
+        $response->headers(true);
+    }
 }
