@@ -112,4 +112,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client('https://localhost:4010');
         $this->assertSame([], $client->getCurlOptions());
     }
+
+    public function testCurlMulti()
+    {
+        $client = new Client('https://localhost:4010');
+        $client->setIsConcurrentRequest(true);
+        $client->get(['name' => 'A New Hope']);
+        $client->get(null, null, ['X-Mock: 200']);
+        $client->get(null, ['limit' => 100, 'offset' => 0]);
+
+        // returns 3 response object
+        $this->assertEquals(3, count($client->send()));
+    }
 }
