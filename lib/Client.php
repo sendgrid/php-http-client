@@ -163,9 +163,19 @@ class Client
     private function buildUrl($queryParams = null)
     {
         $path = '/' . implode('/', $this->path);
+        $additonalPath = '';
+
         if (isset($queryParams)) {
-            $path .= '?' . http_build_query($queryParams);
+            foreach ($queryParams as $paramName => $paramValue) {
+                if (is_array($paramValue)) {
+                    unset($queryParams[$paramName]);
+                    $additonalPath .= '&' . $paramName . '=' . implode('&' . $paramName . '=', $paramValue);
+                }
+            }
+
+            $path .= '?' . http_build_query($queryParams) . $additonalPath;
         }
+
         return sprintf('%s%s%s', $this->host, $this->version ?: '', $path);
     }
 
