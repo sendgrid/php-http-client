@@ -4,6 +4,7 @@
 // comment out the two includes below
 // require __DIR__ . '/vendor/autoload.php';
 include(dirname(__DIR__) . '/lib/Client.php');
+include(dirname(__DIR__) . '/lib/Response.php');
 // This gets the parent directory, for your current directory use getcwd()
 $path_to_config = dirname(__DIR__);
 $apiKey = getenv('SENDGRID_API_KEY');
