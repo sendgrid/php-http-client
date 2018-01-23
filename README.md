@@ -171,7 +171,7 @@ If you are interested in the future direction of this project, please take a loo
 <a name="contribute"></a>
 # How to Contribute
 
-We encourage contribution to our libraries, please see our [CONTRIBUTING](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md)) guide for details.
+We encourage contribution to our libraries, please see our [CONTRIBUTING](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md) guide for details.
 
 Quick links:
 
