@@ -243,11 +243,11 @@ class Client
       * Make the API call and return the response. This is separated into
       * it's own function, so we can mock it easily for testing.
       *
-      * @param string $method       the HTTP verb
-      * @param string $url          the final url to call
-      * @param array  $body         request body
-      * @param array  $headers      any additional request headers
-      * @param bool   $retryOnLimit should retry if rate limit is reach?
+      * @param string                   $method       the HTTP verb
+      * @param string                   $url          the final url to call
+      * @param array|\JsonSerializable  $body         request body
+      * @param array                    $headers      any additional request headers
+      * @param bool                     $retryOnLimit should retry if rate limit is reach?
       *
       * @return Response object
       */
