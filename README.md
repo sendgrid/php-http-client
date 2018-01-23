@@ -106,12 +106,19 @@ Here is a quick example:
 ```php
 // include __DIR__ . '/loader.php';
 require 'vendor/autoload.php';
-$global_headers = array('Authorization: Basic XXXXXXX');
-$client = new SendGrid\Client('base_url', $global_headers);
+$apiKey = YOUR_SENDGRID_API_KEY;
+$authHeaders = [
+    'Authorization: Bearer ' . $apiKey
+];
+$client = new SendGrid\Client('https://api.sendgrid.com', $authHeaders);
+$param = 'foo';
 $response = $client->your()->api()->_($param)->call()->get();
-print $response->statusCode();
-print $response->headers();
-print $response->body();
+
+var_dump(
+    $response->statusCode(),
+    $response->headers(),
+    $response->body()
+);
 ```
 
 `POST /your/api/{param}/call` with headers, query parameters and a request body with versioning.
@@ -119,17 +126,28 @@ print $response->body();
 ```php
 // include __DIR__ . '/loader.php';
 require 'vendor/autoload.php';
-$global_headers = array('Authorization: Basic XXXXXXX');
-$client = new SendGrid\Client('base_url', $global_headers);
-$query_params = array('hello' => 0, 'world' => 1);
-$request_headers = array('X-Test' => 'test');
-$data = array('some' => 1, 'awesome' => 2, 'data' => 3);
-$response = $client->your()->api()->_($param)->call()->post('data',
-                                                            'query_params',
-                                                            'request_headers');
-print $response->statusCode();
-print $response->headers();
-print $response->body();
+$apiKey = YOUR_SENDGRID_API_KEY;
+$authHeaders = [
+    'Authorization: Bearer ' . $apiKey
+];
+$client = new SendGrid\Client('https://api.sendgrid.com', $authHeaders);
+$queryParams = [
+    'hello' => 0, 'world' => 1
+];
+$requestHeaders = [
+    'X-Test' => 'test'
+];
+$data = [
+    'some' => 1, 'awesome' => 2, 'data' => 3
+];
+$param = 'bar';
+$response = $client->your()->api()->_($param)->call()->post($data, $queryParams, $requestHeaders);
+
+var_dump(
+    $response->statusCode(),
+    $response->headers(),
+    $response->body()
+);
 ```
 
 <a name="usage"></a>
