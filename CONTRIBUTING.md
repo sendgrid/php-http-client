@@ -74,7 +74,7 @@ git clone https://github.com/sendgrid/php-http-client.git
 cd php-http-client
 ```
 
-## Environment Variables
+### Environment Variables
 
 First, get your free SendGrid account [here](https://sendgrid.com/free?source=php-http-client).
 
@@ -88,7 +88,8 @@ source ./sendgrid.env
 
 ##### Execute: #####
 
-See the [examples folder](https://github.com/sendgrid/php-http-client/tree/master/examples
+See the [examples folder](https://github.com/sendgrid/php-http-client/tree/master/examples).
+
 <a name="understanding-the-codebase"></a>
 ## Understanding the Code Base
 
@@ -138,7 +139,8 @@ Please run your code through:
 
 - [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer)
 
-## Creating a Pull Request<a name="creating-a-pull-request"></a>
+<a name="creating-a-pull-request"></a>
+## Creating a Pull Request
 
 1. [Fork](https://help.github.com/fork-a-repo/) the project, clone your fork,
    and configure the remotes:
