@@ -65,7 +65,6 @@ $ cd /path/to/your/app
 $ mkdir lib
 $ cd lib
 $ git clone https://github.com/sendgrid/php-http-client.git
-$ git clone https://github.com/sendgrid/sendgrid-php.git
 ```
 
 In the next step you should create `loader.php`:
@@ -82,8 +81,6 @@ And add to `loader.php` code below:
 
 require_once __DIR__ . '/lib/php-http-client/lib/Client.php';
 require_once __DIR__ . '/lib/php-http-client/lib/Response.php';
-require_once __DIR__ . '/lib/sendgrid-php/lib/SendGrid.php';
-
 ```
 
 After it you can use `php-http-client` library in your project:
