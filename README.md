@@ -2,7 +2,6 @@
 
 [![Travis Badge](https://travis-ci.org/sendgrid/php-http-client.svg?branch=master)](https://travis-ci.org/sendgrid/php-http-client)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sendgrid/php-http-client.svg?style=flat-square)](https://packagist.org/packages/sendgrid/php-http-client)
-[![BuildStatus](https://travis-ci.org/sendgrid/php-http-client.svg?branch=master)](https://travis-ci.org/sendgrid/php-http-client)
 [![Email Notifications Badge](https://dx.sendgrid.com/badge/php)](https://dx.sendgrid.com/newsletter/php)
 [![Twitter Follow](https://img.shields.io/twitter/follow/sendgrid.svg?style=social&label=Follow)](https://twitter.com/sendgrid)
 [![GitHub contributors](https://img.shields.io/github/contributors/sendgrid/php-http-client.svg)](https://github.com/sendgrid/php-http-client/graphs/contributors)
@@ -67,7 +66,6 @@ $ cd /path/to/your/app
 $ mkdir lib
 $ cd lib
 $ git clone https://github.com/sendgrid/php-http-client.git
-$ git clone https://github.com/sendgrid/sendgrid-php.git
 ```
 
 In the next step you should create `loader.php`:
@@ -84,8 +82,6 @@ And add to `loader.php` code below:
 
 require_once __DIR__ . '/lib/php-http-client/lib/Client.php';
 require_once __DIR__ . '/lib/php-http-client/lib/Response.php';
-require_once __DIR__ . '/lib/sendgrid-php/lib/SendGrid.php';
-
 ```
 
 After it you can use `php-http-client` library in your project:
@@ -108,12 +104,19 @@ Here is a quick example:
 ```php
 // include __DIR__ . '/loader.php';
 require 'vendor/autoload.php';
-$global_headers = array('Authorization: Basic XXXXXXX');
-$client = new SendGrid\Client('base_url', $global_headers);
+$apiKey = YOUR_SENDGRID_API_KEY;
+$authHeaders = [
+    'Authorization: Bearer ' . $apiKey
+];
+$client = new SendGrid\Client('https://api.sendgrid.com', $authHeaders);
+$param = 'foo';
 $response = $client->your()->api()->_($param)->call()->get();
-print $response->statusCode();
-print $response->headers();
-print $response->body();
+
+var_dump(
+    $response->statusCode(),
+    $response->headers(),
+    $response->body()
+);
 ```
 
 `POST /your/api/{param}/call` with headers, query parameters and a request body with versioning.
@@ -121,23 +124,34 @@ print $response->body();
 ```php
 // include __DIR__ . '/loader.php';
 require 'vendor/autoload.php';
-$global_headers = array('Authorization: Basic XXXXXXX');
-$client = new SendGrid\Client('base_url', $global_headers);
-$query_params = array('hello' => 0, 'world' => 1);
-$request_headers = array('X-Test' => 'test');
-$data = array('some' => 1, 'awesome' => 2, 'data' => 3);
-$response = $client->your()->api()->_($param)->call()->post('data',
-                                                            'query_params',
-                                                            'request_headers');
-print $response->statusCode();
-print $response->headers();
-print $response->body();
+$apiKey = YOUR_SENDGRID_API_KEY;
+$authHeaders = [
+    'Authorization: Bearer ' . $apiKey
+];
+$client = new SendGrid\Client('https://api.sendgrid.com', $authHeaders);
+$queryParams = [
+    'hello' => 0, 'world' => 1
+];
+$requestHeaders = [
+    'X-Test' => 'test'
+];
+$data = [
+    'some' => 1, 'awesome' => 2, 'data' => 3
+];
+$param = 'bar';
+$response = $client->your()->api()->_($param)->call()->post($data, $queryParams, $requestHeaders);
+
+var_dump(
+    $response->statusCode(),
+    $response->headers(),
+    $response->body()
+);
 ```
 
 <a name="usage"></a>
 # Usage
 
-- [Example Code](https://github.com/sendgrid/php-http-client/tree/master/examples)
+- [Usage Examples](USAGE.md)
 
 <a name="docker"></a>
 # Docker
@@ -193,7 +207,7 @@ If you are interested in the future direction of this project, please take a loo
 <a name="contribute"></a>
 # How to Contribute
 
-We encourage contribution to our libraries, please see our [CONTRIBUTING](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md)) guide for details.
+We encourage contribution to our libraries, please see our [CONTRIBUTING](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md) guide for details.
 
 Quick links:
 
@@ -201,6 +215,7 @@ Quick links:
 - [Bug Reports](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md#submit-a-bug-report)
 - [Sign the CLA to Create a Pull Request](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md#cla)
 - [Improvements to the Codebase](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md#improvements-to-the-codebase)
+- [Review Pull Requests](https://github.com/sendgrid/php-http-client/blob/master/CONTRIBUTING.md#code-reviews)
 
 <a name="thanks"></a>
 # Thanks
