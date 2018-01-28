@@ -15,9 +15,9 @@ $client = new SendGrid\Client('https://api.sendgrid.com', $headers, '/v3');
 $queryParams = ['limit' => 100, 'offset' => 0];
 $requestHeaders = ['X-Mock: 200'];
 $response = $client->api_keys()->get(null, $queryParams, $requestHeaders);
-echo $response->statusCode();
-echo $response->body();
-echo $response->headers();
+var_dump($response->statusCode());
+var_dump($response->body());
+var_dump($response->headers());
 
 // GET /v3/api_keys - retrieve all API Keys that belong to the user
 $queryParams = ['limit' => 100, 'offset' => 0];
