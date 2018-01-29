@@ -17,13 +17,18 @@ $requestHeaders = ['X-Mock: 200'];
 $response = $client->api_keys()->get(null, $queryParams, $requestHeaders);
 var_dump($response->statusCode());
 var_dump($response->body());
-var_dump($response->headers());
+// var_dump($response->headers());
+echo '<br><br>';
 
 // GET /v3/api_keys - retrieve all API Keys that belong to the user
 $queryParams = ['limit' => 100, 'offset' => 0];
 $requestHeaders = ['X-Mock: 200'];
 $retryOnLimit = true; // with auto retry on rate limit
 $response = $client->api_keys()->get(null, $queryParams, $requestHeaders, $retryOnLimit);
+var_dump($response->statusCode());
+var_dump($response->body());
+// var_dump($response->headers());
+echo '<br><br>';
 
 // POST /v3/api_keys - create a new user API Key
 $requestBody = [
@@ -41,15 +46,27 @@ $requestBody = [
 $response = $client->api_keys()->post($requestBody);
 $responseBody = json_decode($response->body(), true);
 $apiKeyId = $responseBody['api_key_id'];
+var_dump($response->statusCode());
+var_dump($response->body());
+// var_dump($response->headers());
+echo '<br><br>';
 
 // GET /v3/api_keys/{api_key_id} - retrieve a single API Key
 $response = $client->api_keys()->_($apiKeyId)->get();
+var_dump($response->statusCode());
+var_dump($response->body());
+// var_dump($response->headers());
+echo '<br><br>';
 
 // PATCH /v3/api_keys/{api_key_id} - update the name of an existing API Key
 $requestBody = [
     'name' => 'A New Hope'
 ];
 $response = $client->api_keys()->_($apiKeyId)->patch($requestBody);
+var_dump($response->statusCode());
+var_dump($response->body());
+// var_dump($response->headers());
+echo '<br><br>';
 
 // PUT /v3/api_keys/{api_key_id} - update the name and scopes of a given API Key
 $requestBody = [
@@ -62,6 +79,14 @@ $requestBody = [
     ]
 ];
 $response = $client->api_keys()->_($apiKeyId)->put($requestBody);
+var_dump($response->statusCode());
+var_dump($response->body());
+// var_dump($response->headers());
+echo '<br><br>';
 
 // DELETE /v3/api_keys/{api_key_id} - revoke an existing API Key
 $response = $client->api_keys()->_($apiKeyId)->delete();
+var_dump($response->statusCode());
+var_dump($response->body());
+// var_dump($response->headers());
+echo '<br><br>';
