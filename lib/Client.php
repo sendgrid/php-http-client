@@ -180,7 +180,7 @@ class Client
      */
     private function createCurlOptions($method, $body = null, $headers = null)
     {
-        $options = array_merge(
+        $options = array_replace(
             [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HEADER => 1,
