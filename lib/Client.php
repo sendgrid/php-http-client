@@ -191,18 +191,24 @@ class Client
             $this->curlOptions
         );
 
+        $requestHeaders = ['Content-Type: application/json'];
+
+        // Merge client headers
+        if (isset($this->headers)) {
+            $requestHeaders = array_merge($requestHeaders, $this->headers);
+        }
+
+        // Merge request headers
         if (isset($headers)) {
-            $headers = array_merge($this->headers, $headers);
-        } else {
-            $headers = [];
+            $requestHeaders = array_merge($requestHeaders, $headers);
         }
 
         if (isset($body)) {
             $encodedBody = json_encode($body);
             $options[CURLOPT_POSTFIELDS] = $encodedBody;
-            $headers = array_merge($headers, ['Content-Type: application/json']);
         }
-        $options[CURLOPT_HTTPHEADER] = $headers;
+
+        $options[CURLOPT_HTTPHEADER] = $requestHeaders;
 
         return $options;
     }
@@ -302,8 +308,6 @@ class Client
 
         $curlOpts = $this->createCurlOptions($method, $body, $headers);
         curl_setopt_array($curl, $curlOpts);
-
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $this->headers);
 
         $response = $this->prepareResponse($curl);
 
