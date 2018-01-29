@@ -29,9 +29,13 @@ $response = $client->api_keys()->get(null, $queryParams, $requestHeaders, $retry
 $requestBody = [
     'name' => 'My PHP API Key',
     'scopes' => [
+        'api_keys.create',
+        'api_keys.delete',
+        'api_keys.read',
+        'api_keys.update',
         'mail.send',
         'alerts.create',
-        'alerts.read'
+        'alerts.read',
     ]
 ];
 $response = $client->api_keys()->post($requestBody);
@@ -51,8 +55,10 @@ $response = $client->api_keys()->_($apiKeyId)->patch($requestBody);
 $requestBody = [
     'name' => 'A New Hope',
     'scopes' => [
-        'user.profile.read',
-        'user.profile.update'
+        'api_keys.create',
+        'api_keys.delete',
+        'api_keys.read',
+        'api_keys.update',
     ]
 ];
 $response = $client->api_keys()->_($apiKeyId)->put($requestBody);
