@@ -23,6 +23,7 @@ namespace SendGrid;
  * @method Response delete($body = null, $query = null, $headers = null)
  *
  * @method Client version($value)
+ * @method Client|Response send()
  */
 class Client
 {
