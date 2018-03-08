@@ -185,7 +185,7 @@ class Client
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HEADER => 1,
                 CURLOPT_CUSTOMREQUEST => strtoupper($method),
-                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYPEER => true,
                 CURLOPT_FAILONERROR => false
             ],
             $this->curlOptions
@@ -256,6 +256,7 @@ class Client
         $curl = curl_init($url);
 
         $curlOpts = $this->createCurlOptions($method, $body, $headers);
+
         curl_setopt_array($curl, $curlOpts);
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, $this->headers);
