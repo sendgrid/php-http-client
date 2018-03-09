@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.9.1] - 2018-03-09
+### Fixed
+- Fixes [#88](https://github.com/sendgrid/php-http-client/issues/88), PR [#89](https://github.com/sendgrid/php-http-client/pull/89): Restore missing function 'prepareResponse' due to bad previous merge. 
+
 ## [3.9.0] - 2018-03-08
 ### Added
 - PR [#24](https://github.com/sendgrid/php-http-client/pull/24): implements sending concurrent requests with curl multi, thanks to [Tuan Nguyen](https://github.com/lightbringer1991) for the PR!
