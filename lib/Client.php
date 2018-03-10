@@ -5,7 +5,7 @@
   *
   * @author    Matt Bernier <dx@sendgrid.com>
   * @author    Elmer Thomas <dx@sendgrid.com>
-  * @copyright 2016 SendGrid
+  * @copyright 2018 SendGrid
   * @license   https://opensource.org/licenses/MIT The MIT License
   * @version   GIT: <git_id>
   * @link      http://packagist.org/packages/sendgrid/php-http-client
@@ -259,6 +259,7 @@ class Client
         $response = new Response($statusCode, $responseBody, $responseHeaders);
         return $response;
     }
+ 
     /**
      * Retry request
      *
