@@ -181,16 +181,13 @@ class Client
      */
     private function createCurlOptions($method, $body = null, $headers = null)
     {
-        $options = array_merge(
-            [
+        $options = [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HEADER => 1,
                 CURLOPT_CUSTOMREQUEST => strtoupper($method),
                 CURLOPT_SSL_VERIFYPEER => true,
                 CURLOPT_FAILONERROR => false
-            ],
-            $this->curlOptions
-        );
+            ] + $this->curlOptions;
 
         if (isset($headers)) {
             $headers = array_merge($this->headers, $headers);
