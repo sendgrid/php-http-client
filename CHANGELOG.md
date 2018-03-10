@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.9.2] - 2018-03-10
+### Fixed
+- Fixes [#12](https://github.com/sendgrid/php-http-client/issues/12), PR [#91](https://github.com/sendgrid/php-http-client/pull/91): Curl Options broken as array merge does not preserve keys. 
+
 ## [3.9.1] - 2018-03-09
 ### Fixed
 - Fixes [#88](https://github.com/sendgrid/php-http-client/issues/88), PR [#89](https://github.com/sendgrid/php-http-client/pull/89): Restore missing function 'prepareResponse' due to bad previous merge. 
