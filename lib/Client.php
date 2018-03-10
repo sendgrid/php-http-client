@@ -317,7 +317,7 @@ class Client
         if (empty($requests)) {
             $requests = $this->savedRequests;
         }
-        list ($channels, $multiHandle) = $this->createCurlMultiHandle($requests);
+        list($channels, $multiHandle) = $this->createCurlMultiHandle($requests);
 
         // running all requests
         $isRunning = null;
