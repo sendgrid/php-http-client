@@ -5,7 +5,7 @@
   *
   * @author    Matt Bernier <dx@sendgrid.com>
   * @author    Elmer Thomas <dx@sendgrid.com>
-  * @copyright 2016 SendGrid
+  * @copyright 2018 SendGrid
   * @license   https://opensource.org/licenses/MIT The MIT License
   * @version   GIT: <git_id>
   * @link      http://packagist.org/packages/sendgrid/php-http-client
@@ -23,6 +23,7 @@ namespace SendGrid;
  * @method Response delete($body = null, $query = null, $headers = null)
  *
  * @method Client version($value)
+ * @method Client|Response send()
  */
 class Client
 {
@@ -185,7 +186,7 @@ class Client
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HEADER => 1,
                 CURLOPT_CUSTOMREQUEST => strtoupper($method),
-                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYPEER => true,
                 CURLOPT_FAILONERROR => false
             ],
             $this->curlOptions
@@ -255,22 +256,16 @@ class Client
     private function prepareResponse($curl)
     {
         $response = curl_exec($curl);
-
         $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-
         $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
         $responseBody = substr($response, $headerSize);
-
         $responseHeaders = substr($response, 0, $headerSize);
         $responseHeaders = explode("\n", $responseHeaders);
         $responseHeaders = array_map('trim', $responseHeaders);
-
         $response = new Response($statusCode, $responseBody, $responseHeaders);
-
         return $response;
     }
-
+ 
     /**
      * Retry request
      *
@@ -286,7 +281,6 @@ class Client
     {
         $sleepDurations = $responseHeaders['X-Ratelimit-Reset'] - time();
         sleep($sleepDurations > 0 ? $sleepDurations : 0);
-
         return $this->makeRequest($method, $url, $body, $headers, false);
     }
 
@@ -307,15 +301,16 @@ class Client
         $curl = curl_init($url);
 
         $curlOpts = $this->createCurlOptions($method, $body, $headers);
+
         curl_setopt_array($curl, $curlOpts);
 
         $response = $this->prepareResponse($curl);
 
-        curl_close($curl);
-
         if ($response->statusCode() == 429 && $retryOnLimit) {
             return $this->retryRequest($response->headers(true), $method, $url, $body, $headers);
         }
+
+        curl_close($curl);
 
         return $response;
     }
