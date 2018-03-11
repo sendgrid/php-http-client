@@ -192,7 +192,7 @@ class Client
         if (isset($headers)) {
             $headers = array_merge($this->headers, $headers);
         } else {
-            $headers = [];
+            $headers = $this->headers;
         }
 
         if (isset($body)) {
