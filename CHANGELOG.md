@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.9.3] - 2018-03-11
+### Fixed
+- Fixes [#584](https://github.com/sendgrid/sendgrid-php/issues/584), PR [#93](https://github.com/sendgrid/php-http-client/pull/93): Don't overwrite headers set from upstream dependencies.
+
 ## [3.9.2] - 2018-03-10
 ### Fixed
 - Fixes [#12](https://github.com/sendgrid/php-http-client/issues/12), PR [#91](https://github.com/sendgrid/php-http-client/pull/91): Curl Options broken as array merge does not preserve keys. 
