@@ -124,4 +124,92 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         // returns 3 response object
         $this->assertEquals(3, count($client->send()));
     }
+
+    public function testCreateCurlOptionsWithMethodOnly()
+    {
+        $client = new Client('https://localhost:4010');
+
+        $result = $this->callMethod($client, 'createCurlOptions', ['get']);
+
+        $this->assertEquals([
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_FAILONERROR => false,
+            CURLOPT_HTTPHEADER => []
+        ], $result);
+    }
+
+    public function testCreateCurlOptionsWithBody()
+    {
+        $client = new Client('https://localhost:4010', ['User-Agent: Custom-Client 1.0']);
+        $client->setCurlOptions([
+            CURLOPT_ENCODING => 'utf-8'
+        ]);
+
+        $body = ['foo' => 'bar'];
+
+        $result = $this->callMethod($client, 'createCurlOptions', ['post', $body]);
+
+        $this->assertEquals([
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_FAILONERROR => false,
+            CURLOPT_ENCODING => 'utf-8',
+            CURLOPT_POSTFIELDS => json_encode($body),
+            CURLOPT_HTTPHEADER => [
+                'User-Agent: Custom-Client 1.0',
+                'Content-Type: application/json'
+            ]
+        ], $result);
+    }
+
+    public function testCreateCurlOptionsWithBodyAndHeaders()
+    {
+        $client = new Client('https://localhost:4010', ['User-Agent: Custom-Client 1.0']);
+        $client->setCurlOptions([
+            CURLOPT_ENCODING => 'utf-8'
+        ]);
+
+        $body = ['foo' => 'bar'];
+        $headers = ['Accept-Encoding: gzip'];
+
+        $result = $this->callMethod($client, 'createCurlOptions', ['post', $body, $headers]);
+
+        $this->assertEquals([
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_FAILONERROR => false,
+            CURLOPT_ENCODING => 'utf-8',
+            CURLOPT_POSTFIELDS => json_encode($body),
+            CURLOPT_HTTPHEADER => [
+                'User-Agent: Custom-Client 1.0',
+                'Accept-Encoding: gzip',
+                'Content-Type: application/json'
+            ]
+        ], $result);
+    }
+
+    /**
+     * @param object $obj
+     * @param string $name
+     * @param array $args
+     * @return mixed
+     */
+    private function callMethod($obj, $name, $args = [])
+    {
+        try {
+            $class = new \ReflectionClass($obj);
+        } catch (\ReflectionException $e) {
+            return null;
+        }
+        $method = $class->getMethod($name);
+        $method->setAccessible(true);
+        return $method->invokeArgs($obj, $args);
+    }
 }

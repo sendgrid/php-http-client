@@ -9,7 +9,7 @@ class LicenceYearTest extends \PHPUnit_Framework_TestCase
         $rootDir = __DIR__ . '/../..';
 
         $license = explode("\n", file_get_contents("$rootDir/LICENSE.txt"));
-        $copyright = $license[2];
+        $copyright = trim($license[2]);
 
         $year = date('Y');
 
