@@ -5,7 +5,7 @@
  *
  * @author    Matt Bernier <dx@sendgrid.com>
  * @author    Elmer Thomas <dx@sendgrid.com>
- * @copyright 2016 SendGrid
+ * @copyright 2018 SendGrid
  * @license   https://opensource.org/licenses/MIT The MIT License
  * @version   GIT: <git_id>
  * @link      http://packagist.org/packages/sendgrid/php-http-client
@@ -18,21 +18,29 @@ namespace SendGrid;
  */
 class Response
 {
-    /** @var int */
+    /**
+     * @var int
+     */
     protected $statusCode;
-    /** @var string */
+
+    /**
+     * @var string
+     */
     protected $body;
-    /** @var array */
+
+    /**
+     * @var array
+     */
     protected $headers;
 
     /**
      * Setup the response data
      *
-     * @param int $statusCode the status code.
-     * @param string $body    the response body.
-     * @param array $headers  an array of response headers.
+     * @param int    $statusCode the status code.
+     * @param string $body       the response body.
+     * @param array  $headers    an array of response headers.
      */
-    public function __construct($statusCode = null, $body = null, $headers = null)
+    public function __construct($statusCode = 200, $body = '', array $headers = [])
     {
         $this->statusCode = $statusCode;
         $this->body = $body;
@@ -81,21 +89,12 @@ class Response
       * @param array $headers
       *
       * @return array
-      * 
-      * @throws \InvalidArgumentException
       */
-    private function prettifyHeaders($headers)
+    private function prettifyHeaders(array $headers)
     {
-        if (!is_array($headers)) {
-            throw new \InvalidArgumentException('Headers should be an array');
-        }
-
         return array_reduce(
             array_filter($headers),
             function ($result, $header) {
-                if (empty($header)) {
-                    return $result;
-                }
 
                 if (false === strpos($header, ':')) {
                     $result['Status'] = trim($header);
