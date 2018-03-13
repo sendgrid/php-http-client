@@ -28,4 +28,3 @@ class FilesExistTest extends \PHPUnit_Framework_TestCase
         #$this->assertTrue($composeExists);
     }
 }
-

@@ -85,7 +85,7 @@ class Response
     
     /**
       * Returns response headers as associative array
-      * 
+      *
       * @param array $headers
       *
       * @return array
@@ -102,7 +102,7 @@ class Response
                     return $result;
                 }
 
-                list ($key, $value) = explode(':', $header, 2);
+                list($key, $value) = explode(':', $header, 2);
                 $result[trim($key)] = trim($value);
 
                 return $result;
