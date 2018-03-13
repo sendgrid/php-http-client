@@ -202,6 +202,7 @@ class Client
      * @param string $method
      * @param array $body
      * @param array $headers
+     *
      * @return array
      */
     private function createCurlOptions($method, $body = null, $headers = null)
@@ -339,6 +340,7 @@ class Client
      * Send all saved requests at once
      *
      * @param array $requests
+     *
      * @return Response[]
      */
     public function makeAllRequests(array $requests = [])
