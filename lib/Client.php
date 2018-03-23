@@ -54,20 +54,21 @@ class Client
     /**
       * Initialize the client
       *
-      * @param string  $host                    the base url (e.g. https://api.sendgrid.com)
-      * @param array   $headers                 global request headers
-      * @param string  $version                 api version (configurable)
-      * @param array   $path                    holds the segments of the url path
+      * @param string  $host          the base url (e.g. https://api.sendgrid.com)
+      * @param array   $headers       global request headers
+      * @param string  $version       api version (configurable) - this is specific to the SendGrid API
+      * @param array   $path          holds the segments of the url path
+      * @param array   $curlOptions   extra options to set during curl initialization
+      * @param bool    $retryOnLimit  set default retry on limit flag
       */
-    public function __construct($host, $headers = [], $version = '/v3', $path = [])
+    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null, $retryOnLimit = false)
     {
         $this->host = $host;
-        $this->headers = $headers;
+        $this->headers = $headers ?: [];
         $this->version = $version;
-        $this->path = $path;
-
-        $this->curlOptions = [];
-        $this->retryOnLimit = false;
+        $this->path = $path ?: [];
+        $this->curlOptions = $curlOptions ?: [];
+        $this->retryOnLimit = $retryOnLimit;
         $this->isConcurrentRequest = false;
         $this->savedRequests = [];
     }
