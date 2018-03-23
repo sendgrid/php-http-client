@@ -20,7 +20,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             'Content-Type: application/json',
             'Authorization: Bearer SG.XXXX'
         ];
-        $this->client = new MockClient($this->host, $this->headers);
+        $this->client = new MockClient($this->host, $this->headers, '/v3');
     }
 
     public function testConstructor()
@@ -91,7 +91,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/v3', $client->getVersion());
 
         $client = new Client('https://localhost:4010');
-        $this->assertSame('/v3', $client->getVersion());
+        $this->assertSame(null, $client->getVersion());
     }
 
     public function testGetPath()
