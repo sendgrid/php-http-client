@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.9.5] - 2018-03-26
+### Added
+- Fixes [#94](https://github.com/sendgrid/php-http-client/issues/94), PR [#95](https://github.com/sendgrid/php-http-client/pull/95): CreateCurlOptions method regression tests
+- Thanks to [Alexandr Ivanov](https://github.com/misantron) for the pull request!
+
 ## [3.9.4] - 2018-03-22
 ### Fixed
 - Fixes [#586](https://github.com/sendgrid/sendgrid-php/issues/586), PR [#96](https://github.com/sendgrid/php-http-client/pull/96): Fix constructor function signature regression.
