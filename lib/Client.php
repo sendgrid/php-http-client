@@ -1,15 +1,15 @@
 <?php
 
 /**
-  * HTTP Client library
-  *
-  * @author    Matt Bernier <dx@sendgrid.com>
-  * @author    Elmer Thomas <dx@sendgrid.com>
-  * @copyright 2018 SendGrid
-  * @license   https://opensource.org/licenses/MIT The MIT License
-  * @version   GIT: <git_id>
-  * @link      http://packagist.org/packages/sendgrid/php-http-client
-  */
+ * HTTP Client library
+ *
+ * @author    Matt Bernier <dx@sendgrid.com>
+ * @author    Elmer Thomas <dx@sendgrid.com>
+ * @copyright 2018 SendGrid
+ * @license   https://opensource.org/licenses/MIT The MIT License
+ * @version   GIT: <git_id>
+ * @link      http://packagist.org/packages/sendgrid/php-http-client
+ */
 
 namespace SendGrid;
 
@@ -27,21 +27,46 @@ namespace SendGrid;
  */
 class Client
 {
-    /** @var string */
+    const TOO_MANY_REQUESTS_HTTP_CODE = 429;
+
+    /**
+     * @var string
+     */
     protected $host;
-    /** @var array */
+
+    /**
+     * @var array
+     */
     protected $headers;
-    /** @var string */
+
+    /**
+     * @var string
+     */
     protected $version;
-    /** @var array */
+
+    /**
+     * @var array
+     */
     protected $path;
-    /** @var array */
+
+    /**
+     * @var array
+     */
     protected $curlOptions;
-    /** @var bool $isConcurrentRequest */
+
+    /**
+     * @var bool
+     */
     protected $isConcurrentRequest;
-    /** @var array $savedRequests */
+
+    /**
+     * @var array
+     */
     protected $savedRequests;
-    /** @var bool */
+
+    /**
+     * @var bool
+     */
     protected $retryOnLimit;
 
     /**
@@ -49,7 +74,7 @@ class Client
      *
      * @var array
      */
-    private $methods = ['get', 'post', 'patch',  'put', 'delete'];
+    private $methods = ['get', 'post', 'patch', 'put', 'delete'];
 
     /**
       * Initialize the client
@@ -106,6 +131,14 @@ class Client
     }
 
     /**
+     * @return array
+     */
+    public function getCurlOptions()
+    {
+        return $this->curlOptions;
+    }
+
+    /**
      * Set extra options to set during curl initialization
      *
      * @param array $options
@@ -134,7 +167,7 @@ class Client
     }
 
     /**
-     * set concurrent request flag
+     * Set concurrent request flag
      *
      * @param bool $isConcurrent
      *
@@ -148,20 +181,12 @@ class Client
     }
 
     /**
-     * @return array
+     * Build the final URL to be passed
+     *
+     * @param array $queryParams an array of all the query parameters
+     *
+     * @return string
      */
-    public function getCurlOptions()
-    {
-        return $this->curlOptions;
-    }
-
-    /**
-      * Build the final URL to be passed
-      *
-      * @param array $queryParams an array of all the query parameters
-      *
-      * @return string
-      */
     private function buildUrl($queryParams = null)
     {
         $path = '/' . implode('/', $this->path);
@@ -178,13 +203,14 @@ class Client
      * @param string $method
      * @param array $body
      * @param array $headers
+     *
      * @return array
      */
     private function createCurlOptions($method, $body = null, $headers = null)
     {
         $options = [
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HEADER => 1,
+                CURLOPT_HEADER => true,
                 CURLOPT_CUSTOMREQUEST => strtoupper($method),
                 CURLOPT_SSL_VERIFYPEER => true,
                 CURLOPT_FAILONERROR => false
@@ -213,7 +239,7 @@ class Client
      *
      * @return array
      */
-    private function createSavedRequest($requestData, $retryOnLimit = false)
+    private function createSavedRequest(array $requestData, $retryOnLimit = false)
     {
         return array_merge($requestData, ['retryOnLimit' => $retryOnLimit]);
     }
@@ -223,7 +249,7 @@ class Client
      *
      * @return array
      */
-    private function createCurlMultiHandle($requests)
+    private function createCurlMultiHandle(array $requests)
     {
         $channels = [];
         $multiHandle = curl_multi_init();
@@ -241,35 +267,37 @@ class Client
     /**
      * Prepare response object
      *
-     * @param resource $curl the curl resource
+     * @param resource $channel  the curl resource
+     * @param string   $content
      *
      * @return Response object
      */
-    private function prepareResponse($curl)
+    private function parseResponse($channel, $content)
     {
-        $response = curl_exec($curl);
-        $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $responseBody = substr($response, $headerSize);
-        $responseHeaders = substr($response, 0, $headerSize);
+        $headerSize = curl_getinfo($channel, CURLINFO_HEADER_SIZE);
+        $statusCode = curl_getinfo($channel, CURLINFO_HTTP_CODE);
+
+        $responseBody = substr($content, $headerSize);
+
+        $responseHeaders = substr($content, 0, $headerSize);
         $responseHeaders = explode("\n", $responseHeaders);
         $responseHeaders = array_map('trim', $responseHeaders);
-        $response = new Response($statusCode, $responseBody, $responseHeaders);
-        return $response;
+
+        return new Response($statusCode, $responseBody, $responseHeaders);
     }
- 
+
     /**
      * Retry request
      *
-     * @param  array  $responseHeaders headers from rate limited response
-     * @param  string $method          the HTTP verb
-     * @param  string $url             the final url to call
-     * @param  array  $body            request body
-     * @param  array  $headers         original headers
+     * @param array  $responseHeaders headers from rate limited response
+     * @param string $method          the HTTP verb
+     * @param string $url             the final url to call
+     * @param array  $body            request body
+     * @param array  $headers         original headers
      *
      * @return Response response object
      */
-    private function retryRequest($responseHeaders, $method, $url, $body, $headers)
+    private function retryRequest(array $responseHeaders, $method, $url, $body, $headers)
     {
         $sleepDurations = $responseHeaders['X-Ratelimit-Reset'] - time();
         sleep($sleepDurations > 0 ? $sleepDurations : 0);
@@ -277,32 +305,34 @@ class Client
     }
 
     /**
-      * Make the API call and return the response. This is separated into
-      * it's own function, so we can mock it easily for testing.
-      *
-      * @param string                   $method       the HTTP verb
-      * @param string                   $url          the final url to call
-      * @param array|\JsonSerializable  $body         request body
-      * @param array                    $headers      any additional request headers
-      * @param bool                     $retryOnLimit should retry if rate limit is reach?
-      *
-      * @return Response object
-      */
+     * Make the API call and return the response.
+     * This is separated into it's own function, so we can mock it easily for testing.
+     *
+     * @param string $method       the HTTP verb
+     * @param string $url          the final url to call
+     * @param array  $body         request body
+     * @param array  $headers      any additional request headers
+     * @param bool   $retryOnLimit should retry if rate limit is reach?
+     *
+     * @return Response object
+     */
     public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
     {
-        $curl = curl_init($url);
+        $channel = curl_init($url);
 
-        $curlOpts = $this->createCurlOptions($method, $body, $headers);
+        $options = $this->createCurlOptions($method, $body, $headers);
 
-        curl_setopt_array($curl, $curlOpts);
+        curl_setopt_array($channel, $options);
+        $content = curl_exec($channel);
 
-        $response = $this->prepareResponse($curl);
+        $response = $this->parseResponse($channel, $content);
 
-        if ($response->statusCode() == 429 && $retryOnLimit) {
-            return $this->retryRequest($response->headers(true), $method, $url, $body, $headers);
+        if ($response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE && $retryOnLimit) {
+            $responseHeaders = $response->headers(true);
+            return $this->retryRequest($responseHeaders, $method, $url, $body, $headers);
         }
 
-        curl_close($curl);
+        curl_close($channel);
 
         return $response;
     }
@@ -311,9 +341,10 @@ class Client
      * Send all saved requests at once
      *
      * @param array $requests
+     *
      * @return Response[]
      */
-    public function makeAllRequests($requests = [])
+    public function makeAllRequests(array $requests = [])
     {
         if (empty($requests)) {
             $requests = $this->savedRequests;
@@ -330,32 +361,26 @@ class Client
         $retryRequests = [];
         $responses = [];
         $sleepDurations = 0;
-        foreach ($channels as $id => $ch) {
-            $response = curl_multi_getcontent($ch);
-            $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $responseBody = substr($response, $headerSize);
+        foreach ($channels as $id => $channel) {
 
-            $responseHeaders = substr($response, 0, $headerSize);
-            $responseHeaders = explode("\n", $responseHeaders);
-            $responseHeaders = array_map('trim', $responseHeaders);
+            $content = curl_multi_getcontent($channel);
+            $response = $this->parseResponse($channel, $content);
 
-            $response = new Response($statusCode, $responseBody, $responseHeaders);
-            if (($statusCode === 429) && $requests[$id]['retryOnLimit']) {
+            if ($response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE && $requests[$id]['retryOnLimit']) {
                 $headers = $response->headers(true);
                 $sleepDurations = max($sleepDurations, $headers['X-Ratelimit-Reset'] - time());
                 $requestData = [
                     'method' => $requests[$id]['method'],
                     'url' => $requests[$id]['url'],
                     'body' => $requests[$id]['body'],
-                    'headers' =>$headers,
+                    'headers' => $headers,
                 ];
                 $retryRequests[] = $this->createSavedRequest($requestData, false);
             } else {
                 $responses[] = $response;
             }
 
-            curl_multi_remove_handle($multiHandle, $ch);
+            curl_multi_remove_handle($multiHandle, $channel);
         }
         curl_multi_close($multiHandle);
 
@@ -368,15 +393,13 @@ class Client
     }
 
     /**
-      * Add variable values to the url.
-      * (e.g. /your/api/{variable_value}/call)
-      * Another example: if you have a PHP reserved word, such as and,
-      * in your url, you must use this method.
-      *
-      * @param string $name name of the url segment
-      *
-      * @return Client object
-      */
+     * Add variable values to the url. (e.g. /your/api/{variable_value}/call)
+     * Another example: if you have a PHP reserved word, such as and, in your url, you must use this method.
+     *
+     * @param string $name name of the url segment
+     *
+     * @return Client object
+     */
     public function _($name = null)
     {
         if (isset($name)) {
@@ -391,14 +414,14 @@ class Client
     }
 
     /**
-      * Dynamically add method calls to the url, then call a method.
-      * (e.g. client.name.name.method())
-      *
-      * @param string $name name of the dynamic method call or HTTP verb
-      * @param array  $args parameters passed with the method call
-      *
-      * @return Client|Response|Response[]|null object
-      */
+     * Dynamically add method calls to the url, then call a method.
+     * (e.g. client.name.name.method())
+     *
+     * @param string $name name of the dynamic method call or HTTP verb
+     * @param array  $args parameters passed with the method call
+     *
+     * @return Client|Response|Response[]|null object
+     */
     public function __call($name, $args)
     {
         $name = strtolower($name);
@@ -422,10 +445,8 @@ class Client
 
             if ($this->isConcurrentRequest) {
                 // save request to be sent later
-                $this->savedRequests[] = $this->createSavedRequest(
-                    ['method' => $name, 'url' => $url, 'body' => $body, 'headers' => $headers],
-                    $retryOnLimit
-                );
+                $requestData = ['method' => $name, 'url' => $url, 'body' => $body, 'headers' => $headers];
+                $this->savedRequests[] = $this->createSavedRequest($requestData, $retryOnLimit);
                 return null;
             }
 
