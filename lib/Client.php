@@ -17,8 +17,8 @@ namespace SendGrid;
  *
  * Class Client
  * @package SendGrid
- * @version 3.9.6
- *
+ * @version 3.9.5
+ * 
  * Quickly and easily access any REST or REST-like API.
  *
  * @method Response get($body = null, $query = null, $headers = null)
