@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.9.6] - 2018-04-10
+### Added
+- PR [#98](https://github.com/sendgrid/php-http-client/pull/98). Updated documention of `Client.php` using PHPDoc.
+- Thanks to [Martijn Melchers](https://github.com/martijnmelchers) for the pull request!
+
 ## [3.9.5] - 2018-03-26
 ### Added
 - Fixes [#94](https://github.com/sendgrid/php-http-client/issues/94), PR [#95](https://github.com/sendgrid/php-http-client/pull/95): CreateCurlOptions method regression tests
