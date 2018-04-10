@@ -2,7 +2,7 @@
     "name": "sendgrid/php-http-client",
     "description": "HTTP REST client, simplified for PHP",
     "type": "library",
-    "version": "3.9.5",
+    "version": "3.9.6",
     "homepage": "http://github.com/sendgrid/php-http-client",
     "keywords": ["SendGrid", "HTTP", "REST", "API", "Fluent"],
     "license": "MIT",
