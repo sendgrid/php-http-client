@@ -147,6 +147,9 @@ var_dump(
 );
 ```
 
+If there is an issues with the request, such as misconfigured CURL SSL options, an `InvalidRequest` will be thrown
+with message from CURL on why the request failed. Use the message as a hit to troubleshooting steps of your environment. 
+
 <a name="usage"></a>
 # Usage
 
