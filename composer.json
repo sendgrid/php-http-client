@@ -1,5 +1,5 @@
 {
-    "name": "sendgrid/php-http-client",
+    "name": "gear4music/php-http-client",
     "description": "HTTP REST client, simplified for PHP",
     "type": "library",
     "version": "3.9.6",
