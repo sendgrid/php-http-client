@@ -205,6 +205,11 @@ class Client
     /**
      * @var bool
      */
+    protected $verifySSLCerts;
+    
+    /**
+     * @var bool
+     */
     protected $retryOnLimit;
 
     /**
@@ -217,20 +222,22 @@ class Client
     /**
       * Initialize the client
       *
-      * @param string  $host          the base url (e.g. https://api.sendgrid.com)
-      * @param array   $headers       global request headers
-      * @param string  $version       api version (configurable) - this is specific to the SendGrid API
-      * @param array   $path          holds the segments of the url path
-      * @param array   $curlOptions   extra options to set during curl initialization
-      * @param bool    $retryOnLimit  set default retry on limit flag
+      * @param string  $host            the base url (e.g. https://api.sendgrid.com)
+      * @param array   $headers         global request headers
+      * @param string  $version         api version (configurable) - this is specific to the SendGrid API
+      * @param array   $path            holds the segments of the url path
+      * @param array   $curlOptions     extra options to set during curl initialization
+      * @param bool    $verifySSLCerts  set default verify certificates flag
+      * @param bool    $retryOnLimit    set default retry on limit flag
       */
-    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null, $retryOnLimit = false)
+    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null, $verifySSLCerts = true, $retryOnLimit = false)
     {
         $this->host = $host;
         $this->headers = $headers ?: [];
         $this->version = $version;
         $this->path = $path ?: [];
         $this->curlOptions = $curlOptions ?: [];
+        $this->verifySSLCerts = $verifySSLCerts;
         $this->retryOnLimit = $retryOnLimit;
         $this->isConcurrentRequest = false;
         $this->savedRequests = [];
@@ -350,7 +357,7 @@ class Client
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HEADER => true,
                 CURLOPT_CUSTOMREQUEST => strtoupper($method),
-                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYPEER => $this->verifySSLCerts,
                 CURLOPT_FAILONERROR => false
             ] + $this->curlOptions;
 
