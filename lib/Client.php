@@ -312,6 +312,20 @@ class Client
     }
 
     /**
+     * Set default verify certificates flag
+     *
+     * @param bool $verifySSLCerts
+     *
+     * @return Client
+     */
+    public function setVerifySSLCerts($verifySSLCerts)
+    {
+        $this->verifySSLCerts = $verifySSLCerts;
+
+        return $this;
+    }
+
+    /**
      * Set concurrent request flag
      *
      * @param bool $isConcurrent
@@ -552,6 +566,7 @@ class Client
         }
         $client = new static($this->host, $this->headers, $this->version, $this->path);
         $client->setCurlOptions($this->curlOptions);
+        $client->setVerifySSLCerts($this->verifySSLCerts);
         $client->setRetryOnLimit($this->retryOnLimit);
         $this->path = [];
 
