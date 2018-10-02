@@ -196,6 +196,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessageRegExp /SSL certificate problem/i
+     */
+    public function testMakeRequestWithUntrustedRootCert()
+    {
+        $client = new Client('https://untrusted-root.badssl.com/');
+        $client->makeRequest('GET', 'https://untrusted-root.badssl.com/');
+    }
+
+    /**
      * @param object $obj
      * @param string $name
      * @param array $args
