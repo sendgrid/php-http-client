@@ -415,6 +415,10 @@ class Client
         $headerSize = curl_getinfo($channel, CURLINFO_HEADER_SIZE);
         $statusCode = curl_getinfo($channel, CURLINFO_HTTP_CODE);
 
+        if ($statusCode === 0) {
+            trigger_error(curl_error($channel), E_USER_ERROR);
+        }
+
         $responseBody = substr($content, $headerSize);
 
         $responseHeaders = substr($content, 0, $headerSize);
