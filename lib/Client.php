@@ -415,6 +415,10 @@ class Client
         $headerSize = curl_getinfo($channel, CURLINFO_HEADER_SIZE);
         $statusCode = curl_getinfo($channel, CURLINFO_HTTP_CODE);
 
+        if ($statusCode === 0) {
+            throw new \RuntimeException(curl_error($channel));
+        }
+
         $responseBody = substr($content, $headerSize);
 
         $responseHeaders = substr($content, 0, $headerSize);
@@ -453,6 +457,8 @@ class Client
      * @param bool   $retryOnLimit should retry if rate limit is reach?
      *
      * @return Response object
+     *
+     * @throws \RuntimeException
      */
     public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
     {
@@ -481,6 +487,8 @@ class Client
      * @param array $requests
      *
      * @return Response[]
+     *
+     * @throws \RuntimeException
      */
     public function makeAllRequests(array $requests = [])
     {
