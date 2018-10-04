@@ -12,6 +12,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     private $host;
     /** @var array */
     private $headers;
+    /** @var array */
+    private $errors;
 
     protected function setUp()
     {
@@ -21,6 +23,24 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             'Authorization: Bearer SG.XXXX'
         ];
         $this->client = new MockClient($this->host, $this->headers, '/v3');
+        $this->errors = [];
+        set_error_handler([$this, 'errorHandler']);
+    }
+
+    public function errorHandler($errno, $errstr, $errfile, $errline, $errcontext)
+    {
+        $this->errors[] = compact('errno', 'errstr', 'errfile', 'errline', 'errcontext');
+    }
+
+    public function assertError($expectedErrorStringRegex, $expectedErrorNumber)
+    {
+        foreach ($this->errors as $error) {
+            if ($error['errno'] === $expectedErrorNumber && preg_match($expectedErrorStringRegex, $error['errstr'])) {
+                return $this->assertTrue(true);
+            }
+        }
+
+        $this->fail(sprintf('Error with level "%d" matching "%s" was not triggered', $expectedErrorNumber, $expectedErrorStringRegex));
     }
 
     public function testConstructor()
@@ -193,6 +213,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 'Content-Type: application/json'
             ]
         ], $result);
+    }
+
+    public function testMakeRequestWithUntrustedRootCert()
+    {
+        $client = new Client('https://untrusted-root.badssl.com/');
+        $client->makeRequest('GET', 'https://untrusted-root.badssl.com/');
+
+        $this->assertError('/certificate/i', E_USER_ERROR);
     }
 
     /**
