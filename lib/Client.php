@@ -378,7 +378,7 @@ class Client
     }
 
     /**
-     * @param array $requestData (method, url, body and headers)
+     * @param array $requestData  (method, url, body and headers)
      * @param bool  $retryOnLimit
      *
      * @return array
