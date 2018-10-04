@@ -367,6 +367,15 @@ class Client
         }
         $options[CURLOPT_HTTPHEADER] = $headers;
 
+        if (class_exists('\\Composer\\CaBundle\\CaBundle') && method_exists('\\Composer\\CaBundle\\CaBundle', 'getSystemCaRootBundlePath')) {
+            $caPathOrFile = \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
+            if (is_dir($caPathOrFile) || (is_link($caPathOrFile) && is_dir(readlink($caPathOrFile)))) {
+                $options[CURLOPT_CAPATH] = $caPathOrFile;
+            } else {
+                $options[CURLOPT_CAINFO] = $caPathOrFile;
+            }
+        }
+
         return $options;
     }
 
