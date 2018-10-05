@@ -13,7 +13,7 @@ If you are looking for the SendGrid API client library, please see [this repo](h
 
 # Announcements
 
-All updates to this library is documented in our [CHANGELOG](https://github.com/sendgrid/php-http-client/blob/master/CHANGELOG.md).
+All updates to this library are documented in our [CHANGELOG](https://github.com/sendgrid/php-http-client/blob/master/CHANGELOG.md).
 
 # Table of Contents
 - [Installation](#installation)
@@ -58,7 +58,7 @@ composer install
 
 ## Install without Composer
 
-You should create directory `lib` in directory of your application and clone to `lib` repositories [php-http-client](https://github.com/sendgrid/php-http-client.git) and [sendgrid-php](https://github.com/sendgrid/sendgrid-php.git):
+You should create a `lib` directory in the directory of your application and clone to `lib` repositories [php-http-client](https://github.com/sendgrid/php-http-client.git) and [sendgrid-php](https://github.com/sendgrid/sendgrid-php.git):
 
 ```
 $ cd /path/to/your/app
@@ -74,7 +74,7 @@ $ cd /path/to/your/app
 $ touch loader.php
 ```
 
-And add to `loader.php` code below:
+And add the code below to the `loader.php`:
 
 ```php
 <?php
@@ -83,7 +83,7 @@ require_once __DIR__ . '/lib/php-http-client/lib/Client.php';
 require_once __DIR__ . '/lib/php-http-client/lib/Response.php';
 ```
 
-After it you can use `php-http-client` library in your project:
+After it you can use the `php-http-client` library in your project:
 
 ```php
 <?php
