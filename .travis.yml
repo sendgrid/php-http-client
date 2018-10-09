@@ -1,4 +1,8 @@
 language: php
+php:
+- 5.6
+- 7.0
+
 before_script:
 - composer install --dev --no-interaction
 - cd test/unit
@@ -6,9 +10,14 @@ script:
 - ../../vendor/bin/phpunit . --bootstrap bootstrap.php --filter test* --coverage-clover=coverage.xml
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-php:
-- 5.6
-- 7.0
+deploy:
+  provider: releases
+  api_key: "**GITHUB OAUTH TOKEN**"
+  skip_cleanup: false
+  on:
+    repo:   sendgrid/php-http-client
+    tags:   true
+    branch: master
 env:
   global:
   - secure: eUN0huKA436uIkISu6V3yW01/gZHC6slBvlnprMPEhzclU2szH6qhWEXWS5CcOG6EEDBReqLZdNAwu+FC69KGFO9+6oW2GQQLSsfEViqFi/Ig2N0r4EBO4jLRebgq0GOfetPwQvJH27d8BCiloPy8rXBb5pskxSNw4B4bRyXHz4=
