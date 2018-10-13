@@ -199,7 +199,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ], $result);
     }
 
-    public function testCallRetriesWhenResponseIsTooManyRequestsAndRetryOnLimitTrue()
+	/**
+	 * These annotations are required for the function mock to work
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testCallRetriesWhenResponseIsTooManyRequestsAndRetryOnLimitTrue()
 	{
 		$host   = 'https://localhost:4010';
 		$client = new Client($host);
@@ -214,15 +219,18 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
 		$curlExec = $this->getFunctionMock('SendGrid', 'curl_exec');
 		$headers  = "X-Ratelimit-Reset: " . time();
+		$length = strlen($headers);
 		$content  = $headers . PHP_EOL . PHP_EOL . "Content Here";
 		//Asserting that this is called twice confirms that the retry was
 		// called.
 		$curlExec->expects($this->exactly(2))
 			->willReturn($content);
 
+		//This sets the header size and the http code
 		$curlGetInfo = $this->getFunctionMock('SendGrid', 'curl_getinfo');
-		$curlGetInfo->expects($this->any())
-					->willReturnOnConsecutiveCalls(strlen($headers), 429);
+		$curlGetInfo->expects($this->atLeastOnce())
+					->willReturnOnConsecutiveCalls($length, 429,
+												   $length, 200);
 
 		$client->get('test');
 	}
