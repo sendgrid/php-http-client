@@ -154,44 +154,50 @@ Please run your code through:
    # Assign the original repo to a remote called "upstream"
    git remote add upstream https://github.com/sendgrid/php-http-client
    ```
-
-2. If you cloned a while ago, get the latest changes from upstream:
+   
+2. Switch to `development` branch:
 
    ```bash
-   git checkout <dev-branch>
-   git pull upstream <dev-branch>
+   git checkout development
+   ```
+   
+3. If you cloned a while ago, get the latest changes from upstream:
+
+   ```bash
+   git checkout development
+   git pull upstream development
    ```
 
-3. Create a new topic branch (off the main project development branch) to
+4. Create a new topic branch from the main project development branch to
    contain your feature, change, or fix:
 
    ```bash
    git checkout -b <topic-branch-name>
    ```
 
-4. Commit your changes in logical chunks. Please adhere to these [git commit
+5. Commit your changes in logical chunks. Please adhere to these [git commit
    message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
    or your code is unlikely be merged into the main project. Use Git's
    [interactive rebase](https://help.github.com/articles/interactive-rebase)
    feature to tidy up your commits before making them public.
 
-4a. Create tests.
+5a. Create tests.
 
-4b. Create or update the example code that demonstrates the functionality of this change to the code.
+5b. Create or update the example code that demonstrates the functionality of this change to the code.
 
-5. Locally merge (or rebase) the upstream development branch into your topic branch:
+6. Locally merge (or rebase) the upstream development branch into your topic branch:
 
    ```bash
-   git pull [--rebase] upstream master
+   git pull [--rebase] upstream development
    ```
 
-6. Push your topic branch up to your fork:
+7. Push your topic branch up to your fork:
 
    ```bash
    git push origin <topic-branch-name>
    ```
 
-7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
+8. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
     with a clear title and description against the `master` branch. All tests must be passing before we will review the PR.
 
 <a name="code-reviews"></a>
