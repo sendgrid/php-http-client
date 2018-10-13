@@ -2,7 +2,6 @@
 
 namespace SendGrid\Test;
 
-use phpDocumentor\Reflection\Types\Resource_;
 use phpmock\phpunit\PHPMock;
 use SendGrid\Client;
 
