@@ -235,6 +235,55 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 		$client->get('test');
 	}
 
+	/**
+	 * These annotations are required for the function mock to work
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testMakeAllRequestsRetriesWhenResponseIsTooManyRequestsAndRetryOnLimitTrue()
+	{
+		$host   = 'https://localhost:4010';
+		$client = new Client($host);
+		$client->setRetryOnLimit(true);
+		$client->setIsConcurrentRequest(true);
+
+		$client->get(['name' => 'A New Hope']);
+		$client->get(null, null, ['X-Mock: 200']);
+		$client->get(null, ['limit' => 100, 'offset' => 0]);
+
+		/**
+		 * Stub curl calls that we aren't concerned with in this test.
+		 */
+		$this->getFunctionMock('SendGrid', 'curl_multi_init');
+		$this->getFunctionMock('SendGrid', 'curl_multi_exec');
+		$this->getFunctionMock('SendGrid', 'curl_init');
+		$this->getFunctionMock('SendGrid', 'curl_setopt_array');
+		$this->getFunctionMock('SendGrid', 'curl_multi_add_handle');
+		$this->getFunctionMock('SendGrid', 'curl_multi_remove_handle');
+		$this->getFunctionMock('SendGrid', 'curl_multi_close');
+
+		$headers  = "X-Ratelimit-Reset: " . time();
+		$length = strlen($headers);
+		$content  = $headers . PHP_EOL . PHP_EOL . "Content Here";
+		$curlGetContent = $this->getFunctionMock('SendGrid', 'curl_multi_getcontent');
+		//This assertion tests that all 3 of the calls were retried.
+		$curlGetContent->expects($this->exactly(6))
+			->willReturn($content);
+
+		//This sets the header size and the http code
+		$curlGetInfo = $this->getFunctionMock('SendGrid', 'curl_getinfo');
+		$curlGetInfo->expects($this->atLeastOnce())
+					->willReturnOnConsecutiveCalls($length, 429,
+												   $length, 429,
+												   $length, 429,
+												   $length, 200,
+												   $length, 200,
+												   $length, 200);
+
+		// returns 3 response object
+		$client->send();
+	}
+
     /**
      * @param object $obj
      * @param string $name
