@@ -3,8 +3,9 @@
 namespace SendGrid\Test;
 
 use SendGrid\Client;
+use PHPUnit\Framework\TestCase;
 
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends TestCase
 {
     /** @var MockClient */
     private $client;
