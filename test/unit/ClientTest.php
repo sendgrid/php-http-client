@@ -2,6 +2,8 @@
 
 namespace SendGrid\Test;
 
+use phpDocumentor\Reflection\Types\Resource_;
+use phpmock\phpunit\PHPMock;
 use SendGrid\Client;
 
 class ClientTest extends \PHPUnit_Framework_TestCase
@@ -12,6 +14,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     private $host;
     /** @var array */
     private $headers;
+
+    use PHPMock;
 
     protected function setUp()
     {
@@ -194,6 +198,34 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ]
         ], $result);
     }
+
+    public function testCallRetriesWhenResponseIsTooManyRequestsAndRetryOnLimitTrue()
+	{
+		$host   = 'https://localhost:4010';
+		$client = new Client($host);
+		$client->setRetryOnLimit(true);
+
+		/**
+		 * Stub curl calls that we aren't concerned with in this test.
+		 */
+		$this->getFunctionMock('SendGrid', 'curl_init');
+		$this->getFunctionMock('SendGrid', 'curl_setopt_array');
+		$this->getFunctionMock('SendGrid', 'curl_close');
+
+		$curlExec = $this->getFunctionMock('SendGrid', 'curl_exec');
+		$headers  = "X-Ratelimit-Reset: " . time();
+		$content  = $headers . PHP_EOL . PHP_EOL . "Content Here";
+		//Asserting that this is called twice confirms that the retry was
+		// called.
+		$curlExec->expects($this->exactly(2))
+			->willReturn($content);
+
+		$curlGetInfo = $this->getFunctionMock('SendGrid', 'curl_getinfo');
+		$curlGetInfo->expects($this->any())
+					->willReturnOnConsecutiveCalls(strlen($headers), 429);
+
+		$client->get('test');
+	}
 
     /**
      * @param object $obj
