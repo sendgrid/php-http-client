@@ -207,6 +207,16 @@ class Client
      */
     protected $retryOnLimit;
 
+	/**
+	 * @var bool
+	 */
+	protected $throwException;
+
+	/**
+	 * @var int
+	 */
+	protected $defaultErrorCode = 0;
+
     /**
      * These are the supported HTTP verbs
      *
@@ -217,14 +227,15 @@ class Client
     /**
       * Initialize the client
       *
-      * @param string  $host          the base url (e.g. https://api.sendgrid.com)
-      * @param array   $headers       global request headers
-      * @param string  $version       api version (configurable) - this is specific to the SendGrid API
-      * @param array   $path          holds the segments of the url path
-      * @param array   $curlOptions   extra options to set during curl initialization
-      * @param bool    $retryOnLimit  set default retry on limit flag
+      * @param string  $host            the base url (e.g. https://api.sendgrid.com)
+      * @param array   $headers         global request headers
+      * @param string  $version         api version (configurable) - this is specific to the SendGrid API
+      * @param array   $path            holds the segments of the url path
+      * @param array   $curlOptions     extra options to set during curl initialization
+      * @param bool    $retryOnLimit    set default retry on limit flag
+	  * @param bool    $throwException  Throw Exception in case of 4xx or 5xx HTTP Status Response
       */
-    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null, $retryOnLimit = false)
+    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null, $retryOnLimit = false, $throwException = false)
     {
         $this->host = $host;
         $this->headers = $headers ?: [];
@@ -234,6 +245,7 @@ class Client
         $this->retryOnLimit = $retryOnLimit;
         $this->isConcurrentRequest = false;
         $this->savedRequests = [];
+		$this->throwException = $throwException;
     }
 
     /**
@@ -317,6 +329,53 @@ class Client
 
         return $this;
     }
+
+	/**
+	 * @return bool
+	 */
+	public function getThrowException()
+	{
+		return $this->throwException;
+	}
+
+	/**
+	 * Set throw exception flag. Error code by default set to Exception level
+	 *
+	 * @param bool $throwException
+	 *
+	 * @param int  $defaultErrorCode Don't mix-up with HTTP status code. You can define own error level according to http://php.net/manual/en/errorfunc.constants.php
+	 *
+	 * @return Client
+	 */
+	public function setThrowException($throwException, $defaultErrorCode = 0)
+	{
+		$this->throwException = $throwException;
+		$this->defaultErrorCode = $defaultErrorCode;
+
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getDefaultErrorCode()
+	{
+		return $this->defaultErrorCode;
+	}
+
+	/**
+	 * Set error code constant
+	 *
+	 * @param int $defaultErrorCode
+	 *
+	 * @return Client
+	 */
+	public function setDefaultErrorCode($defaultErrorCode)
+	{
+		$this->defaultErrorCode = $defaultErrorCode;
+
+		return $this;
+	}
 
     /**
      * Build the final URL to be passed
@@ -424,17 +483,18 @@ class Client
         return new Response($statusCode, $responseBody, $responseHeaders);
     }
 
-    /**
-     * Retry request
-     *
-     * @param array  $responseHeaders headers from rate limited response
-     * @param string $method          the HTTP verb
-     * @param string $url             the final url to call
-     * @param array  $body            request body
-     * @param array  $headers         original headers
-     *
-     * @return Response response object
-     */
+	/**
+	 * Retry request
+	 *
+	 * @param array  $responseHeaders headers from rate limited response
+	 * @param string $method          the HTTP verb
+	 * @param string $url             the final url to call
+	 * @param array  $body            request body
+	 * @param array  $headers         original headers
+	 *
+	 * @return Response response object
+	 * @throws \SendGrid\ClientException
+	 */
     private function retryRequest(array $responseHeaders, $method, $url, $body, $headers)
     {
         $sleepDurations = $responseHeaders['X-Ratelimit-Reset'] - time();
@@ -442,18 +502,19 @@ class Client
         return $this->makeRequest($method, $url, $body, $headers, false);
     }
 
-    /**
-     * Make the API call and return the response.
-     * This is separated into it's own function, so we can mock it easily for testing.
-     *
-     * @param string $method       the HTTP verb
-     * @param string $url          the final url to call
-     * @param array  $body         request body
-     * @param array  $headers      any additional request headers
-     * @param bool   $retryOnLimit should retry if rate limit is reach?
-     *
-     * @return Response object
-     */
+	/**
+	 * Make the API call and return the response.
+	 * This is separated into it's own function, so we can mock it easily for testing.
+	 *
+	 * @param string $method       the HTTP verb
+	 * @param string $url          the final url to call
+	 * @param array  $body         request body
+	 * @param array  $headers      any additional request headers
+	 * @param bool   $retryOnLimit should retry if rate limit is reach?
+	 *
+	 * @return Response object
+	 * @throws \SendGrid\ClientException
+	 */
     public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
     {
         $channel = curl_init($url);
@@ -471,6 +532,10 @@ class Client
         }
 
         curl_close($channel);
+
+		if ($response->statusCode() > 399 && $this->throwException) {
+			throw new ClientException($response->body(), $response->statusCode(), $this->defaultErrorCode);
+		}
 
         return $response;
     }
@@ -546,20 +611,22 @@ class Client
         $client = new static($this->host, $this->headers, $this->version, $this->path);
         $client->setCurlOptions($this->curlOptions);
         $client->setRetryOnLimit($this->retryOnLimit);
+		$client->setThrowException($this->throwException);
         $this->path = [];
 
         return $client;
     }
 
-    /**
-     * Dynamically add method calls to the url, then call a method.
-     * (e.g. client.name.name.method())
-     *
-     * @param string $name name of the dynamic method call or HTTP verb
-     * @param array  $args parameters passed with the method call
-     *
-     * @return Client|Response|Response[]|null object
-     */
+	/**
+	 * Dynamically add method calls to the url, then call a method.
+	 * (e.g. client.name.name.method())
+	 *
+	 * @param string $name name of the dynamic method call or HTTP verb
+	 * @param array  $args parameters passed with the method call
+	 *
+	 * @return Client|Response|Response[]|null object
+	 * @throws \SendGrid\ClientException
+	 */
     public function __call($name, $args)
     {
         $name = strtolower($name);
