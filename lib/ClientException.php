@@ -49,16 +49,16 @@ class ClientException extends Exception
         $errors = null;
 
         // If message is set
-        if($message) {
+        if(isset($message)) {
             // Trying to get an array
             $messageArray = json_decode($message, true);
 
             // If successfully parsed
-            if($messageArray and isset($messageArray["errors"])) {
+            if($messageArray && isset($messageArray["errors"])) {
                 $errors = $messageArray["errors"];
 
                 // Parsing all errors
-                if($errors && is_array($errors) and count($errors)) {
+                if($errors && is_array($errors) && count($errors) > 0) {
                     $this->message .= "ERRORS: \n";
                     foreach($errors as $error) {
                         $this->errors[] = new ClientError($error);
