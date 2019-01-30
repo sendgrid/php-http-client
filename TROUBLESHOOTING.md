@@ -14,3 +14,22 @@ echo $response->statusCode();
 echo $response->body();
 echo $response->headers();
 ```
+
+Sometimes it is critical to know whether you request success or not. You can handle it by forcing to throw exceptions if something goes wrong instead of checking HTTP status code:
+
+```php
+$client = new SendGrid\Client('https://api.sendgrid.com', $headers, '/v3');
+$client->setThrowException(true);
+
+try {
+   $response = $client->api_keys()->get(null, $query_params, $request_headers);
+}
+catch(SendGrid\ClientException $e) {
+    // Do some log routines or just print out error to STDOUT
+    var_dump(
+        $e->getErrors(),
+        $e->getHttpStatus(),
+        $e->getShortTrace());
+    exit;
+}
+```
