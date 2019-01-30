@@ -13,26 +13,23 @@ namespace SendGrid;
 
 class ClientError
 {
-	/** @var string */
-	public $message;
-	/** @var string */
-	public $field;
-	/** @var string */
-	public $help;
-	/** @var array Unknown fields */
-	public $other;
+    /** @var string */
+    public $message;
+    /** @var string */
+    public $field;
+    /** @var string */
+    public $help;
+    /** @var array Unknown fields */
+    public $other;
 
-	public function __construct($error)
-	{
-		foreach($error as $key => $value)
-		{
-			if(property_exists($this, $key))
-			{
-				$this->$key = $value;
-			}
-			else {
-				$this->other[] = [ $key => $value ];
-			}
-		}
-	}
+    public function __construct($error)
+    {
+        foreach($error as $key => $value) {
+            if(property_exists($this, $key)) {
+                $this->$key = $value;
+            } else {
+                $this->other[] = [ $key => $value ];
+            }
+        }
+    }
 }

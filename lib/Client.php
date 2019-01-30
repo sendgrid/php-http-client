@@ -207,15 +207,15 @@ class Client
      */
     protected $retryOnLimit;
 
-	/**
-	 * @var bool
-	 */
-	protected $throwException;
+    /**
+     * @var bool
+     */
+    protected $throwException;
 
-	/**
-	 * @var int
-	 */
-	protected $defaultErrorCode = 0;
+    /**
+     * @var int
+     */
+    protected $defaultErrorCode = 0;
 
     /**
      * These are the supported HTTP verbs
@@ -233,7 +233,7 @@ class Client
       * @param array   $path            holds the segments of the url path
       * @param array   $curlOptions     extra options to set during curl initialization
       * @param bool    $retryOnLimit    set default retry on limit flag
-	  * @param bool    $throwException  Throw Exception in case of 4xx or 5xx HTTP Status Response
+      * @param bool    $throwException  Throw Exception in case of 4xx or 5xx HTTP Status Response
       */
     public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null, $retryOnLimit = false, $throwException = false)
     {
@@ -245,7 +245,7 @@ class Client
         $this->retryOnLimit = $retryOnLimit;
         $this->isConcurrentRequest = false;
         $this->savedRequests = [];
-		$this->throwException = $throwException;
+        $this->throwException = $throwException;
     }
 
     /**
@@ -330,52 +330,52 @@ class Client
         return $this;
     }
 
-	/**
-	 * @return bool
-	 */
-	public function getThrowException()
-	{
-		return $this->throwException;
-	}
+    /**
+     * @return bool
+     */
+    public function getThrowException()
+    {
+        return $this->throwException;
+    }
 
-	/**
-	 * Set throw exception flag. Error code by default set to Exception level
-	 *
-	 * @param bool $throwException
-	 *
-	 * @param int  $defaultErrorCode Don't mix-up with HTTP status code. You can define own error level according to http://php.net/manual/en/errorfunc.constants.php
-	 *
-	 * @return Client
-	 */
-	public function setThrowException($throwException, $defaultErrorCode = 0)
-	{
-		$this->throwException = $throwException;
-		$this->defaultErrorCode = $defaultErrorCode;
+    /**
+     * Set throw exception flag. Error code by default set to Exception level
+     *
+     * @param bool $throwException
+     *
+     * @param int  $defaultErrorCode Don't mix-up with HTTP status code. You can define own error level according to http://php.net/manual/en/errorfunc.constants.php
+     *
+     * @return Client
+     */
+    public function setThrowException($throwException, $defaultErrorCode = 0)
+    {
+        $this->throwException = $throwException;
+        $this->defaultErrorCode = $defaultErrorCode;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getDefaultErrorCode()
-	{
-		return $this->defaultErrorCode;
-	}
+    /**
+     * @return int
+     */
+    public function getDefaultErrorCode()
+    {
+        return $this->defaultErrorCode;
+    }
 
-	/**
-	 * Set error code constant
-	 *
-	 * @param int $defaultErrorCode
-	 *
-	 * @return Client
-	 */
-	public function setDefaultErrorCode($defaultErrorCode)
-	{
-		$this->defaultErrorCode = $defaultErrorCode;
+    /**
+     * Set error code constant
+     *
+     * @param int $defaultErrorCode
+     *
+     * @return Client
+     */
+    public function setDefaultErrorCode($defaultErrorCode)
+    {
+        $this->defaultErrorCode = $defaultErrorCode;
 
-		return $this;
-	}
+        return $this;
+    }
 
     /**
      * Build the final URL to be passed
@@ -533,9 +533,9 @@ class Client
 
         curl_close($channel);
 
-		if ($response->statusCode() > 399 && $this->throwException) {
-			throw new ClientException($response->body(), $response->statusCode(), $this->defaultErrorCode);
-		}
+        if($response->statusCode() > 399 && $this->throwException) {
+            throw new ClientException($response->body(), $response->statusCode(), $this->defaultErrorCode);
+        }
 
         return $response;
     }
