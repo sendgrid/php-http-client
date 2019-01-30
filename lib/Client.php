@@ -502,19 +502,19 @@ class Client
         return $this->makeRequest($method, $url, $body, $headers, false);
     }
 
-	/**
-	 * Make the API call and return the response.
-	 * This is separated into it's own function, so we can mock it easily for testing.
-	 *
-	 * @param string $method       the HTTP verb
-	 * @param string $url          the final url to call
-	 * @param array  $body         request body
-	 * @param array  $headers      any additional request headers
-	 * @param bool   $retryOnLimit should retry if rate limit is reach?
-	 *
-	 * @return Response object
-	 * @throws \SendGrid\ClientException
-	 */
+    /**
+     * Make the API call and return the response.
+     * This is separated into it's own function, so we can mock it easily for testing.
+     *
+     * @param string $method       the HTTP verb
+     * @param string $url          the final url to call
+     * @param array  $body         request body
+     * @param array  $headers      any additional request headers
+     * @param bool   $retryOnLimit should retry if rate limit is reach?
+     *
+     * @return Response object
+     * @throws \SendGrid\ClientException
+     */
     public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
     {
         $channel = curl_init($url);
@@ -611,22 +611,22 @@ class Client
         $client = new static($this->host, $this->headers, $this->version, $this->path);
         $client->setCurlOptions($this->curlOptions);
         $client->setRetryOnLimit($this->retryOnLimit);
-		$client->setThrowException($this->throwException);
+        $client->setThrowException($this->throwException);
         $this->path = [];
 
         return $client;
     }
 
-	/**
-	 * Dynamically add method calls to the url, then call a method.
-	 * (e.g. client.name.name.method())
-	 *
-	 * @param string $name name of the dynamic method call or HTTP verb
-	 * @param array  $args parameters passed with the method call
-	 *
-	 * @return Client|Response|Response[]|null object
-	 * @throws \SendGrid\ClientException
-	 */
+    /**
+     * Dynamically add method calls to the url, then call a method.
+     * (e.g. client.name.name.method())
+     *
+     * @param string $name name of the dynamic method call or HTTP verb
+     * @param array  $args parameters passed with the method call
+     *
+     * @return Client|Response|Response[]|null object
+     * @throws \SendGrid\ClientException
+     */
     public function __call($name, $args)
     {
         $name = strtolower($name);
