@@ -483,18 +483,18 @@ class Client
         return new Response($statusCode, $responseBody, $responseHeaders);
     }
 
-	/**
-	 * Retry request
-	 *
-	 * @param array  $responseHeaders headers from rate limited response
-	 * @param string $method          the HTTP verb
-	 * @param string $url             the final url to call
-	 * @param array  $body            request body
-	 * @param array  $headers         original headers
-	 *
-	 * @return Response response object
-	 * @throws \SendGrid\ClientException
-	 */
+    /**
+     * Retry request
+     *
+     * @param array  $responseHeaders headers from rate limited response
+     * @param string $method          the HTTP verb
+     * @param string $url             the final url to call
+     * @param array  $body            request body
+     * @param array  $headers         original headers
+     *
+     * @return Response response object
+     * @throws \SendGrid\ClientException
+     */
     private function retryRequest(array $responseHeaders, $method, $url, $body, $headers)
     {
         $sleepDurations = $responseHeaders['X-Ratelimit-Reset'] - time();
