@@ -1,11 +1,11 @@
 <?php
+
 /**
  * HTTP Client Error Explanation
  *
  * @author    Nurlan Mukhanov <nurike@gmail.com>
- * @copyright 2018 Nurlan Mukhanov
+ * @copyright 2019 Nurlan Mukhanov
  * @license   https://opensource.org/licenses/MIT The MIT License
- * @version   GIT: <git_id>
  * @link      http://packagist.org/packages/sendgrid/php-http-client
  */
 
@@ -13,15 +13,31 @@ namespace SendGrid;
 
 class ClientError
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     public $message;
-    /** @var string */
+
+    /**
+     * @var string
+     */
     public $field;
-    /** @var string */
+
+    /**
+     * @var string
+     */
     public $help;
-    /** @var array Unknown fields */
+
+    /**
+     * @var array Unknown fields
+     */
     public $other;
 
+    /**
+     * ClientError constructor.
+     *
+     * @param array $error
+     */
     public function __construct($error)
     {
         foreach($error as $key => $value) {

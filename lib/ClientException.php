@@ -1,11 +1,11 @@
 <?php
+
 /**
  * HTTP Client Exception Handler
  *
  * @author    Nurlan Mukhanov <nurike@gmail.com>
- * @copyright 2018 Nurlan Mukhanov
+ * @copyright 2019 Nurlan Mukhanov
  * @license   https://opensource.org/licenses/MIT The MIT License
- * @version   GIT: <git_id>
  * @link      http://packagist.org/packages/sendgrid/php-http-client
  */
 
@@ -15,15 +15,33 @@ use Exception;
 
 class ClientException extends Exception
 {
-    /** @var ClientError[] $errors */
+    /**
+     * @var ClientError[] $errors
+     */
     protected $errors;
-    /** @var int $httpStatus HTTP status code */
+
+    /**
+     * @var int $httpStatus HTTP status code
+     */
     protected $httpStatus;
-    /** @var array $fullTrace Full Exception trace */
+
+    /**
+     * @var array $fullTrace Full Exception trace
+     */
     protected $fullTrace;
-    /** @var array $shortTrace Place where send method was called */
+
+    /**
+     * @var array $shortTrace Place where send method was called
+     */
     protected $shortTrace;
 
+    /**
+     * ClientException constructor.
+     *
+     * @param string $message
+     * @param int    $httpStatus
+     * @param int    $code
+     */
     public function __construct($message = "unhandled body response", $httpStatus = 0, $code = 0)
     {
         $this->httpStatus = $httpStatus;
