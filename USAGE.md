@@ -14,6 +14,10 @@ $path_to_config = dirname(__DIR__);
 $apiKey = getenv('SENDGRID_API_KEY');
 $headers = ['Authorization: Bearer ' . $apiKey];
 $client = new SendGrid\Client('https://api.sendgrid.com', $headers, '/v3');
+// This will force client to throw exception in case of 4xx or 5xx HTTP Status response
+$client->setThrowException(true);
+// and you can set your our own error level if required. By default $code == 0 (Exception) is triggered 
+// $client->setThrowException(true, E_USER_WARNING);
 ```
 
 ## Table of Contents
@@ -23,6 +27,7 @@ $client = new SendGrid\Client('https://api.sendgrid.com', $headers, '/v3');
 - [POST](#post)
 - [PUT](#put)
 - [PATCH](#patch)
+- [Exception Handling](#exceptions)
 
 <a name="get"></a>
 ## GET
@@ -106,4 +111,19 @@ $response = $client->api_keys()->_($api_key_id)->patch($request_body);
 echo $response->statusCode();
 echo $response->body();
 echo $response->headers();
+```
+<a name="exceptions"></a>
+## Exception Handling
+
+```
+try {
+    $response = $client->setThrowException(true)->api_keys()->_($WRONG_api_key)->patch($request_body);
+}
+catch(ClientException $e) {
+    var_dump(
+        $e->getErrors(),
+        $e->getHttpStatus(),
+        $e->getShortTrace());
+    exit;
+}
 ```
