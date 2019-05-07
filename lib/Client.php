@@ -13,6 +13,8 @@
 
 namespace SendGrid;
 
+use SendGrid\Exception\InvalidRequest;
+
 /**
  *
  * Class Client
@@ -453,6 +455,7 @@ class Client
      * @param bool   $retryOnLimit should retry if rate limit is reach?
      *
      * @return Response object
+     * @throws InvalidRequest
      */
     public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
     {
@@ -462,6 +465,10 @@ class Client
 
         curl_setopt_array($channel, $options);
         $content = curl_exec($channel);
+
+        if ($content === false) {
+            throw new InvalidRequest(curl_error($channel), curl_errno($channel));
+        }
 
         $response = $this->parseResponse($channel, $content);
 
