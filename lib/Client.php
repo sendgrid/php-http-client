@@ -71,15 +71,17 @@ use SendGrid\Exception\InvalidRequest;
  * Clients
  * @method Client clients()
  *
- * ContactDB
- * @method Client contactdb()
- * @method Client custom_fields()
- * @method Client lists()
- * @method Client recipients()
- * @method Client billable_count()
+ * Marketing
+ * @method Client marketing()
+ * @method Client contacts()
  * @method Client count()
- * @method Client reserved_fields()
+ * @method Client exports()
+ * @method Client imports()
+ * @method Client lists()
+ * @method Client field_definitions()
  * @method Client segments()
+ * @method Client singlesends()
+ *
  *
  * Devices
  * @method Client devices()
