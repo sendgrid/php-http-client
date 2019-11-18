@@ -352,7 +352,7 @@ class Client
     {
         $path = '/' . implode('/', $this->path);
         if (isset($queryParams)) {
-            $path .= '?' . http_build_query($queryParams);
+            $path .= '?' . preg_replace('/%5B(?:\d|[1-9]\d+)%5D=/', '=', http_build_query($queryParams));
         }
 
         return sprintf('%s%s%s', $this->host, $this->version ?: '', $path);
