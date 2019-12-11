@@ -39,7 +39,7 @@ Add php-http-client to your `composer.json` file. If you are not using [Composer
 ```json
 {
   "require": {
-    "sendgrid/php-http-client": "~3.9.6"
+    "sendgrid/php-http-client": "~3.10.0"
   }
 }
 ```

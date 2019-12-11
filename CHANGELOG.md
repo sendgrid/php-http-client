@@ -3,6 +3,16 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2019-12-11] Version 3.10.0
+---------------------------
+
+**Library - Fix**
+- [PR #99](https://github.com/sendgrid/php-http-client/pull/99): Throw InvalidRequest exception on invalid CURL request. Thanks to [@alextech](https://github.com/alextech)!
+
+**Library - Docs**
+- [PR #102](https://github.com/sendgrid/php-http-client/pull/102): Create a Use Cases Directory. Thanks to [@ProZsolt](https://github.com/ProZsolt)!
+- [PR #106](https://github.com/sendgrid/php-http-client/pull/106): Only mention the lowest required PHP version in README. Thanks to [@svenluijten](https://github.com/svenluijten)!
+
 ## [3.9.6] - 2018-04-10
 ### Added
 - PR [#98](https://github.com/sendgrid/php-http-client/pull/98). Updated documention of `Client.php` using PHPDoc.

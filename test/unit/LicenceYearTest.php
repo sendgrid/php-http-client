@@ -13,7 +13,7 @@ class LicenceYearTest extends \PHPUnit_Framework_TestCase
 
         $year = date('Y');
 
-        $expected = "Copyright (c) 2012-{$year} SendGrid, Inc.";
+        $expected = "Copyright (c) 2012-{$year} Twilio SendGrid, Inc.";
 
         $this->assertEquals($expected, $copyright);
     }
