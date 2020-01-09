@@ -1,10 +1,7 @@
 language: php
 
-before_script:
-  - composer install --dev --no-interaction
-
 script:
-  - vendor/bin/phpunit test/unit --filter test* --coverage-clover=coverage.xml
+  - make test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -7,4 +7,4 @@ install: clean
 	composer install
 
 test: install
-	vendor/bin/phpunit test/unit --filter test*
+	vendor/bin/phpunit test/unit
