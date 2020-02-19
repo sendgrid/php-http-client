@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2020-02-19] Version 3.10.3
+---------------------------
+**Library - Fix**
+- [PR #134](https://github.com/sendgrid/php-http-client/pull/134): Change contactsdb to marketing api #133. Thanks to [@murich](https://github.com/murich)!
+
+
 [2020-01-22] Version 3.10.2
 ---------------------------
 **Library - Docs**
