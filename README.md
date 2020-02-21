@@ -30,7 +30,7 @@ All updates to this library are documented in our [CHANGELOG](https://github.com
 
 ## Prerequisites
 
-- PHP version 5.6 or higher
+- PHP version 5.6, 7.0, 7.1, 7.2, 7.3, or 7.4
 
 ## Install with Composer
 
