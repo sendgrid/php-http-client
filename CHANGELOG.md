@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2020-03-04] Version 3.10.4
+---------------------------
+**Library - Chore**
+- [PR #140](https://github.com/sendgrid/php-http-client/pull/140): add PHP 7.4 to Travis and test with lowest dependencies. Thanks to [@childish-sambino](https://github.com/childish-sambino)!
+
+
 [2020-02-19] Version 3.10.3
 ---------------------------
 **Library - Fix**
