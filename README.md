@@ -5,7 +5,7 @@
 [![Email Notifications Badge](https://dx.sendgrid.com/badge/php)](https://dx.sendgrid.com/newsletter/php)
 [![Twitter Follow](https://img.shields.io/twitter/follow/sendgrid.svg?style=social&label=Follow)](https://twitter.com/sendgrid)
 [![GitHub contributors](https://img.shields.io/github/contributors/sendgrid/php-http-client.svg)](https://github.com/sendgrid/php-http-client/graphs/contributors)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.txt)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
 
 **Quickly and easily access any RESTful or RESTful-like API.**
 
@@ -30,7 +30,7 @@ All updates to this library are documented in our [CHANGELOG](https://github.com
 
 ## Prerequisites
 
-- PHP version 5.6 or higher
+- PHP version 5.6, 7.0, 7.1, 7.2, 7.3, or 7.4
 
 ## Install with Composer
 
@@ -39,7 +39,7 @@ Add php-http-client to your `composer.json` file. If you are not using [Composer
 ```json
 {
   "require": {
-    "sendgrid/php-http-client": "~3.9.6"
+    "sendgrid/php-http-client": "^3.10.4"
   }
 }
 ```
@@ -147,12 +147,15 @@ var_dump(
 );
 ```
 
+If there is an issues with the request, such as misconfigured CURL SSL options, an `InvalidRequest` will be thrown
+with message from CURL on why the request failed. Use the message as a hit to troubleshooting steps of your environment.
+
 <a name="usage"></a>
 # Usage
 
 - [Usage Examples](USAGE.md)
 
-## Environment Variables 
+## Environment Variables
 
 You can do the following to create a .env file:
 
@@ -192,4 +195,4 @@ php-http-client is maintained and funded by SendGrid, Inc. The names and logos f
 
 <a name="license"></a>
 # License
-[The MIT License (MIT)](LICENSE.txt)
+[The MIT License (MIT)](LICENSE.md)

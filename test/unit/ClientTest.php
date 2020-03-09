@@ -3,6 +3,7 @@
 namespace SendGrid\Test;
 
 use SendGrid\Client;
+use SendGrid\Exception\InvalidRequest;
 
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -193,6 +194,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 'Content-Type: application/json'
             ]
         ], $result);
+    }
+
+
+    public function testThrowExceptionOnInvalidCall()
+    {
+        $this->setExpectedException(InvalidRequest::class);
+        $client = new Client('invalid://url',['User-Agent: Custom-Client 1.0']);
+        $client->get();
     }
 
     /**
