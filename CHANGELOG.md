@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2020-03-18] Version 3.10.5
+---------------------------
+**Library - Docs**
+- [PR #111](https://github.com/sendgrid/php-http-client/pull/111): run .md files through grammarly. Thanks to [@redbrickone](https://github.com/redbrickone)!
+
+
 [2020-03-04] Version 3.10.4
 ---------------------------
 **Library - Chore**
