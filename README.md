@@ -189,9 +189,11 @@ We were inspired by the work done on [birdy](https://github.com/inueni/birdy) an
 <a name="about"></a>
 # About
 
-php-http-client is guided and supported by the SendGrid [Developer Experience Team](mailto:dx@sendgrid.com).
+php-http-client is maintained and funded by Twilio SendGrid, Inc. The names and logos for php-http-client are trademarks of Twilio SendGrid, Inc.
 
-php-http-client is maintained and funded by SendGrid, Inc. The names and logos for php-http-client are trademarks of SendGrid, Inc.
+If you need help installing or using the library, please check the [Twilio SendGrid Support Help Center](https://support.sendgrid.com).
+
+If you've instead found a bug in the library or would like new features added, go ahead and open issues or pull requests against this repo!
 
 <a name="license"></a>
 # License

@@ -2,13 +2,6 @@
 
 /**
  * HTTP Client library
- *
- * @author    Matt Bernier <dx@sendgrid.com>
- * @author    Elmer Thomas <dx@sendgrid.com>
- * @copyright 2018 SendGrid
- * @license   https://opensource.org/licenses/MIT The MIT License
- * @version   GIT: <git_id>
- * @link      http://packagist.org/packages/sendgrid/php-http-client
  */
 
 namespace SendGrid;
@@ -79,10 +72,10 @@ class Response
         if (!$assoc) {
             return $this->headers;
         }
-        
+
         return $this->prettifyHeaders($this->headers);
     }
-    
+
     /**
       * Returns response headers as associative array
       *
