@@ -49,6 +49,7 @@ use SendGrid\Exception\InvalidRequest;
  * ASM
  * @method Client asm()
  * @method Client groups()
+ * @method Client suppressions()
  *
  * Browsers
  * @method Client browsers()
@@ -123,7 +124,7 @@ use SendGrid\Exception\InvalidRequest;
  * @method Client reputations()
  *
  * Supressions
- * @method Client suppressions()
+ * @method Client suppression()
  * @method Client global()
  * @method Client blocks()
  * @method Client bounces()
