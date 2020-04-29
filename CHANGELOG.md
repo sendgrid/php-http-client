@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2020-04-29] Version 3.10.6
+---------------------------
+**Library - Fix**
+- [PR #141](https://github.com/sendgrid/php-http-client/pull/141): add the singular 'suppression' method. Thanks to [@childish-sambino](https://github.com/childish-sambino)!
+
+
 [2020-03-18] Version 3.10.5
 ---------------------------
 **Library - Docs**
