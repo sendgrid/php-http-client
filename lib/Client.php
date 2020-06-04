@@ -123,14 +123,14 @@ use SendGrid\Exception\InvalidRequest;
  * @method Client subusers()
  * @method Client reputations()
  *
- * Supressions
+ * Suppressions
  * @method Client suppression()
  * @method Client global()
  * @method Client blocks()
  * @method Client bounces()
  * @method Client invalid_emails()
  * @method Client spam_reports()
- * @method Client unsubcribes()
+ * @method Client unsubscribes()
  *
  * Templates
  * @method Client templates()
@@ -432,6 +432,7 @@ class Client
      * @param array  $headers         original headers
      *
      * @return Response response object
+     * @throws InvalidRequest
      */
     private function retryRequest(array $responseHeaders, $method, $url, $body, $headers)
     {
@@ -562,6 +563,7 @@ class Client
      * @param array  $args parameters passed with the method call
      *
      * @return Client|Response|Response[]|null object
+     * @throws InvalidRequest
      */
     public function __call($name, $args)
     {
