@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2020-06-10] Version 3.10.7
+---------------------------
+**Library - Fix**
+- [PR #144](https://github.com/sendgrid/php-http-client/pull/144): replace Throwable with Exception. Thanks to [@childish-sambino](https://github.com/childish-sambino)!
+
+
 [2020-04-29] Version 3.10.6
 ---------------------------
 **Library - Fix**
