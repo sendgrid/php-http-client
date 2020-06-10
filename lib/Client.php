@@ -16,11 +16,11 @@ use SendGrid\Exception\InvalidRequest;
  *
  * Quickly and easily access any REST or REST-like API.
  *
- * @method Response get($body = null, $query = null, $headers = null)
- * @method Response post($body = null, $query = null, $headers = null)
- * @method Response patch($body = null, $query = null, $headers = null)
- * @method Response put($body = null, $query = null, $headers = null)
- * @method Response delete($body = null, $query = null, $headers = null)
+ * @method Response get($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response post($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response patch($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response put($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response delete($body = null, $query = null, $headers = null, $retryOnLimit = null)
  *
  * @method Client version($value)
  * @method Client|Response send()
