@@ -7,7 +7,7 @@ namespace SendGrid\Exception;
  *
  * Thrown when invalid payload was constructed, which could not reach SendGrid server.
  *
- * @package SendGrid\Exceptions
+ * @package SendGrid\Exception
  */
 class InvalidRequest extends \Exception
 {
