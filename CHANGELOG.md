@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2020-06-24] Version 3.10.8
+---------------------------
+**Library - Fix**
+- [PR #143](https://github.com/sendgrid/php-http-client/pull/143): Composer configuration, typos and type hints. Thanks to [@kampalex](https://github.com/kampalex)!
+
+
 [2020-06-10] Version 3.10.7
 ---------------------------
 **Library - Fix**
