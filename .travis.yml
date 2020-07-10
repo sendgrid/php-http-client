@@ -25,7 +25,7 @@ install:
   - if [ "$dependencies" = "lowest" ]; then composer update $composer_flags --prefer-lowest --prefer-stable; fi;
 
 script:
-  - ./vendor/bin/phpunit
+  - vendor/bin/phpunit test/unit
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
