@@ -13,7 +13,7 @@ env:
     - dependencies=lowest
     - dependencies=highest
   global:
-    - composer_flags="--no-interaction --no-ansi --no-progress --no-suggest"
+    - composer_flags="--no-interaction --no-ansi --no-progress --no-suggest --verbose"
 
 before_install:
   - composer self-update
@@ -22,10 +22,10 @@ before_install:
 install:
   - if [ -n "$GIT_HUB_TOKEN" ]; then composer config -g github-oauth.github.com "$GIT_HUB_TOKEN"; fi;
   - if [ "$dependencies" = "highest" ]; then composer update $composer_flags; fi;
-  - if [ "$dependencies" = "lowest" ]; then composer update $composer_flags --prefer-lowest; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update $composer_flags --prefer-lowest --prefer-stable; fi;
 
 script:
-  - vendor/bin/phpunit test/unit
+  - ./vendor/bin/phpunit
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
