@@ -1,16 +1,5 @@
 language: php
 
-before_script:
-  - if [ -n "$GIT_HUB_TOKEN" ]; then composer config -g github-oauth.github.com "$GIT_HUB_TOKEN"; fi;
-  - composer install
-  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-stable -n; fi;
-
-script:
-  - make test
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
 php:
   - 5.6
   - 7.0
@@ -20,8 +9,26 @@ php:
   - 7.4
 
 env:
-  - dependencies=lowest
-  - dependencies=highest
+  matrix:
+    - dependencies=lowest
+    - dependencies=highest
+  global:
+    - composer_flags="--no-interaction --no-ansi --no-progress --no-suggest --verbose"
+
+before_install:
+  - composer self-update
+  - composer clear-cache
+
+install:
+  - if [ -n "$GIT_HUB_TOKEN" ]; then composer config -g github-oauth.github.com "$GIT_HUB_TOKEN"; fi;
+  - if [ "$dependencies" = "highest" ]; then composer update $composer_flags; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update $composer_flags --prefer-lowest --prefer-stable; fi;
+
+script:
+  - vendor/bin/phpunit test/unit
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 notifications:
   slack:

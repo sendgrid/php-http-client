@@ -27,11 +27,11 @@ class Response
     protected $headers;
 
     /**
-     * Setup the response data
+     * Setup the response data.
      *
-     * @param int    $statusCode the status code.
-     * @param string $body       the response body.
-     * @param array  $headers    an array of response headers.
+     * @param int    $statusCode the status code
+     * @param string $body       the response body
+     * @param array  $headers    an array of response headers
      */
     public function __construct($statusCode = 200, $body = '', array $headers = [])
     {
@@ -41,7 +41,7 @@ class Response
     }
 
     /**
-     * The status code
+     * The status code.
      *
      * @return int
      */
@@ -51,7 +51,7 @@ class Response
     }
 
     /**
-     * The response body
+     * The response body.
      *
      * @return string
      */
@@ -61,7 +61,7 @@ class Response
     }
 
     /**
-     * The response headers
+     * The response headers.
      *
      * @param bool $assoc
      *
@@ -77,19 +77,18 @@ class Response
     }
 
     /**
-      * Returns response headers as associative array
-      *
-      * @param array $headers
-      *
-      * @return array
-      */
+     * Returns response headers as associative array.
+     *
+     * @param array $headers
+     *
+     * @return array
+     */
     private function prettifyHeaders(array $headers)
     {
         return array_reduce(
             array_filter($headers),
-            function ($result, $header) {
-
-                if (false === strpos($header, ':')) {
+            static function ($result, $header) {
+                if (mb_strpos($header, ':') === false) {
                     $result['Status'] = trim($header);
 
                     return $result;

@@ -9,9 +9,7 @@ namespace SendGrid;
 use SendGrid\Exception\InvalidRequest;
 
 /**
- *
  * Class Client
- * @package SendGrid
  * @version 3.9.5
  *
  * Quickly and easily access any REST or REST-like API.
@@ -75,7 +73,6 @@ use SendGrid\Exception\InvalidRequest;
  * @method Client field_definitions()
  * @method Client segments()
  * @method Client singlesends()
- *
  *
  * Devices
  * @method Client devices()
@@ -206,24 +203,30 @@ class Client
     protected $retryOnLimit;
 
     /**
-     * These are the supported HTTP verbs
+     * Supported HTTP verbs.
      *
      * @var array
      */
     private $methods = ['get', 'post', 'patch', 'put', 'delete'];
 
     /**
-      * Initialize the client
-      *
-      * @param string  $host          the base url (e.g. https://api.sendgrid.com)
-      * @param array   $headers       global request headers
-      * @param string  $version       api version (configurable) - this is specific to the SendGrid API
-      * @param array   $path          holds the segments of the url path
-      * @param array   $curlOptions   extra options to set during curl initialization
-      * @param bool    $retryOnLimit  set default retry on limit flag
-      */
-    public function __construct($host, $headers = null, $version = null, $path = null, $curlOptions = null, $retryOnLimit = false)
-    {
+     * Initialize the client.
+     *
+     * @param string $host         the base url (e.g. https://api.sendgrid.com)
+     * @param array  $headers      global request headers
+     * @param string $version      api version (configurable) - this is specific to the SendGrid API
+     * @param array  $path         holds the segments of the url path
+     * @param array  $curlOptions  extra options to set during curl initialization
+     * @param bool   $retryOnLimit set default retry on limit flag
+     */
+    public function __construct(
+        $host,
+        $headers = null,
+        $version = null,
+        $path = null,
+        $curlOptions = null,
+        $retryOnLimit = false
+    ) {
         $this->host = $host;
         $this->headers = $headers ?: [];
         $this->version = $version;
@@ -275,7 +278,7 @@ class Client
     }
 
     /**
-     * Set extra options to set during curl initialization
+     * Set extra options to set during curl initialization.
      *
      * @param array $options
      *
@@ -289,7 +292,7 @@ class Client
     }
 
     /**
-     * Set default retry on limit flag
+     * Set default retry on limit flag.
      *
      * @param bool $retry
      *
@@ -303,7 +306,7 @@ class Client
     }
 
     /**
-     * Set concurrent request flag
+     * Set concurrent request flag.
      *
      * @param bool $isConcurrent
      *
@@ -317,7 +320,7 @@ class Client
     }
 
     /**
-     * Build the final URL to be passed
+     * Build the final URL to be passed.
      *
      * @param array $queryParams an array of all the query parameters
      *
@@ -329,16 +332,17 @@ class Client
         if (isset($queryParams)) {
             $path .= '?' . http_build_query($queryParams);
         }
+
         return sprintf('%s%s%s', $this->host, $this->version ?: '', $path);
     }
 
     /**
      * Creates curl options for a request
-     * this function does not mutate any private variables
+     * this function does not mutate any private variables.
      *
      * @param string $method
-     * @param array $body
-     * @param array $headers
+     * @param array  $body
+     * @param array  $headers
      *
      * @return array
      */
@@ -349,7 +353,7 @@ class Client
                 CURLOPT_HEADER => true,
                 CURLOPT_CUSTOMREQUEST => strtoupper($method),
                 CURLOPT_SSL_VERIFYPEER => true,
-                CURLOPT_FAILONERROR => false
+                CURLOPT_FAILONERROR => false,
             ] + $this->curlOptions;
 
         if (isset($headers)) {
@@ -369,9 +373,8 @@ class Client
     }
 
     /**
-     * @param array $requestData
-     *      e.g. ['method' => 'POST', 'url' => 'www.example.com', 'body' => 'test body', 'headers' => []]
-     * @param bool $retryOnLimit
+     * @param array $requestData  (method, url, body and headers)
+     * @param bool  $retryOnLimit
      *
      * @return array
      */
@@ -401,9 +404,9 @@ class Client
     }
 
     /**
-     * Prepare response object
+     * Prepare response object.
      *
-     * @param resource $channel  the curl resource
+     * @param resource $channel the curl resource
      * @param string   $content
      *
      * @return Response object
@@ -413,9 +416,9 @@ class Client
         $headerSize = curl_getinfo($channel, CURLINFO_HEADER_SIZE);
         $statusCode = curl_getinfo($channel, CURLINFO_HTTP_CODE);
 
-        $responseBody = substr($content, $headerSize);
+        $responseBody = mb_substr($content, $headerSize);
 
-        $responseHeaders = substr($content, 0, $headerSize);
+        $responseHeaders = mb_substr($content, 0, $headerSize);
         $responseHeaders = explode("\n", $responseHeaders);
         $responseHeaders = array_map('trim', $responseHeaders);
 
@@ -423,7 +426,7 @@ class Client
     }
 
     /**
-     * Retry request
+     * Retry request.
      *
      * @param array  $responseHeaders headers from rate limited response
      * @param string $method          the HTTP verb
@@ -432,12 +435,14 @@ class Client
      * @param array  $headers         original headers
      *
      * @return Response response object
+     *
      * @throws InvalidRequest
      */
     private function retryRequest(array $responseHeaders, $method, $url, $body, $headers)
     {
         $sleepDurations = $responseHeaders['X-Ratelimit-Reset'] - time();
         sleep($sleepDurations > 0 ? $sleepDurations : 0);
+
         return $this->makeRequest($method, $url, $body, $headers, false);
     }
 
@@ -452,6 +457,7 @@ class Client
      * @param bool   $retryOnLimit should retry if rate limit is reach?
      *
      * @return Response object
+     *
      * @throws InvalidRequest
      */
     public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
@@ -469,8 +475,9 @@ class Client
 
         $response = $this->parseResponse($channel, $content);
 
-        if ($response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE && $retryOnLimit) {
+        if ($retryOnLimit && $response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE) {
             $responseHeaders = $response->headers(true);
+
             return $this->retryRequest($responseHeaders, $method, $url, $body, $headers);
         }
 
@@ -480,7 +487,7 @@ class Client
     }
 
     /**
-     * Send all saved requests at once
+     * Send all saved requests at once.
      *
      * @param array $requests
      *
@@ -504,11 +511,10 @@ class Client
         $responses = [];
         $sleepDurations = 0;
         foreach ($channels as $id => $channel) {
-
             $content = curl_multi_getcontent($channel);
             $response = $this->parseResponse($channel, $content);
 
-            if ($response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE && $requests[$id]['retryOnLimit']) {
+            if ($requests[$id]['retryOnLimit'] && $response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE) {
                 $headers = $response->headers(true);
                 $sleepDurations = max($sleepDurations, $headers['X-Ratelimit-Reset'] - time());
                 $requestData = [
@@ -531,6 +537,7 @@ class Client
             sleep($sleepDurations > 0 ? $sleepDurations : 0);
             $responses = array_merge($responses, $this->makeAllRequests($retryRequests));
         }
+
         return $responses;
     }
 
@@ -557,20 +564,22 @@ class Client
 
     /**
      * Dynamically add method calls to the url, then call a method.
-     * (e.g. client.name.name.method())
+     * (e.g. client.name.name.method()).
      *
      * @param string $name name of the dynamic method call or HTTP verb
      * @param array  $args parameters passed with the method call
      *
      * @return Client|Response|Response[]|null object
+     *
      * @throws InvalidRequest
      */
     public function __call($name, $args)
     {
-        $name = strtolower($name);
+        $name = mb_strtolower($name);
 
         if ($name === 'version') {
             $this->version = $args[0];
+
             return $this->_();
         }
 
@@ -579,7 +588,7 @@ class Client
             return $this->makeAllRequests();
         }
 
-        if (in_array($name, $this->methods, true)) {
+        if (\in_array($name, $this->methods, true)) {
             $body = isset($args[0]) ? $args[0] : null;
             $queryParams = isset($args[1]) ? $args[1] : null;
             $url = $this->buildUrl($queryParams);
@@ -590,6 +599,7 @@ class Client
                 // save request to be sent later
                 $requestData = ['method' => $name, 'url' => $url, 'body' => $body, 'headers' => $headers];
                 $this->savedRequests[] = $this->createSavedRequest($requestData, $retryOnLimit);
+
                 return null;
             }
 
