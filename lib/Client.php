@@ -1,33 +1,28 @@
 <?php
 
 /**
- * HTTP Client library.
- *
- * @author    Matt Bernier <dx@sendgrid.com>
- * @author    Elmer Thomas <dx@sendgrid.com>
- * @copyright 2018 SendGrid
- * @license   https://opensource.org/licenses/MIT The MIT License
- *
- * @version   GIT: <git_id>
- *
- * @see      http://packagist.org/packages/sendgrid/php-http-client
+ * HTTP Client library
  */
 
 namespace SendGrid;
 
+use SendGrid\Exception\InvalidRequest;
+
 /**
- * Class Client.
  *
- * @version Release: <package_version>
+ * Class Client
+ * @package SendGrid
+ * @version 3.9.5
  *
  * Quickly and easily access any REST or REST-like API.
  *
- * @method Response        get($body = null, $query = null, $headers = null)
- * @method Response        post($body = null, $query = null, $headers = null)
- * @method Response        patch($body = null, $query = null, $headers = null)
- * @method Response        put($body = null, $query = null, $headers = null)
- * @method Response        delete($body = null, $query = null, $headers = null)
- * @method Client          version($value)
+ * @method Response get($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response post($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response patch($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response put($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response delete($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ *
+ * @method Client version($value)
  * @method Client|Response send()
  *
  * Adding all the endpoints as a method so code completion works
@@ -54,6 +49,7 @@ namespace SendGrid;
  * ASM
  * @method Client asm()
  * @method Client groups()
+ * @method Client suppressions()
  *
  * Browsers
  * @method Client browsers()
@@ -69,15 +65,17 @@ namespace SendGrid;
  * Clients
  * @method Client clients()
  *
- * ContactDB
- * @method Client contactdb()
- * @method Client custom_fields()
- * @method Client lists()
- * @method Client recipients()
- * @method Client billable_count()
+ * Marketing
+ * @method Client marketing()
+ * @method Client contacts()
  * @method Client count()
- * @method Client reserved_fields()
+ * @method Client exports()
+ * @method Client imports()
+ * @method Client lists()
+ * @method Client field_definitions()
  * @method Client segments()
+ * @method Client singlesends()
+ *
  *
  * Devices
  * @method Client devices()
@@ -125,14 +123,14 @@ namespace SendGrid;
  * @method Client subusers()
  * @method Client reputations()
  *
- * Supressions
- * @method Client suppressions()
+ * Suppressions
+ * @method Client suppression()
  * @method Client global()
  * @method Client blocks()
  * @method Client bounces()
  * @method Client invalid_emails()
  * @method Client spam_reports()
- * @method Client unsubcribes()
+ * @method Client unsubscribes()
  *
  * Templates
  * @method Client templates()
@@ -440,6 +438,7 @@ class Client
      * @param array  $headers         original headers
      *
      * @return Response response object
+     * @throws InvalidRequest
      */
     private function retryRequest(array $responseHeaders, $method, $url, $body, $headers)
     {
@@ -460,6 +459,7 @@ class Client
      * @param bool   $retryOnLimit should retry if rate limit is reach?
      *
      * @return Response object
+     * @throws InvalidRequest
      */
     public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
     {
@@ -469,6 +469,10 @@ class Client
 
         curl_setopt_array($channel, $options);
         $content = curl_exec($channel);
+
+        if ($content === false) {
+            throw new InvalidRequest(curl_error($channel), curl_errno($channel));
+        }
 
         $response = $this->parseResponse($channel, $content);
 
@@ -567,6 +571,7 @@ class Client
      * @param array  $args parameters passed with the method call
      *
      * @return Client|Response|Response[]|null object
+     * @throws InvalidRequest
      */
     public function __call($name, $args)
     {
