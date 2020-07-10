@@ -87,8 +87,8 @@ class Response
     {
         return array_reduce(
             array_filter($headers),
-            function ($result, $header) {
-                if (false === mb_strpos($header, ':')) {
+            static function ($result, $header) {
+                if (mb_strpos($header, ':') === false) {
                     $result['Status'] = trim($header);
 
                     return $result;

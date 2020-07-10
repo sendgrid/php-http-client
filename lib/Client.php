@@ -9,9 +9,7 @@ namespace SendGrid;
 use SendGrid\Exception\InvalidRequest;
 
 /**
- *
  * Class Client
- * @package SendGrid
  * @version 3.9.5
  *
  * Quickly and easily access any REST or REST-like API.
@@ -75,7 +73,6 @@ use SendGrid\Exception\InvalidRequest;
  * @method Client field_definitions()
  * @method Client segments()
  * @method Client singlesends()
- *
  *
  * Devices
  * @method Client devices()
@@ -354,7 +351,7 @@ class Client
         $options = [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HEADER => true,
-                CURLOPT_CUSTOMREQUEST => mb_strtoupper($method),
+                CURLOPT_CUSTOMREQUEST => strtoupper($method),
                 CURLOPT_SSL_VERIFYPEER => true,
                 CURLOPT_FAILONERROR => false,
             ] + $this->curlOptions;
@@ -438,6 +435,7 @@ class Client
      * @param array  $headers         original headers
      *
      * @return Response response object
+     *
      * @throws InvalidRequest
      */
     private function retryRequest(array $responseHeaders, $method, $url, $body, $headers)
@@ -459,6 +457,7 @@ class Client
      * @param bool   $retryOnLimit should retry if rate limit is reach?
      *
      * @return Response object
+     *
      * @throws InvalidRequest
      */
     public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
@@ -476,7 +475,7 @@ class Client
 
         $response = $this->parseResponse($channel, $content);
 
-        if ($response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE && $retryOnLimit) {
+        if ($retryOnLimit && $response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE) {
             $responseHeaders = $response->headers(true);
 
             return $this->retryRequest($responseHeaders, $method, $url, $body, $headers);
@@ -515,7 +514,7 @@ class Client
             $content = curl_multi_getcontent($channel);
             $response = $this->parseResponse($channel, $content);
 
-            if ($response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE && $requests[$id]['retryOnLimit']) {
+            if ($requests[$id]['retryOnLimit'] && $response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE) {
                 $headers = $response->headers(true);
                 $sleepDurations = max($sleepDurations, $headers['X-Ratelimit-Reset'] - time());
                 $requestData = [
@@ -571,6 +570,7 @@ class Client
      * @param array  $args parameters passed with the method call
      *
      * @return Client|Response|Response[]|null object
+     *
      * @throws InvalidRequest
      */
     public function __call($name, $args)

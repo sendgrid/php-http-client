@@ -6,28 +6,15 @@ $finder = PhpCsFixer\Finder::create()
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
+        '@PSR2' => true,
         '@Symfony' => true,
-        'binary_operator_spaces' => array(
-            'align_equals' => false,
-            'align_double_arrow' => false,
-        ),
-        '@Symfony:risky' => true,
         'array_syntax' => ['syntax' => 'short'],
-        'linebreak_after_opening_tag' => true,
-        'mb_str_functions' => true,
-        'no_php4_constructor' => true,
-        'no_unreachable_default_argument_value' => true,
-        'no_useless_else' => true,
-        'no_useless_return' => true,
-        'ordered_imports' => true,
-        'php_unit_strict' => true,
-        'phpdoc_order' => true,
-        'semicolon_after_instruction' => true,
-        'strict_comparison' => true,
-        'strict_param' => true,
-        'concat_space' => ['spacing' => 'one'],
-        'trailing_comma_in_multiline_array' => true,
+        'cast_spaces' => ['space' => 'single'],
         'yoda_style' => false,
+        'concat_space' => ['spacing' => 'one'],
+        'phpdoc_summary' => false,
+        'combine_consecutive_unsets' => true,
+        'final_internal_class' => true,
+        'global_namespace_import' => ['import_classes' => false],
     ])
-    ->setFinder($finder)
-    ->setCacheFile(__DIR__ . '/.php_cs.cache');
+    ->setFinder($finder);
