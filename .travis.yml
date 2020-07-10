@@ -22,7 +22,7 @@ before_install:
 install:
   - if [ -n "$GIT_HUB_TOKEN" ]; then composer config -g github-oauth.github.com "$GIT_HUB_TOKEN"; fi;
   - if [ "$dependencies" = "highest" ]; then composer update $composer_flags; fi;
-  - if [ "$dependencies" = "lowest" ]; then composer update $composer_flags --prefer-lowest --prefer-stable; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update $composer_flags --prefer-lowest; fi;
 
 script:
   - vendor/bin/phpunit test/unit
