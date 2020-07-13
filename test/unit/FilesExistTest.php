@@ -2,7 +2,9 @@
 
 namespace SendGrid\Test;
 
-class FilesExistTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class FilesExistTest extends TestCase
 {
     public function testFileArePresentInRepo()
     {

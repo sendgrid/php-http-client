@@ -2,10 +2,11 @@
 
 namespace SendGrid\Test;
 
+use PHPUnit\Framework\TestCase;
 use SendGrid\Client;
 use SendGrid\Exception\InvalidRequest;
 
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends TestCase
 {
     /** @var MockClient */
     private $client;
