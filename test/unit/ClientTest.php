@@ -2,8 +2,9 @@
 
 namespace SendGrid\Test;
 
-use SendGrid\Client;
 use PHPUnit\Framework\TestCase;
+use SendGrid\Client;
+use SendGrid\Exception\InvalidRequest;
 
 class ClientTest extends TestCase
 {
@@ -79,7 +80,10 @@ class ClientTest extends TestCase
 
     public function testGetHeaders()
     {
-        $client = new Client('https://localhost:4010', ['Content-Type: application/json', 'Authorization: Bearer SG.XXXX']);
+        $client = new Client(
+            'https://localhost:4010',
+            ['Content-Type: application/json', 'Authorization: Bearer SG.XXXX']
+        );
         $this->assertSame(['Content-Type: application/json', 'Authorization: Bearer SG.XXXX'], $client->getHeaders());
 
         $client2 = new Client('https://localhost:4010');
@@ -92,7 +96,7 @@ class ClientTest extends TestCase
         $this->assertSame('/v3', $client->getVersion());
 
         $client = new Client('https://localhost:4010');
-        $this->assertSame(null, $client->getVersion());
+        $this->assertNull($client->getVersion());
     }
 
     public function testGetPath()
@@ -123,7 +127,7 @@ class ClientTest extends TestCase
         $client->get(null, ['limit' => 100, 'offset' => 0]);
 
         // returns 3 response object
-        $this->assertEquals(3, count($client->send()));
+        $this->assertCount(3, $client->send());
     }
 
     public function testCreateCurlOptionsWithMethodOnly()
@@ -194,6 +198,15 @@ class ClientTest extends TestCase
                 'Content-Type: application/json'
             ]
         ], $result);
+    }
+
+
+    public function testThrowExceptionOnInvalidCall()
+    {
+        $this->expectException(InvalidRequest::class);
+
+        $client = new Client('invalid://url', ['User-Agent: Custom-Client 1.0']);
+        $client->get();
     }
 
     /**
