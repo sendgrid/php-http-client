@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2020-07-22] Version 3.11.0
+---------------------------
+**Library - Test**
+- [PR #120](https://github.com/sendgrid/php-http-client/pull/120): test enhancements. Thanks to [@peter279k](https://github.com/peter279k)!
+
+**Library - Feature**
+- [PR #109](https://github.com/sendgrid/php-http-client/pull/109): automatic code style checking. Thanks to [@misantron](https://github.com/misantron)!
+
+
 [2020-06-24] Version 3.10.8
 ---------------------------
 **Library - Fix**
