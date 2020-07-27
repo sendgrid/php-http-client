@@ -12,6 +12,7 @@
 If you are looking for the SendGrid API client library, please see [this repo](https://github.com/sendgrid/sendgrid-php).
 
 # Announcements
+**The default branch name for this repository has been changed to `main` as of 07/27/2020.**
 
 All updates to this library are documented in our [CHANGELOG](https://github.com/sendgrid/php-http-client/blob/master/CHANGELOG.md).
 
