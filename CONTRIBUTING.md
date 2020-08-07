@@ -88,11 +88,11 @@ Unit tests.
 
 **/lib/SendGrid/Client.php**
 
-An HTTP client with a fluent interface using method chaining and reflection. By returning self on [__call](lib/client.php#L212) and [_()](lib/client.pph#L198), we can dynamically build the URL using method chaining and [__call](lib/client.php#L212) allows us to dynamically receive the method calls to achieve reflection.
+An HTTP client with a fluent interface using method chaining and reflection. By returning `$this` on [__call](lib/Client.php#L576), we can dynamically build the URL using method chaining and [__call](lib/Client.php#L576) allows us to dynamically receive the method calls to achieve reflection.
 
 This allows for the following mapping from a URL to a method chain:
 
-`/api_client/{api_key_id}/version` maps to `client->api_client().->_($api_key_id)->version-><method>()` where <method> is a [HTTP verb](lib/client.php#L94).
+`/api_client/{api_key_id}/version` maps to `client->api_client().->_($api_key_id)->version-><method>()` where <method> is a [HTTP verb](lib/Client.php#L210).
 
 **/lib/SendGrid/Config.php**
 
