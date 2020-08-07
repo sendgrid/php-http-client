@@ -73,7 +73,7 @@ source ./sendgrid.env
 
 ##### Execute: #####
 
-See the [examples folder](https://github.com/sendgrid/php-http-client/tree/HEAD/examples).
+See the [examples folder](examples).
 
 <a name="understanding-the-codebase"></a>
 ## Understanding the Code Base
@@ -88,11 +88,11 @@ Unit tests.
 
 **/lib/SendGrid/Client.php**
 
-An HTTP client with a fluent interface using method chaining and reflection. By returning self on [__call](https://github.com/sendgrid/php-http-client/blob/HEAD/lib/client.php#L212) and [_()](https://github.com/sendgrid/php-http-client/blob/HEAD/lib/client.pph#L198), we can dynamically build the URL using method chaining and [__call](https://github.com/sendgrid/php-http-client/blob/HEAD/lib/client.php#L212) allows us to dynamically receive the method calls to achieve reflection.
+An HTTP client with a fluent interface using method chaining and reflection. By returning self on [__call](lib/client.php#L212) and [_()](lib/client.pph#L198), we can dynamically build the URL using method chaining and [__call](lib/client.php#L212) allows us to dynamically receive the method calls to achieve reflection.
 
 This allows for the following mapping from a URL to a method chain:
 
-`/api_client/{api_key_id}/version` maps to `client->api_client().->_($api_key_id)->version-><method>()` where <method> is a [HTTP verb](https://github.com/sendgrid/php-http-client/blob/HEAD/lib/client.php#L94).
+`/api_client/{api_key_id}/version` maps to `client->api_client().->_($api_key_id)->version-><method>()` where <method> is a [HTTP verb](lib/client.php#L94).
 
 **/lib/SendGrid/Config.php**
 
@@ -103,9 +103,9 @@ Loads the environment variables.
 
 All PRs require passing tests before the PR will be reviewed.
 
-All test files are in the [`/test/unit`](https://github.com/sendgrid/php-http-client/tree/HEAD/test/unit) directory.
+All test files are in the [`/test/unit`](test/unit) directory.
 
-For the purposes of contributing to this repo, please update the [`ClientTest.php`](https://github.com/sendgrid/php-http-client/blob/HEAD/test/unit/ClientTest.php) file with unit tests as you modify the code.
+For the purposes of contributing to this repo, please update the [`ClientTest.php`](test/unit/ClientTest.php) file with unit tests as you modify the code.
 
 ```bash
 composer install

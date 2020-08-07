@@ -1,4 +1,4 @@
-![SendGrid Logo](https://uiux.s3.amazonaws.com/2016-logos/email-logo%402x.png)
+![SendGrid Logo](twilio_sendgrid_logo.png)
 
 [![Travis Badge](https://travis-ci.org/sendgrid/php-http-client.svg?branch=main)](https://travis-ci.org/sendgrid/php-http-client)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sendgrid/php-http-client.svg?style=flat-square)](https://packagist.org/packages/sendgrid/php-http-client)
@@ -14,7 +14,7 @@ If you are looking for the SendGrid API client library, please see [this repo](h
 # Announcements
 **The default branch name for this repository has been changed to `main` as of 07/27/2020.**
 
-All updates to this library are documented in our [CHANGELOG](https://github.com/sendgrid/php-http-client/blob/HEAD/CHANGELOG.md).
+All updates to this library are documented in our [CHANGELOG](CHANGELOG.md).
 
 # Table of Contents
 - [Installation](#installation)
@@ -172,14 +172,14 @@ If you are interested in the future direction of this project, please take a loo
 <a name="contribute"></a>
 # How to Contribute
 
-We encourage contribution to our libraries, please see our [CONTRIBUTING](https://github.com/sendgrid/php-http-client/blob/HEAD/CONTRIBUTING.md) guide for details.
+We encourage contribution to our libraries, please see our [CONTRIBUTING](CONTRIBUTING.md) guide for details.
 
 Quick links:
 
-- [Feature Request](https://github.com/sendgrid/php-http-client/blob/HEAD/CONTRIBUTING.md#feature-request)
-- [Bug Reports](https://github.com/sendgrid/php-http-client/blob/HEAD/CONTRIBUTING.md#submit-a-bug-report)
-- [Improvements to the Codebase](https://github.com/sendgrid/php-http-client/blob/HEAD/CONTRIBUTING.md#improvements-to-the-codebase)
-- [Review Pull Requests](https://github.com/sendgrid/php-http-client/blob/HEAD/CONTRIBUTING.md#code-reviews)
+- [Feature Request](CONTRIBUTING.md#feature-request)
+- [Bug Reports](CONTRIBUTING.md#submit-a-bug-report)
+- [Improvements to the Codebase](CONTRIBUTING.md#improvements-to-the-codebase)
+- [Review Pull Requests](CONTRIBUTING.md#code-reviews)
 
 <a name="thanks"></a>
 # Thanks
