@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2020-08-19] Version 3.11.1
+---------------------------
+**Library - Docs**
+- [PR #116](https://github.com/sendgrid/php-http-client/pull/116): Add first-timers.md for newcomers. Thanks to [@daniloff200](https://github.com/daniloff200)!
+
+**Library - Chore**
+- [PR #145](https://github.com/sendgrid/php-http-client/pull/145): update GitHub branch references to use HEAD. Thanks to [@thinkingserious](https://github.com/thinkingserious)!
+
+
 [2020-07-22] Version 3.11.0
 ---------------------------
 **Library - Test**
