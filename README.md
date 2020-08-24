@@ -20,7 +20,6 @@ All updates to this library are documented in our [CHANGELOG](CHANGELOG.md).
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Usage](#usage)
-- [Roadmap](#roadmap)
 - [How to Contribute](#contribute)
 - [Thanks](#thanks)
 - [About](#about)
@@ -163,11 +162,6 @@ You can do the following to create a .env file:
 ```cp .env_example .env```
 
 Then, just add your API Key into your .env file.
-
-<a name="roadmap"></a>
-# Roadmap
-
-If you are interested in the future direction of this project, please take a look at our [milestones](https://github.com/sendgrid/php-http-client/milestones). We would love to hear your feedback.
 
 <a name="contribute"></a>
 # How to Contribute
