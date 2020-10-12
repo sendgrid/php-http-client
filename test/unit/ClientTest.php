@@ -33,7 +33,7 @@ class ClientTest extends TestCase
         $this->assertAttributeEquals([], 'path', $this->client);
         $this->assertAttributeEquals([], 'curlOptions', $this->client);
         $this->assertAttributeEquals(false, 'retryOnLimit', $this->client);
-        $this->assertAttributeEquals(['get', 'post', 'patch',  'put', 'delete'], 'methods', $this->client);
+        $this->assertAttributeEquals(['get', 'post', 'patch', 'put', 'delete'], 'methods', $this->client);
     }
 
     public function test_()
@@ -207,6 +207,15 @@ class ClientTest extends TestCase
 
         $client = new Client('invalid://url', ['User-Agent: Custom-Client 1.0']);
         $client->get();
+    }
+
+    public function testMakeRequestWithUntrustedRootCert()
+    {
+        $this->expectException(InvalidRequest::class);
+        $this->expectExceptionMessageRegExp('/certificate/i');
+
+        $client = new Client('https://untrusted-root.badssl.com/');
+        $client->makeRequest('GET', 'https://untrusted-root.badssl.com/');
     }
 
     /**

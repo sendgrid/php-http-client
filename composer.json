@@ -27,6 +27,9 @@
         "squizlabs/php_codesniffer": "~2.0",
         "friendsofphp/php-cs-fixer": "^2.16"
     },
+    "suggest": {
+        "composer/ca-bundle": "Including this library will ensure that a valid CA bundle is available for secure connections"
+    },
     "autoload": {
         "psr-4": {
             "SendGrid\\": "lib/"

@@ -369,6 +369,15 @@ class Client
         }
         $options[CURLOPT_HTTPHEADER] = $headers;
 
+        if (class_exists('\\Composer\\CaBundle\\CaBundle') && method_exists('\\Composer\\CaBundle\\CaBundle', 'getSystemCaRootBundlePath')) {
+            $caPathOrFile = \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
+            if (is_dir($caPathOrFile) || (is_link($caPathOrFile) && is_dir(readlink($caPathOrFile)))) {
+                $options[CURLOPT_CAPATH] = $caPathOrFile;
+            } else {
+                $options[CURLOPT_CAINFO] = $caPathOrFile;
+            }
+        }
+
         return $options;
     }
 
@@ -492,6 +501,8 @@ class Client
      * @param array $requests
      *
      * @return Response[]
+     *
+     * @throws InvalidRequest
      */
     public function makeAllRequests(array $requests = [])
     {
@@ -512,6 +523,11 @@ class Client
         $sleepDurations = 0;
         foreach ($channels as $id => $channel) {
             $content = curl_multi_getcontent($channel);
+
+            if ($content === false) {
+                throw new InvalidRequest(curl_error($channel), curl_errno($channel));
+            }
+
             $response = $this->parseResponse($channel, $content);
 
             if ($requests[$id]['retryOnLimit'] && $response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE) {
