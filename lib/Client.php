@@ -425,10 +425,6 @@ class Client
         $headerSize = curl_getinfo($channel, CURLINFO_HEADER_SIZE);
         $statusCode = curl_getinfo($channel, CURLINFO_HTTP_CODE);
 
-        if ($statusCode === 0) {
-            throw new \RuntimeException(curl_error($channel));
-        }
-
         $responseBody = mb_substr($content, $headerSize);
 
         $responseHeaders = mb_substr($content, 0, $headerSize);
@@ -472,7 +468,6 @@ class Client
      * @return Response object
      *
      * @throws InvalidRequest
-     * @throws \RuntimeException
      */
     public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
     {
@@ -507,7 +502,7 @@ class Client
      *
      * @return Response[]
      *
-     * @throws \RuntimeException
+     * @throws InvalidRequest
      */
     public function makeAllRequests(array $requests = [])
     {
@@ -528,6 +523,11 @@ class Client
         $sleepDurations = 0;
         foreach ($channels as $id => $channel) {
             $content = curl_multi_getcontent($channel);
+
+            if ($content === false) {
+                throw new InvalidRequest(curl_error($channel), curl_errno($channel));
+            }
+
             $response = $this->parseResponse($channel, $content);
 
             if ($requests[$id]['retryOnLimit'] && $response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE) {
