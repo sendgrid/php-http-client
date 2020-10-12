@@ -210,7 +210,7 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException InvalidRequest
      * @expectedExceptionMessageRegExp /certificate/i
      */
     public function testMakeRequestWithUntrustedRootCert()
