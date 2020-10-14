@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2020-10-14] Version 3.12.0
+---------------------------
+**Library - Feature**
+- [PR #103](https://github.com/sendgrid/php-http-client/pull/103): Throw an InvalidRequest whenever a curl request fails. Thanks to [@colinodell](https://github.com/colinodell)!
+
+
 [2020-08-19] Version 3.11.1
 ---------------------------
 **Library - Docs**
