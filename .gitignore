@@ -9,3 +9,8 @@ vendor/
 
 # Environment files
 .env/*.*
+
+# Local configs
+.php_cs
+.php_cs.cache
+phpunit.xml
