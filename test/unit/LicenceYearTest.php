@@ -6,11 +6,11 @@ use PHPUnit\Framework\TestCase;
 
 class LicenceYearTest extends TestCase
 {
-    public function testConstructor()
+    public function testLicenseYear()
     {
         $rootDir = __DIR__ . '/../..';
 
-        $license = explode("\n", file_get_contents("$rootDir/LICENSE.md"));
+        $license = explode("\n", file_get_contents("$rootDir/LICENSE"));
         $copyright = trim($license[2]);
 
         $year = date('Y');
