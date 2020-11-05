@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2020-11-05] Version 3.13.0
+---------------------------
+**Library - Feature**
+- [PR #101](https://github.com/sendgrid/php-http-client/pull/101): Allows for a user to utilize self-signed certificates. Thanks to [@davcpas1234](https://github.com/davcpas1234)!
+
+
 [2020-10-14] Version 3.12.0
 ---------------------------
 **Library - Feature**
