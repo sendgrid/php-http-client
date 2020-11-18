@@ -1,73 +1,246 @@
 <?php
 
 /**
-  * HTTP Client library
-  *
-  * @author    Matt Bernier <dx@sendgrid.com>
-  * @author    Elmer Thomas <dx@sendgrid.com>
-  * @copyright 2018 SendGrid
-  * @license   https://opensource.org/licenses/MIT The MIT License
-  * @version   GIT: <git_id>
-  * @link      http://packagist.org/packages/sendgrid/php-http-client
-  */
+ * HTTP Client library
+ */
 
 namespace SendGrid;
 
+use SendGrid\Exception\InvalidRequest;
+
 /**
+ * Class Client
+ * @version 3.9.5
+ *
  * Quickly and easily access any REST or REST-like API.
  *
- * @method Response get($body = null, $query = null, $headers = null)
- * @method Response post($body = null, $query = null, $headers = null)
- * @method Response patch($body = null, $query = null, $headers = null)
- * @method Response put($body = null, $query = null, $headers = null)
- * @method Response delete($body = null, $query = null, $headers = null)
+ * @method Response get($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response post($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response patch($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response put($body = null, $query = null, $headers = null, $retryOnLimit = null)
+ * @method Response delete($body = null, $query = null, $headers = null, $retryOnLimit = null)
  *
  * @method Client version($value)
  * @method Client|Response send()
+ *
+ * Adding all the endpoints as a method so code completion works
+ *
+ * General
+ * @method Client stats()
+ * @method Client search()
+ * @method Client monthly()
+ * @method Client sums()
+ * @method Client monitor()
+ * @method Client test()
+ *
+ * Access settings
+ * @method Client access_settings()
+ * @method Client activity()
+ * @method Client whitelist()
+ *
+ * Alerts
+ * @method Client alerts()
+ *
+ * Api keys
+ * @method Client api_keys()
+ *
+ * ASM
+ * @method Client asm()
+ * @method Client groups()
+ * @method Client suppressions()
+ *
+ * Browsers
+ * @method Client browsers()
+ *
+ * Campaigns
+ * @method Client campaigns()
+ * @method Client schedules()
+ * @method Client now()
+ *
+ * Categories
+ * @method Client categories()
+ *
+ * Clients
+ * @method Client clients()
+ *
+ * Marketing
+ * @method Client marketing()
+ * @method Client contacts()
+ * @method Client count()
+ * @method Client exports()
+ * @method Client imports()
+ * @method Client lists()
+ * @method Client field_definitions()
+ * @method Client segments()
+ * @method Client singlesends()
+ *
+ * Devices
+ * @method Client devices()
+ *
+ * Geo
+ * @method Client geo()
+ *
+ * Ips
+ * @method Client ips()
+ * @method Client assigned()
+ * @method Client pools()
+ * @method Client warmup()
+ *
+ * Mail
+ * @method Client mail()
+ * @method Client batch()
+ *
+ * Mailbox Providers
+ * @method Client mailbox_providers()
+ *
+ * Mail settings
+ * @method Client mail_settings()
+ * @method Client address_whitelist()
+ * @method Client bcc()
+ * @method Client bounce_purge()
+ * @method Client footer()
+ * @method Client forward_bounce()
+ * @method Client forward_spam()
+ * @method Client plain_content()
+ * @method Client spam_check()
+ * @method Client template()
+ *
+ * Partner settings
+ * @method Client partner_settings()
+ * @method Client new_relic()
+ *
+ * Scopes
+ * @method Client scopes()
+ *
+ * Senders
+ * @method Client senders()
+ * @method Client resend_verification()
+ *
+ * Sub Users
+ * @method Client subusers()
+ * @method Client reputations()
+ *
+ * Suppressions
+ * @method Client suppression()
+ * @method Client global()
+ * @method Client blocks()
+ * @method Client bounces()
+ * @method Client invalid_emails()
+ * @method Client spam_reports()
+ * @method Client unsubscribes()
+ *
+ * Templates
+ * @method Client templates()
+ * @method Client versions()
+ * @method Client activate()
+ *
+ * Tracking settings
+ * @method Client tracking_settings()
+ * @method Client click()
+ * @method Client google_analytics()
+ * @method Client open()
+ * @method Client subscription()
+ *
+ * User
+ * @method Client user()
+ * @method Client account()
+ * @method Client credits()
+ * @method Client email()
+ * @method Client password()
+ * @method Client profile()
+ * @method Client scheduled_sends()
+ * @method Client enforced_tls()
+ * @method Client settings()
+ * @method Client username()
+ * @method Client webhooks()
+ * @method Client event()
+ * @method Client parse()
+ *
+ * Missed any? Simply add them by doing: @method Client method()
  */
 class Client
 {
-    /** @var string */
+    const TOO_MANY_REQUESTS_HTTP_CODE = 429;
+
+    /**
+     * @var string
+     */
     protected $host;
-    /** @var array */
+
+    /**
+     * @var array
+     */
     protected $headers;
-    /** @var string */
+
+    /**
+     * @var string
+     */
     protected $version;
-    /** @var array */
+
+    /**
+     * @var array
+     */
     protected $path;
-    /** @var array */
+
+    /**
+     * @var array
+     */
     protected $curlOptions;
-    /** @var bool $isConcurrentRequest */
+
+    /**
+     * @var bool
+     */
     protected $isConcurrentRequest;
-    /** @var array $savedRequests */
+
+    /**
+     * @var array
+     */
     protected $savedRequests;
-    /** @var bool */
+
+    /**
+     * @var bool
+     */
+    protected $verifySSLCerts;
+    
+    /**
+     * @var bool
+     */
     protected $retryOnLimit;
 
     /**
-     * These are the supported HTTP verbs
+     * Supported HTTP verbs.
      *
      * @var array
      */
-    private $methods = ['get', 'post', 'patch',  'put', 'delete'];
+    private $methods = ['get', 'post', 'patch', 'put', 'delete'];
 
     /**
-      * Initialize the client
-      *
-      * @param string  $host                    the base url (e.g. https://api.sendgrid.com)
-      * @param array   $headers                 global request headers
-      * @param string  $version                 api version (configurable)
-      * @param array   $path                    holds the segments of the url path
-      */
-    public function __construct($host, $headers = [], $version = '/v3', $path = [])
-    {
+     * Initialize the client.
+     *
+     * @param string $host           the base url (e.g. https://api.sendgrid.com)
+     * @param array  $headers        global request headers
+     * @param string $version        api version (configurable) - this is specific to the SendGrid API
+     * @param array  $path           holds the segments of the url path
+     * @param array  $curlOptions    extra options to set during curl initialization
+     * @param bool   $retryOnLimit   set default retry on limit flag
+     * @param bool   $verifySSLCerts set default verify certificates flag
+     */
+    public function __construct(
+        $host,
+        $headers = null,
+        $version = null,
+        $path = null,
+        $curlOptions = null,
+        $retryOnLimit = false,
+        $verifySSLCerts = true
+    ) {
         $this->host = $host;
-        $this->headers = $headers;
+        $this->headers = $headers ?: [];
         $this->version = $version;
-        $this->path = $path;
-
-        $this->curlOptions = [];
-        $this->retryOnLimit = false;
+        $this->path = $path ?: [];
+        $this->curlOptions = $curlOptions ?: [];
+        $this->retryOnLimit = $retryOnLimit;
+        $this->verifySSLCerts = $verifySSLCerts;
         $this->isConcurrentRequest = false;
         $this->savedRequests = [];
     }
@@ -105,7 +278,15 @@ class Client
     }
 
     /**
-     * Set extra options to set during curl initialization
+     * @return array
+     */
+    public function getCurlOptions()
+    {
+        return $this->curlOptions;
+    }
+
+    /**
+     * Set extra options to set during curl initialization.
      *
      * @param array $options
      *
@@ -119,7 +300,7 @@ class Client
     }
 
     /**
-     * Set default retry on limit flag
+     * Set default retry on limit flag.
      *
      * @param bool $retry
      *
@@ -133,7 +314,21 @@ class Client
     }
 
     /**
-     * set concurrent request flag
+     * Set default verify certificates flag
+     *
+     * @param bool $verifySSLCerts
+     *
+     * @return Client
+     */
+    public function setVerifySSLCerts($verifySSLCerts)
+    {
+        $this->verifySSLCerts = $verifySSLCerts;
+
+        return $this;
+    }
+
+    /**
+     * Set concurrent request flag
      *
      * @param bool $isConcurrent
      *
@@ -147,36 +342,30 @@ class Client
     }
 
     /**
-     * @return array
+     * Build the final URL to be passed.
+     *
+     * @param array $queryParams an array of all the query parameters
+     *
+     * @return string
      */
-    public function getCurlOptions()
-    {
-        return $this->curlOptions;
-    }
-
-    /**
-      * Build the final URL to be passed
-      *
-      * @param array $queryParams an array of all the query parameters
-      *
-      * @return string
-      */
     private function buildUrl($queryParams = null)
     {
         $path = '/' . implode('/', $this->path);
         if (isset($queryParams)) {
             $path .= '?' . http_build_query($queryParams);
         }
+
         return sprintf('%s%s%s', $this->host, $this->version ?: '', $path);
     }
 
     /**
      * Creates curl options for a request
-     * this function does not mutate any private variables
+     * this function does not mutate any private variables.
      *
      * @param string $method
-     * @param array $body
-     * @param array $headers
+     * @param array  $body
+     * @param array  $headers
+     *
      * @return array
      */
     private function createCurlOptions($method, $body = null, $headers = null)
@@ -184,13 +373,11 @@ class Client
         $options = array_replace(
             [
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HEADER => 1,
+                CURLOPT_HEADER => true,
                 CURLOPT_CUSTOMREQUEST => strtoupper($method),
-                CURLOPT_SSL_VERIFYPEER => true,
-                CURLOPT_FAILONERROR => false
-            ],
-            $this->curlOptions
-        );
+                CURLOPT_SSL_VERIFYPEER => $this->verifySSLCerts,
+                CURLOPT_FAILONERROR => false,
+            ] + $this->curlOptions;
 
         $requestHeaders = ['Content-Type: application/json'];
 
@@ -211,17 +398,25 @@ class Client
 
         $options[CURLOPT_HTTPHEADER] = $requestHeaders;
 
+        if (class_exists('\\Composer\\CaBundle\\CaBundle') && method_exists('\\Composer\\CaBundle\\CaBundle', 'getSystemCaRootBundlePath')) {
+            $caPathOrFile = \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
+            if (is_dir($caPathOrFile) || (is_link($caPathOrFile) && is_dir(readlink($caPathOrFile)))) {
+                $options[CURLOPT_CAPATH] = $caPathOrFile;
+            } else {
+                $options[CURLOPT_CAINFO] = $caPathOrFile;
+            }
+        }
+
         return $options;
     }
 
     /**
-     * @param array $requestData
-     *      e.g. ['method' => 'POST', 'url' => 'www.example.com', 'body' => 'test body', 'headers' => []]
-     * @param bool $retryOnLimit
+     * @param array $requestData  (method, url, body and headers)
+     * @param bool  $retryOnLimit
      *
      * @return array
      */
-    private function createSavedRequest($requestData, $retryOnLimit = false)
+    private function createSavedRequest(array $requestData, $retryOnLimit = false)
     {
         return array_merge($requestData, ['retryOnLimit' => $retryOnLimit]);
     }
@@ -231,7 +426,7 @@ class Client
      *
      * @return array
      */
-    private function createCurlMultiHandle($requests)
+    private function createCurlMultiHandle(array $requests)
     {
         $channels = [];
         $multiHandle = curl_multi_init();
@@ -247,86 +442,103 @@ class Client
     }
 
     /**
-     * Prepare response object
+     * Prepare response object.
      *
-     * @param resource $curl the curl resource
+     * @param resource $channel the curl resource
+     * @param string   $content
      *
      * @return Response object
      */
-    private function prepareResponse($curl)
+    private function parseResponse($channel, $content)
     {
-        $response = curl_exec($curl);
-        $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $responseBody = substr($response, $headerSize);
-        $responseHeaders = substr($response, 0, $headerSize);
+        $headerSize = curl_getinfo($channel, CURLINFO_HEADER_SIZE);
+        $statusCode = curl_getinfo($channel, CURLINFO_HTTP_CODE);
+
+        $responseBody = mb_substr($content, $headerSize);
+
+        $responseHeaders = mb_substr($content, 0, $headerSize);
         $responseHeaders = explode("\n", $responseHeaders);
         $responseHeaders = array_map('trim', $responseHeaders);
-        $response = new Response($statusCode, $responseBody, $responseHeaders);
-        return $response;
+
+        return new Response($statusCode, $responseBody, $responseHeaders);
     }
- 
+
     /**
-     * Retry request
+     * Retry request.
      *
-     * @param  array  $responseHeaders headers from rate limited response
-     * @param  string $method          the HTTP verb
-     * @param  string $url             the final url to call
-     * @param  array  $body            request body
-     * @param  array  $headers         original headers
+     * @param array  $responseHeaders headers from rate limited response
+     * @param string $method          the HTTP verb
+     * @param string $url             the final url to call
+     * @param array  $body            request body
+     * @param array  $headers         original headers
      *
      * @return Response response object
+     *
+     * @throws InvalidRequest
      */
-    private function retryRequest($responseHeaders, $method, $url, $body, $headers)
+    private function retryRequest(array $responseHeaders, $method, $url, $body, $headers)
     {
         $sleepDurations = $responseHeaders['X-Ratelimit-Reset'] - time();
         sleep($sleepDurations > 0 ? $sleepDurations : 0);
+
         return $this->makeRequest($method, $url, $body, $headers, false);
     }
 
     /**
-      * Make the API call and return the response. This is separated into
-      * it's own function, so we can mock it easily for testing.
-      *
-      * @param string                   $method       the HTTP verb
-      * @param string                   $url          the final url to call
-      * @param array|\JsonSerializable  $body         request body
-      * @param array                    $headers      any additional request headers
-      * @param bool                     $retryOnLimit should retry if rate limit is reach?
-      *
-      * @return Response object
-      */
+     * Make the API call and return the response.
+     * This is separated into it's own function, so we can mock it easily for testing.
+     *
+     * @param string $method       the HTTP verb
+     * @param string $url          the final url to call
+     * @param array  $body         request body
+     * @param array  $headers      any additional request headers
+     * @param bool   $retryOnLimit should retry if rate limit is reach?
+     *
+     * @return Response object
+     *
+     * @throws InvalidRequest
+     */
     public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
     {
-        $curl = curl_init($url);
+        $channel = curl_init($url);
 
-        $curlOpts = $this->createCurlOptions($method, $body, $headers);
+        $options = $this->createCurlOptions($method, $body, $headers);
 
-        curl_setopt_array($curl, $curlOpts);
+        curl_setopt_array($channel, $options);
+        $content = curl_exec($channel);
 
-        $response = $this->prepareResponse($curl);
-
-        if ($response->statusCode() == 429 && $retryOnLimit) {
-            return $this->retryRequest($response->headers(true), $method, $url, $body, $headers);
+        if ($content === false) {
+            throw new InvalidRequest(curl_error($channel), curl_errno($channel));
         }
 
-        curl_close($curl);
+        $response = $this->parseResponse($channel, $content);
+
+        if ($retryOnLimit && $response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE) {
+            $responseHeaders = $response->headers(true);
+
+            return $this->retryRequest($responseHeaders, $method, $url, $body, $headers);
+        }
+
+        curl_close($channel);
 
         return $response;
     }
 
     /**
-     * Send all saved requests at once
+     * Send all saved requests at once.
      *
      * @param array $requests
+     *
      * @return Response[]
+     *
+     * @throws InvalidRequest
      */
-    public function makeAllRequests($requests = [])
+    public function makeAllRequests(array $requests = [])
     {
         if (empty($requests)) {
             $requests = $this->savedRequests;
         }
-        list ($channels, $multiHandle) = $this->createCurlMultiHandle($requests);
+        list($channels, $multiHandle) = $this->createCurlMultiHandle($requests);
 
         // running all requests
         $isRunning = null;
@@ -338,32 +550,30 @@ class Client
         $retryRequests = [];
         $responses = [];
         $sleepDurations = 0;
-        foreach ($channels as $id => $ch) {
-            $response = curl_multi_getcontent($ch);
-            $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $responseBody = substr($response, $headerSize);
+        foreach ($channels as $id => $channel) {
+            $content = curl_multi_getcontent($channel);
 
-            $responseHeaders = substr($response, 0, $headerSize);
-            $responseHeaders = explode("\n", $responseHeaders);
-            $responseHeaders = array_map('trim', $responseHeaders);
+            if ($content === false) {
+                throw new InvalidRequest(curl_error($channel), curl_errno($channel));
+            }
 
-            $response = new Response($statusCode, $responseBody, $responseHeaders);
-            if (($statusCode === 429) && $requests[$id]['retryOnLimit']) {
+            $response = $this->parseResponse($channel, $content);
+
+            if ($requests[$id]['retryOnLimit'] && $response->statusCode() === self::TOO_MANY_REQUESTS_HTTP_CODE) {
                 $headers = $response->headers(true);
                 $sleepDurations = max($sleepDurations, $headers['X-Ratelimit-Reset'] - time());
                 $requestData = [
                     'method' => $requests[$id]['method'],
                     'url' => $requests[$id]['url'],
                     'body' => $requests[$id]['body'],
-                    'headers' =>$headers,
+                    'headers' => $headers,
                 ];
                 $retryRequests[] = $this->createSavedRequest($requestData, false);
             } else {
                 $responses[] = $response;
             }
 
-            curl_multi_remove_handle($multiHandle, $ch);
+            curl_multi_remove_handle($multiHandle, $channel);
         }
         curl_multi_close($multiHandle);
 
@@ -372,19 +582,18 @@ class Client
             sleep($sleepDurations > 0 ? $sleepDurations : 0);
             $responses = array_merge($responses, $this->makeAllRequests($retryRequests));
         }
+
         return $responses;
     }
 
     /**
-      * Add variable values to the url.
-      * (e.g. /your/api/{variable_value}/call)
-      * Another example: if you have a PHP reserved word, such as and,
-      * in your url, you must use this method.
-      *
-      * @param string $name name of the url segment
-      *
-      * @return Client object
-      */
+     * Add variable values to the url. (e.g. /your/api/{variable_value}/call)
+     * Another example: if you have a PHP reserved word, such as and, in your url, you must use this method.
+     *
+     * @param string $name name of the url segment
+     *
+     * @return Client object
+     */
     public function _($name = null)
     {
         if (isset($name)) {
@@ -392,6 +601,7 @@ class Client
         }
         $client = new static($this->host, $this->headers, $this->version, $this->path);
         $client->setCurlOptions($this->curlOptions);
+        $client->setVerifySSLCerts($this->verifySSLCerts);
         $client->setRetryOnLimit($this->retryOnLimit);
         $this->path = [];
 
@@ -399,20 +609,23 @@ class Client
     }
 
     /**
-      * Dynamically add method calls to the url, then call a method.
-      * (e.g. client.name.name.method())
-      *
-      * @param string $name name of the dynamic method call or HTTP verb
-      * @param array  $args parameters passed with the method call
-      *
-      * @return Client|Response|Response[]|null object
-      */
+     * Dynamically add method calls to the url, then call a method.
+     * (e.g. client.name.name.method()).
+     *
+     * @param string $name name of the dynamic method call or HTTP verb
+     * @param array  $args parameters passed with the method call
+     *
+     * @return Client|Response|Response[]|null object
+     *
+     * @throws InvalidRequest
+     */
     public function __call($name, $args)
     {
-        $name = strtolower($name);
+        $name = mb_strtolower($name);
 
         if ($name === 'version') {
             $this->version = $args[0];
+
             return $this->_();
         }
 
@@ -421,7 +634,7 @@ class Client
             return $this->makeAllRequests();
         }
 
-        if (in_array($name, $this->methods, true)) {
+        if (\in_array($name, $this->methods, true)) {
             $body = isset($args[0]) ? $args[0] : null;
             $queryParams = isset($args[1]) ? $args[1] : null;
             $url = $this->buildUrl($queryParams);
@@ -430,10 +643,9 @@ class Client
 
             if ($this->isConcurrentRequest) {
                 // save request to be sent later
-                $this->savedRequests[] = $this->createSavedRequest(
-                    ['method' => $name, 'url' => $url, 'body' => $body, 'headers' => $headers],
-                    $retryOnLimit
-                );
+                $requestData = ['method' => $name, 'url' => $url, 'body' => $body, 'headers' => $headers];
+                $this->savedRequests[] = $this->createSavedRequest($requestData, $retryOnLimit);
+
                 return null;
             }
 

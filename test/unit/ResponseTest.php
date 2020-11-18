@@ -3,20 +3,21 @@
 namespace SendGrid\Test;
 
 use SendGrid\Response;
+use PHPUnit\Framework\TestCase;
 
-class ResponseTest extends \PHPUnit_Framework_TestCase
+class ResponseTest extends TestCase
 {
     public function testConstructor()
     {
         $response = new Response();
-        
-        $this->assertAttributeEquals(null, 'statusCode', $response);
-        $this->assertAttributeEquals(null, 'body', $response);
-        $this->assertAttributeEquals(null, 'headers', $response);
-
-        $response = new Response(200, 'test', ['Content-Encoding: gzip']);
 
         $this->assertAttributeEquals(200, 'statusCode', $response);
+        $this->assertAttributeEquals('', 'body', $response);
+        $this->assertAttributeEquals([], 'headers', $response);
+
+        $response = new Response(201, 'test', ['Content-Encoding: gzip']);
+
+        $this->assertAttributeEquals(201, 'statusCode', $response);
         $this->assertAttributeEquals('test', 'body', $response);
         $this->assertAttributeEquals(['Content-Encoding: gzip'], 'headers', $response);
     }
@@ -41,21 +42,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(['Content-Type: text/html'], $response->headers());
     }
-    
+
     public function testAssociativeHeaders()
     {
         $response = new Response(null, null, ['Content-Type: text/html', 'HTTP/1.1 200 OK']);
-        
-        $this->assertEquals(['Content-Type' => 'text/html', 'Status' => 'HTTP/1.1 200 OK'], $response->headers(true));
-    }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Headers should be an array
-     */
-    public function testHeadersWithInvalidValue()
-    {
-        $response = new Response(null, null, false);
-        $response->headers(true);
+        $this->assertEquals(['Content-Type' => 'text/html', 'Status' => 'HTTP/1.1 200 OK'], $response->headers(true));
     }
 }
