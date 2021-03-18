@@ -346,13 +346,16 @@ class Client
      *
      * @param array $queryParams an array of all the query parameters
      *
+     * Nested arrays will resolve to multiple instances of the same parameter
+     *
      * @return string
      */
     private function buildUrl($queryParams = null)
     {
         $path = '/' . implode('/', $this->path);
         if (isset($queryParams)) {
-            $path .= '?' . http_build_query($queryParams);
+            // Regex replaces `[0]=`, `[1]=`, etc. with `=`.
+            $path .= '?' . preg_replace('/%5B(?:\d|[1-9]\d+)%5D=/', '=', http_build_query($queryParams));
         }
 
         return sprintf('%s%s%s', $this->host, $this->version ?: '', $path);

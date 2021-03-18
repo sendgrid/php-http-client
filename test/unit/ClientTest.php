@@ -218,6 +218,22 @@ class ClientTest extends TestCase
         $client->makeRequest('GET', 'https://untrusted-root.badssl.com/');
     }
 
+    public function testFormRepeatUrlArgs()
+    {
+        $client = new Client('https://localhost:4010');
+
+        $testParams = [
+          'thing' => 'stuff',
+          'foo' => [
+            'bar',
+            'bat',
+            'baz',
+          ],
+        ];
+        $result = $this->callMethod($client, 'buildUrl', [$testParams]);
+        $this->assertEquals($result, 'https://localhost:4010/?thing=stuff&foo=bar&foo=bat&foo=baz');
+    }
+
     /**
      * @param object $obj
      * @param string $name
