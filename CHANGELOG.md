@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2021-03-24] Version 3.14.0
+---------------------------
+**Library - Feature**
+- [PR #136](https://github.com/sendgrid/php-http-client/pull/136): Build URL with multiple instances of the same param. Thanks to [@agh1](https://github.com/agh1)!
+
+
 [2020-11-05] Version 3.13.0
 ---------------------------
 **Library - Feature**
