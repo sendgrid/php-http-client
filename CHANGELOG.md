@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2022-01-12] Version 3.14.1
+---------------------------
+**Library - Chore**
+- [PR #148](https://github.com/sendgrid/php-http-client/pull/148): update license year. Thanks to [@JenniferMah](https://github.com/JenniferMah)!
+
+
 [2021-03-24] Version 3.14.0
 ---------------------------
 **Library - Feature**
