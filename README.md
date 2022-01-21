@@ -1,6 +1,6 @@
 ![SendGrid Logo](twilio_sendgrid_logo.png)
 
-[![Travis Badge](https://travis-ci.com/sendgrid/php-http-client.svg?branch=main)](https://travis-ci.com/sendgrid/php-http-client)
+[![Tests](https://github.com/sendgrid/php-http-client/actions/workflows/test-and-deploy.yml/badge.svg)](https://github.com/sendgrid/php-http-client/actions/workflows/test-and-deploy.yml)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sendgrid/php-http-client.svg?style=flat-square)](https://packagist.org/packages/sendgrid/php-http-client)
 [![Twitter Follow](https://img.shields.io/twitter/follow/sendgrid.svg?style=social&label=Follow)](https://twitter.com/sendgrid)
 [![GitHub contributors](https://img.shields.io/github/contributors/sendgrid/php-http-client.svg)](https://github.com/sendgrid/php-http-client/graphs/contributors)
