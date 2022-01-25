@@ -11,9 +11,7 @@ class FilesExistTest extends TestCase
         $rootDir = __DIR__ . '/../..';
 
         $this->assertFileExists("$rootDir/.gitignore");
-        #$this->assertFileExists("$rootDir/.env_sample");
-        $this->assertFileExists("$rootDir/.travis.yml");
-        $this->assertFileExists("$rootDir/.codeclimate.yml");
+        $this->assertFileExists("$rootDir/.github/workflows/test-and-deploy.yml");
         $this->assertFileExists("$rootDir/CHANGELOG.md");
         $this->assertFileExists("$rootDir/CODE_OF_CONDUCT.md");
         $this->assertFileExists("$rootDir/CONTRIBUTING.md");
@@ -24,9 +22,5 @@ class FilesExistTest extends TestCase
         $this->assertFileExists("$rootDir/README.md");
         $this->assertFileExists("$rootDir/TROUBLESHOOTING.md");
         $this->assertFileExists("$rootDir/USAGE.md");
-        #$this->assertFileExists("$rootDir/USE_CASES.md");
-
-        #$composeExists = file_exists('./docker-compose.yml') || file_exists('./docker/docker-compose.yml');
-        #$this->assertTrue($composeExists);
     }
 }
