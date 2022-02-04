@@ -14,3 +14,6 @@ vendor/
 .php_cs
 .php_cs.cache
 phpunit.xml
+
+# Build artifacts
+php-http-client.zip
