@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2022-02-09] Version 3.14.3
+---------------------------
+**Library - Chore**
+- [PR #151](https://github.com/sendgrid/php-http-client/pull/151): add deploy steps to build library release artifacts. Thanks to [@Hunga1](https://github.com/Hunga1)!
+- [PR #150](https://github.com/sendgrid/php-http-client/pull/150): add gh release to workflow. Thanks to [@shwetha-manvinkurke](https://github.com/shwetha-manvinkurke)!
+
+
 [2022-01-26] Version 3.14.2
 ---------------------------
 **Library - Chore**
