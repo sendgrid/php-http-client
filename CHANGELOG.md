@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2022-03-09] Version 3.14.4
+---------------------------
+**Library - Chore**
+- [PR #152](https://github.com/sendgrid/php-http-client/pull/152): push Datadog Release Metric upon deploy success. Thanks to [@eshanholtz](https://github.com/eshanholtz)!
+
+
 [2022-02-09] Version 3.14.3
 ---------------------------
 **Library - Chore**
