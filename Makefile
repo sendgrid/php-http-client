@@ -7,7 +7,7 @@ ci-install: clean
 	composer install --no-dev
 
 install: clean
-	composer install --no-suggest --no-scripts --no-progress --no-interaction
+	composer install --no-scripts --no-progress --no-interaction
 
 test: install
 	vendor/bin/phpunit test/unit
