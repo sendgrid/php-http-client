@@ -6,9 +6,9 @@ use SendGrid\Client;
 
 class MockClient extends Client
 {
-    protected $requestBody;
-    protected $requestHeaders;
-    protected $url;
+    public $requestBody;
+    public $requestHeaders;
+    public $url;
 
     public function makeRequest($method, $url, $requestBody = null, $requestHeaders = null, $retryOnLimit = false)
     {
