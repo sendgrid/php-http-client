@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2022-05-04] Version 4.0.0
+--------------------------
+**Note:** This release contains breaking changes, check our [upgrade guide](./UPGRADE.md#2022-05-04-3xx-to-4xx) for detailed migration notes.
+
+**Library - Chore**
+- [PR #153](https://github.com/sendgrid/php-http-client/pull/153): drop support for EOL PHP versions and add support for PHP 8. Thanks to [@childish-sambino](https://github.com/childish-sambino)! **(breaking change)**
+
+
 [2022-03-09] Version 3.14.4
 ---------------------------
 **Library - Chore**
