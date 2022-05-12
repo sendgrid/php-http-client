@@ -1,5 +1,5 @@
 # How To Contribute to Twilio SendGrid Repositories via GitHub
-Contributing to the Twilio SendGrid repositories is easy! All you need to do is find an open issue (see the bottom of this page for a list of repositories containing open issues), fix it and submit a pull request. Once you have submitted your pull request, the team can easily review it before it is merged into the repository.
+Contributing to the Twilio SendGrid repositories is easy! Once you have submitted your pull request, the team can easily review it before it is merged into the repository.
 
 To make a pull request, follow these steps:
 
