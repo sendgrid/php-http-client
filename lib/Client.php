@@ -73,6 +73,10 @@ use SendGrid\Exception\InvalidRequest;
  * @method Client field_definitions()
  * @method Client segments()
  * @method Client singlesends()
+ * @method Client contactdb()
+ * @method Client recipients()
+ * @method Client status()
+ * @method Client billable_count()
  *
  * Devices
  * @method Client devices()
@@ -202,7 +206,7 @@ class Client
      * @var bool
      */
     protected $verifySSLCerts;
-    
+
     /**
      * @var bool
      */
