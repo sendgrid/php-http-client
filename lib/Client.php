@@ -145,6 +145,7 @@ use SendGrid\Exception\InvalidRequest;
  * @method Client user()
  * @method Client account()
  * @method Client credits()
+ * @method Client validations()
  * @method Client email()
  * @method Client password()
  * @method Client profile()
