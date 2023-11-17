@@ -263,7 +263,7 @@ class Client
     public function setHost(string $host)
     {
         $this->host = $host;
-
+        
         return $this;
     }
 
