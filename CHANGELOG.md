@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2023-12-01] Version 4.1.0
+--------------------------
+**Library - Feature**
+- [PR #161](https://github.com/sendgrid/php-http-client/pull/161): added setHost for client. Thanks to [@tiwarishubham635](https://github.com/tiwarishubham635)!
+
+**Library - Test**
+- [PR #155](https://github.com/sendgrid/php-http-client/pull/155): Adding misc as PR type. Thanks to [@rakatyal](https://github.com/rakatyal)!
+
+**Library - Docs**
+- [PR #154](https://github.com/sendgrid/php-http-client/pull/154): Update docs to align with SendGrid Support. Thanks to [@garethpaul](https://github.com/garethpaul)!
+
+
 [2022-05-04] Version 4.0.0
 --------------------------
 **Note:** This release contains breaking changes, check our [upgrade guide](./UPGRADE.md#2022-05-04-3xx-to-4xx) for detailed migration notes.
