@@ -202,7 +202,7 @@ class Client
      * @var bool
      */
     protected $verifySSLCerts;
-    
+
     /**
      * @var bool
      */
@@ -252,6 +252,20 @@ class Client
     public function getHost()
     {
         return $this->host;
+    }
+
+    /**
+     * Set host
+     *
+     * @param string $host
+     *
+     * @return Client
+     */
+    public function setHost(string $host)
+    {
+        $this->host = $host;
+        
+        return $this;
     }
 
     /**
