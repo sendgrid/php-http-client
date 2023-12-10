@@ -85,6 +85,13 @@ class ClientTest extends TestCase
         $this->assertSame('https://localhost:4010', $client->getHost());
     }
 
+    public function testSetHost()
+    {
+        $client = new Client('https://localhost:4010');
+        $client->setHost("https://api.test.com");
+        $this->assertSame('https://api.test.com', $client->getHost());
+    }
+
     public function testGetHeaders()
     {
         $client = new Client(
@@ -238,7 +245,7 @@ class ClientTest extends TestCase
             ],
         ];
         $result = $this->callMethod($client, 'buildUrl', [$testParams]);
-        $this->assertEquals($result, 'https://localhost:4010/?thing=stuff&foo=bar&foo=bat&foo=baz');
+        $this->assertEquals('https://localhost:4010/?thing=stuff&foo=bar&foo=bat&foo=baz', $result);
     }
 
     /**
