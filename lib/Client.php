@@ -66,6 +66,7 @@ use SendGrid\Exception\InvalidRequest;
  * Marketing
  * @method Client marketing()
  * @method Client contacts()
+ * @method Client emails()
  * @method Client count()
  * @method Client exports()
  * @method Client imports()
