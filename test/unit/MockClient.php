@@ -10,7 +10,7 @@ class MockClient extends Client
     public $requestHeaders;
     public $url;
 
-    public function makeRequest($method, $url, $requestBody = null, $requestHeaders = null, $retryOnLimit = false)
+    public function makeRequest($method, $url, ?array $requestBody = null, ?array $requestHeaders = null, $retryOnLimit = false)
     {
         $this->requestBody = $requestBody;
         $this->requestHeaders = $requestHeaders;

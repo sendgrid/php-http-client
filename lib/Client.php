@@ -217,22 +217,22 @@ class Client
     /**
      * Initialize the client.
      *
-     * @param string $host           the base url (e.g. https://api.sendgrid.com)
-     * @param array  $headers        global request headers
-     * @param string $version        api version (configurable) - this is specific to the SendGrid API
-     * @param array  $path           holds the segments of the url path
-     * @param array  $curlOptions    extra options to set during curl initialization
-     * @param bool   $retryOnLimit   set default retry on limit flag
-     * @param bool   $verifySSLCerts set default verify certificates flag
+     * @param string $host the base url (e.g. https://api.sendgrid.com)
+     * @param array|null $headers global request headers
+     * @param string|null $version api version (configurable) - this is specific to the SendGrid API
+     * @param array|null $path holds the segments of the url path
+     * @param array|null $curlOptions extra options to set during curl initialization
+     * @param bool $retryOnLimit set default retry on limit flag
+     * @param bool $verifySSLCerts set default verify certificates flag
      */
     public function __construct(
         $host,
-        $headers = null,
-        $version = null,
-        $path = null,
-        $curlOptions = null,
-        $retryOnLimit = false,
-        $verifySSLCerts = true
+        ?array $headers = null,
+        ?string $version = null,
+        ?array $path = null,
+        ?array $curlOptions = null,
+        bool $retryOnLimit = false,
+        bool $verifySSLCerts = true
     ) {
         $this->host = $host;
         $this->headers = $headers ?: [];
@@ -263,7 +263,7 @@ class Client
     public function setHost(string $host)
     {
         $this->host = $host;
-        
+
         return $this;
     }
 
@@ -358,13 +358,13 @@ class Client
     /**
      * Build the final URL to be passed.
      *
-     * @param array $queryParams an array of all the query parameters
+     * @param array|null $queryParams an array of all the query parameters
      *
      * Nested arrays will resolve to multiple instances of the same parameter
      *
      * @return string
      */
-    private function buildUrl($queryParams = null)
+    private function buildUrl(?array $queryParams = null)
     {
         $path = '/' . implode('/', $this->path);
         if (isset($queryParams)) {
@@ -380,12 +380,12 @@ class Client
      * this function does not mutate any private variables.
      *
      * @param string $method
-     * @param array  $body
-     * @param array  $headers
+     * @param array|null $body
+     * @param array|null $headers
      *
      * @return array
      */
-    private function createCurlOptions($method, $body = null, $headers = null)
+    private function createCurlOptions($method, ?array $body = null, ?array $headers = null)
     {
         $options = [
                 CURLOPT_RETURNTRANSFER => true,
@@ -498,17 +498,17 @@ class Client
      * Make the API call and return the response.
      * This is separated into it's own function, so we can mock it easily for testing.
      *
-     * @param string $method       the HTTP verb
-     * @param string $url          the final url to call
-     * @param array  $body         request body
-     * @param array  $headers      any additional request headers
-     * @param bool   $retryOnLimit should retry if rate limit is reach?
+     * @param string $method the HTTP verb
+     * @param string $url the final url to call
+     * @param array|null $body request body
+     * @param array|null $headers any additional request headers
+     * @param bool $retryOnLimit should retry if rate limit is reach?
      *
      * @return Response object
      *
      * @throws InvalidRequest
      */
-    public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
+    public function makeRequest($method, $url, ?array $body = null, ?array $headers = null, $retryOnLimit = false)
     {
         $channel = curl_init($url);
 
@@ -604,7 +604,7 @@ class Client
      *
      * @return Client object
      */
-    public function _($name = null)
+    public function _(?string $name = null)
     {
         if (isset($name)) {
             $this->path[] = $name;

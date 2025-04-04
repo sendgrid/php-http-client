@@ -28,7 +28,7 @@ All updates to this library are documented in our [CHANGELOG](CHANGELOG.md).
 
 ## Prerequisites
 
-- PHP version 7.3, 7.4, 8.0, or 8.1
+- PHP version 7.3+
 
 ## Install with Composer
 

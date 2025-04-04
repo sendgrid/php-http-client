@@ -18,7 +18,7 @@ We welcome direct contributions to the php-http-client code base. Thank you!
 
 ##### Prerequisites #####
 
-- PHP version 7.3, 7.4, 8.0, or 8.1
+- PHP version 7.3+
 - [Composer](https://getcomposer.org/)
 
 ##### Initial setup: #####
