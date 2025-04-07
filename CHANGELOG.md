@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[2025-04-07] Version 4.1.2
+--------------------------
+**Library - Fix**
+- [PR #165](https://github.com/sendgrid/php-http-client/pull/165): implicitly nullable parameter deprecation in PHP 8.4. Thanks to [@theodorejb](https://github.com/theodorejb)!
+
+**Library - Chore**
+- [PR #169](https://github.com/sendgrid/php-http-client/pull/169): fix php 8.4 deprecation warning. Thanks to [@tiwarishubham635](https://github.com/tiwarishubham635)!
+- [PR #168](https://github.com/sendgrid/php-http-client/pull/168): update licence year. Thanks to [@tiwarishubham635](https://github.com/tiwarishubham635)!
+- [PR #166](https://github.com/sendgrid/php-http-client/pull/166): add tests for php new versions. Thanks to [@tiwarishubham635](https://github.com/tiwarishubham635)!
+
+
 [2023-12-14] Version 4.1.1
 --------------------------
 **Library - Chore**
