@@ -226,13 +226,13 @@ class Client
      * @param bool   $verifySSLCerts set default verify certificates flag
      */
     public function __construct(
-        $host,
-        $headers = null,
-        $version = null,
-        $path = null,
-        $curlOptions = null,
-        $retryOnLimit = false,
-        $verifySSLCerts = true
+        string $host,
+        ?array $headers = null,
+        ?string $version = null,
+        ?array $path = null,
+        ?array $curlOptions = null,
+        bool $retryOnLimit = false,
+        bool $verifySSLCerts = true
     ) {
         $this->host = $host;
         $this->headers = $headers ?: [];
@@ -263,7 +263,7 @@ class Client
     public function setHost(string $host)
     {
         $this->host = $host;
-        
+
         return $this;
     }
 
@@ -364,7 +364,7 @@ class Client
      *
      * @return string
      */
-    private function buildUrl($queryParams = null)
+    private function buildUrl(?array $queryParams = null)
     {
         $path = '/' . implode('/', $this->path);
         if (isset($queryParams)) {
@@ -385,7 +385,7 @@ class Client
      *
      * @return array
      */
-    private function createCurlOptions($method, $body = null, $headers = null)
+    private function createCurlOptions($method, ?array $body = null, ?array $headers = null)
     {
         $options = [
                 CURLOPT_RETURNTRANSFER => true,
@@ -508,7 +508,7 @@ class Client
      *
      * @throws InvalidRequest
      */
-    public function makeRequest($method, $url, $body = null, $headers = null, $retryOnLimit = false)
+    public function makeRequest($method, $url, ?array $body = null, ?array $headers = null, $retryOnLimit = false)
     {
         $channel = curl_init($url);
 
@@ -604,7 +604,7 @@ class Client
      *
      * @return Client object
      */
-    public function _($name = null)
+    public function _(?string $name = null)
     {
         if (isset($name)) {
             $this->path[] = $name;
