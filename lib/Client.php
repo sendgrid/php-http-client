@@ -217,7 +217,15 @@ class Client
     /**
      * Initialize the client.
      *
-     * @param string $host the base url (e.g. https://api.sendgrid.com)
+     /**
+ * @param string $host The base URL (e.g., https://api.sendgrid.com).
+ * @param array|null $headers Global request headers. If provided, these headers will be included in every request.
+ * @param string|null $version API version (configurable). This is specific to the SendGrid API.
+ * @param array|null $path Holds the segments of the URL path.
+ * @param array|null $curlOptions Extra options to set during cURL initialization.
+ * @param bool $retryOnLimit Set default retry on limit flag.
+ * @param bool $verifySSLCerts Set default verify SSL certificates flag.
+ */
      * @param array|null $headers global request headers
      * @param string|null $version api version (configurable) - this is specific to the SendGrid API
      * @param array|null $path holds the segments of the url path
