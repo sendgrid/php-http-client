@@ -366,7 +366,7 @@ class Client
     /**
      * Build the final URL to be passed.
      *
-     * @param array|null $queryParams an array of all the query parameters
+     * @param array|null \$queryParams An array of all the query parameters.
      *
      * Nested arrays will resolve to multiple instances of the same parameter
      *
