@@ -1,4 +1,4 @@
-Hello! Thank you for choosing to help contribute to one of the SendGrid open source projects. There are many ways you can contribute and help is always welcome.  We merely ask that you follow the following contribution policies.
+Hello! Thank you for choosing to help contribute to one of the SendGrid open source projects. There are many ways you can contribute and help is always welcome. We merely ask that you follow the following contribution policies.
 
 - [Improvements to the Codebase](#improvements-to-the-codebase)
 - [Understanding the Code Base](#understanding-the-codebase)
@@ -61,7 +61,7 @@ An HTTP client with a fluent interface using method chaining and reflection. By 
 
 This allows for the following mapping from a URL to a method chain:
 
-`/api_client/{api_key_id}/version` maps to `client->api_client().->_($api_key_id)->version-><method>()` where <method> is a [HTTP verb](lib/Client.php#L210).
+`/api_client/{api_key_id}/version` maps to `$client->api_client()->_($api_key_id)->version-><method>()` where <method> is a [HTTP verb](lib/Client.php#L210).
 
 **/lib/SendGrid/Config.php**
 
