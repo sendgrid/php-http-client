@@ -32,6 +32,7 @@ use SendGrid\Exception\InvalidRequest;
  * @method Client sums()
  * @method Client monitor()
  * @method Client test()
+ * @method Client _version()
  *
  * Access settings
  * @method Client access_settings()
@@ -633,10 +634,16 @@ class Client
     {
         $name = mb_strtolower($name);
 
+        // set the API version
         if ($name === 'version') {
             $this->version = $args[0];
 
             return $this->_();
+        }
+
+        // set the endpoint version (e.g. client.name.name._version("2.0"))
+        if ($name === '_version') {
+            return $this->_($version = $args[0]);
         }
 
         // send all saved requests
@@ -645,11 +652,11 @@ class Client
         }
 
         if (\in_array($name, $this->methods, true)) {
-            $body = isset($args[0]) ? $args[0] : null;
-            $queryParams = isset($args[1]) ? $args[1] : null;
-            $url = $this->buildUrl($queryParams);
-            $headers = isset($args[2]) ? $args[2] : null;
-            $retryOnLimit = isset($args[3]) ? $args[3] : $this->retryOnLimit;
+            $body         = $args[0] ?? null;
+            $queryParams  = $args[1] ?? null;
+            $url          = $this->buildUrl($queryParams);
+            $headers      = $args[2] ?? null;
+            $retryOnLimit = $args[3] ?? $this->retryOnLimit;
 
             if ($this->isConcurrentRequest) {
                 // save request to be sent later
