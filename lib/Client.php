@@ -73,6 +73,7 @@ use SendGrid\Exception\InvalidRequest;
  * @method Client field_definitions()
  * @method Client segments()
  * @method Client singlesends()
+ * @method Client schedule()
  *
  * Devices
  * @method Client devices()
