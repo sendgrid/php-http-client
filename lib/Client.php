@@ -529,8 +529,6 @@ class Client
             return $this->retryRequest($responseHeaders, $method, $url, $body, $headers);
         }
 
-        curl_close($channel);
-
         return $response;
     }
 
