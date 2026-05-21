@@ -156,6 +156,13 @@ use SendGrid\Exception\InvalidRequest;
  * @method Client event()
  * @method Client parse()
  *
+ * Domains
+ * @method Client whitelabel()
+ * @method Client domains()
+ * @method Client default()
+ * @method Client validate()
+ * @method Client subuser()
+ *
  * Missed any? Simply add them by doing: @method Client method()
  */
 class Client
