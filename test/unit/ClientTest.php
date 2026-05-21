@@ -70,6 +70,15 @@ class ClientTest extends TestCase
         $this->assertEquals(['path_to_endpoint', 'one_more_segment'], $client->getPath());
     }
 
+    public function test__callWithEndpointVersion()
+    {
+        $endpoint_version = '2.0';
+        $object_id        = '00000000-0000-0000-0000-000000000000';
+        $response         = $this->client->segments()->_version($endpoint_version)->_($object_id)->patch();
+        
+        $this->assertEquals("https://localhost:4010/v3/segments/$endpoint_version/$object_id", $response->url);
+    }
+
     public function testGetHost()
     {
         $client = new Client('https://localhost:4010');
