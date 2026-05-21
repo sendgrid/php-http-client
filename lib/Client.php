@@ -155,6 +155,9 @@ use SendGrid\Exception\InvalidRequest;
  * @method Client webhooks()
  * @method Client event()
  * @method Client parse()
+ * 
+ * Validations
+ * @method Client validations()
  *
  * Missed any? Simply add them by doing: @method Client method()
  */
